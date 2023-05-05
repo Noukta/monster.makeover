@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">create monster</string>
+    <string name="start">Start</string>
+    <string name="create_monster">Create monster</string>
+    <string name="end">End</string>
+    <string name="back_button">Back</string>
+    <string name="share">Share</string>
+    <string name="remake">Remake</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="accessory">Accessory</string>
+    <string name="mouth">Mouth</string>
+    <string name="eye">Eye</string>
+    <string name="head">Head</string>
+    <string name="body">Body</string>
+</resources>
