@@ -69,12 +69,13 @@ fun CreateMonsterAppBar(
 fun CreateMonsterApp(modifier: Modifier = Modifier, viewModel: CreateMonsterViewModel = viewModel()){
     val navController = rememberNavController()
     val context = LocalContext.current
+    var canNavigateBack by remember {mutableStateOf(false)}
 
     Scaffold(
         topBar = {
             CreateMonsterAppBar(
                 context = context,
-                canNavigateBack = navController.previousBackStackEntry != null
+                canNavigateBack = canNavigateBack
             )
         }
     ) { innerPadding ->
@@ -86,7 +87,10 @@ fun CreateMonsterApp(modifier: Modifier = Modifier, viewModel: CreateMonsterView
         ){
             composable(route = CreateMonsterScreen.Start.name) {
                 StartScreen(
-                    onNextButtonClicked = {navController.navigate(CreateMonsterScreen.Create.name)}
+                    onNextButtonClicked = {
+                        navController.navigate(CreateMonsterScreen.Create.name)
+                        canNavigateBack = true
+                    }
                 )
             }
             composable(route = CreateMonsterScreen.Create.name) {
@@ -115,7 +119,10 @@ fun CreateMonsterApp(modifier: Modifier = Modifier, viewModel: CreateMonsterView
                 EndScreen(
                     monsterUiState = uiState,
                     screenshotState = screenshotState,
-                    onRemakeButtonClicked = {remakeNewMonster(viewModel, navController)}
+                    onRemakeButtonClicked = {
+                        remakeNewMonster(viewModel, navController)
+                        canNavigateBack = false
+                    }
                 ) {
                     screenshotState.capture()
                     if(showDialog) {
