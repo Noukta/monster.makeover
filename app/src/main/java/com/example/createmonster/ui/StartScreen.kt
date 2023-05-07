@@ -1,17 +1,25 @@
 package com.example.createmonster.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.createmonster.R
+import com.example.createmonster.data.DataSource.allParts
 import com.example.createmonster.data.MonsterUiState
 import com.example.createmonster.ui.theme.PrimaryButton
-import com.example.createmonster.data.DataSource.allParts
 
 fun randomMonster(): MonsterUiState {
     return MonsterUiState(
@@ -34,11 +42,9 @@ fun StartScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Image(
-            painter = painterResource(R.drawable.title_anim),
-            contentDescription = null,
-            modifier = Modifier.width(300.dp).weight(.2f)
-        )
+        AnimatedTitle(modifier = Modifier
+            .width(300.dp)
+            .weight(.2f))
         Monster(
             modifier = Modifier
                 .weight(.6f)
@@ -46,11 +52,51 @@ fun StartScreen(
             monsterUiState = randomMonster()
         )
         Box(
-            Modifier.padding(horizontal = 64.dp).weight(.2f)
+            Modifier
+                .padding(horizontal = 64.dp)
+                .weight(.2f)
         ){
-            StartButton (Modifier.fillMaxWidth()
-                .padding(horizontal = 32.dp))
+            StartButton (
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp))
             { onNextButtonClicked() }
+        }
+    }
+}
+
+@Composable
+fun AnimatedTitle(modifier: Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        AnimatedImage(
+            painter = painterResource(id = R.drawable.title_monster),
+            animationSpeed = 3f,
+            maxAngle = 1f
+        )
+        Spacer(modifier = Modifier.size(10.dp))
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            AnimatedImage(
+                painter = painterResource(id = R.drawable.title_makeover),
+                animationSpeed = 3.5f,
+                maxAngle = -1f
+            )
+            AnimatedImage(
+                painter = painterResource(id = R.drawable.title_star),
+                modifier = Modifier.offset(95.dp, (-10).dp),
+                animationSpeed = 8f
+            )
+            AnimatedImage(
+                painter = painterResource(id = R.drawable.title_star),
+                modifier = Modifier.offset((-95).dp, (10).dp).rotate(180F),
+                animationSpeed = -10f
+            )
         }
     }
 }
