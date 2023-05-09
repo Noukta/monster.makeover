@@ -7,4 +7,5 @@ data class TabInfo(
     @StringRes val tabName: Int,
     @DrawableRes val iconResId: Int,
     @DrawableRes val selectedIconResId: Int,
-    val contentSize: Int = 0)
+    val contentSize: Int = 0
+)

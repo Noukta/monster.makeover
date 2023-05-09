@@ -42,9 +42,11 @@ fun StartScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        AnimatedTitle(modifier = Modifier
-            .width(300.dp)
-            .weight(.2f))
+        AnimatedTitle(
+            modifier = Modifier
+                .width(300.dp)
+                .weight(.2f)
+        )
         Monster(
             modifier = Modifier
                 .weight(.6f)
@@ -55,11 +57,12 @@ fun StartScreen(
             Modifier
                 .padding(horizontal = 64.dp)
                 .weight(.2f)
-        ){
-            StartButton (
+        ) {
+            StartButton(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp))
+                    .padding(horizontal = 32.dp)
+            )
             { onNextButtonClicked() }
         }
     }
@@ -94,7 +97,9 @@ fun AnimatedTitle(modifier: Modifier) {
             )
             AnimatedImage(
                 painter = painterResource(id = R.drawable.title_star),
-                modifier = Modifier.offset((-95).dp, (10).dp).rotate(180F),
+                modifier = Modifier
+                    .offset((-95).dp, (10).dp)
+                    .rotate(180F),
                 animationSpeed = -10f
             )
         }
@@ -108,6 +113,6 @@ fun StartButton(modifier: Modifier, onClick: () -> Unit) {
 
 @Preview
 @Composable
-fun StartPreview(){
+fun StartPreview() {
     StartScreen()
 }
