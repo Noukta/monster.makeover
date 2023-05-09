@@ -27,14 +27,17 @@ fun CustomTabRow(
             .fillMaxWidth()
             .background(
                 color = Color.White,
-                shape = RoundedCornerShape(percent = 50)),
+                shape = RoundedCornerShape(percent = 50)
+            ),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
-    ){
-        tabs.forEachIndexed{index, tab ->
+    ) {
+        tabs.forEachIndexed { index, tab ->
             Box(
-                modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
-            ){
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 16.dp)
+            ) {
                 val icon = if (selectedTabIndex == index) {
                     tab.selectedIconResId
                 } else {
@@ -48,9 +51,11 @@ fun CustomTabRow(
             }
         }
         Box(
-            modifier = Modifier.weight(1.5f).padding(end = 4.dp),
+            modifier = Modifier
+                .weight(2f)
+                .padding(end = 4.dp),
             contentAlignment = Alignment.CenterEnd
-        ){
+        ) {
             lastTab()
         }
     }

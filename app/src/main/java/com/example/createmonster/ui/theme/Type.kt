@@ -13,26 +13,26 @@ val MainFont = FontFamily(
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = MainFont,
-        fontSize = 36.sp
+        fontSize = 34.sp
     ),
     displayMedium = TextStyle(
         fontFamily = MainFont,
-        fontSize = 20.sp
+        fontSize = 18.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = MainFont,
-        fontSize = 14.sp
+        fontSize = 12.sp
     ),
     labelLarge = TextStyle(
         fontFamily = MainFont,
-        fontSize = 18.sp
+        fontSize = 14.sp
     ),
     labelMedium = TextStyle(
         fontFamily = MainFont,
-        fontSize = 16.sp
+        fontSize = 12.sp
     ),
     labelSmall = TextStyle(
         fontFamily = MainFont,
-        fontSize = 14.sp
+        fontSize = 10.sp
     )
 )
