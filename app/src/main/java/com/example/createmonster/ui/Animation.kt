@@ -23,7 +23,7 @@ fun AnimatedImage(
     contentDescription: String? = null,
     maxAngle: Float = 5f,
     maxTranslation: Float = 3f,
-    maxScale:Float = .1f
+    maxScale: Float = .1f
 ) {
     var translation by remember { mutableStateOf(0f) }
     var scale by remember { mutableStateOf(1f) }
@@ -31,10 +31,13 @@ fun AnimatedImage(
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(100)
-            if(maxAngle != 0f) angle = sin(System.currentTimeMillis() / 1000.0 * animationSpeed).toFloat() * maxAngle
-            if(maxTranslation != 0f) translation = sin(System.currentTimeMillis() / 1000.0 * animationSpeed).toFloat() * maxTranslation
-            if(maxScale != 0f) scale = 1.0f + abs(sin(System.currentTimeMillis() / 1000.0 * animationSpeed)).toFloat() * maxScale
+            delay(40)
+            if (maxAngle != 0f) angle =
+                sin(System.currentTimeMillis() / 1000.0 * animationSpeed).toFloat() * maxAngle
+            if (maxTranslation != 0f) translation =
+                sin(System.currentTimeMillis() / 1000.0 * animationSpeed).toFloat() * maxTranslation
+            if (maxScale != 0f) scale =
+                1.0f + abs(sin(System.currentTimeMillis() / 1000.0 * animationSpeed)).toFloat() * maxScale
         }
     }
 
