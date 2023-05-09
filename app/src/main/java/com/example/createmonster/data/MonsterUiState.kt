@@ -11,8 +11,8 @@ data class MonsterUiState(
     val acc: Int? = null,
     val body: Int? = null,
 
-    val eyeOffset:Offset = Offset.Zero,
-    val mouthOffset: Offset = Offset(0F, 160F),
-    val accOffset: Offset = Offset(0F, -160F),
+    val eyeOffset: Offset = Offset(0F, -200F),
+    val mouthOffset: Offset = Offset(0F, 0F),
+    val accOffset: Offset = Offset(0F, -400F),
 
     )
