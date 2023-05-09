@@ -48,30 +48,32 @@ fun CreateScreen(
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
-    Column {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Box(
+            modifier = Modifier
+                .weight(.6f)
+                .padding(16.dp)
+        ) {
             Monster(
-                modifier = Modifier
-                    .weight(.6f)
-                    .padding(16.dp),
                 monsterUiState = monsterUiState,
                 onEyePositionChanged = onEyePositionChanged,
                 onMouthPositionChanged = onMouthPositionChanged,
                 onAccPositionChanged = onAccPositionChanged
             )
-
+        }
         Column(
             modifier = Modifier
                 .weight(.4f)
                 .padding(16.dp)
-        ){
+        ) {
             CustomTabRow(selectedTabIndex) {
-                when(selectedTabIndex){
-                    0 -> NextButton(monsterUiState.head != null) { selectedTabIndex++}
-                    1 -> NextButton(monsterUiState.eye != null) { selectedTabIndex++}
-                    2 -> NextButton(monsterUiState.mouth != null) { selectedTabIndex++}
-                    3 -> DoneButton(monsterUiState.acc != null, onDoneButtonClicked)
-                    //3 -> NextButton(monsterUiState.acc != null) { selectedTabIndex++}
-                    //4 -> DoneButton(monsterUiState.body != null) { selectedTabIndex++}
+                when (selectedTabIndex) {
+                    0 -> NextButton(monsterUiState.head != null) { selectedTabIndex++ }
+                    1 -> NextButton(monsterUiState.eye != null) { selectedTabIndex++ }
+                    2 -> NextButton(monsterUiState.mouth != null) { selectedTabIndex++ }
+                    3 -> NextButton(monsterUiState.acc != null) { selectedTabIndex++ }
+                    4 -> DoneButton(monsterUiState.body != null) { onDoneButtonClicked() }
                 }
             }
             TabContent(
@@ -97,7 +99,8 @@ fun DoneButton(enabled: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun TabContent(tabIndex: Int,
+fun TabContent(
+    tabIndex: Int,
     onMonsterHeadChanged: (Int) -> Unit,
     onMonsterEyeChanged: (Int) -> Unit,
     onMonsterMouthChanged: (Int) -> Unit,
@@ -112,20 +115,19 @@ fun TabContent(tabIndex: Int,
         border = BorderStroke(2.dp, MaterialTheme.colorScheme.onPrimaryContainer)
     ) {
         LazyHorizontalGrid(
-            rows = GridCells.Fixed(3),
-            contentPadding = PaddingValues(8.dp)
+            rows = GridCells.Fixed(3), contentPadding = PaddingValues(8.dp)
         ) {
-            items(allParts[tabIndex]) {part ->
+            items(allParts[tabIndex]) { part ->
                 Box(
                     Modifier.clickable(role = Role.Button) {
                         when (tabIndex) {
                             0 -> onMonsterHeadChanged(part.second)
                             1 -> onMonsterEyeChanged(part.second)
                             2 -> onMonsterMouthChanged(part.second)
-                            else -> onMonsterAccChanged(part.second)
+                            3 -> onMonsterAccChanged(part.second)
+                            else -> onMonsterBodyChanged(part.second)
                         }
-                    },
-                    Alignment.Center
+                    }, Alignment.Center
 
                 ) {
                     Image(
@@ -148,6 +150,14 @@ fun TabContent(tabIndex: Int,
 
 @Preview(showBackground = true)
 @Composable
-fun CreatePreview(){
-    CreateScreen()
+fun CreatePreview() {
+    CreateScreen(
+        monsterUiState = MonsterUiState(
+            head = R.drawable.head_04,
+            eye = R.drawable.eye_11,
+            mouth = R.drawable.mouth_20,
+            acc = R.drawable.acc_00,
+            body = R.drawable.body_26
+        )
+    )
 }

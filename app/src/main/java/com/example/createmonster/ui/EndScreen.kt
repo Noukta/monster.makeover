@@ -3,9 +3,7 @@ package com.example.createmonster.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +14,9 @@ import com.example.createmonster.R
 import com.example.createmonster.data.MonsterUiState
 import com.example.createmonster.ui.theme.PrimaryButton
 import com.example.createmonster.ui.theme.SecondaryButton
+import com.smarttoolfactory.screenshot.ScreenshotBox
 import com.smarttoolfactory.screenshot.ScreenshotState
+import com.smarttoolfactory.screenshot.rememberScreenshotState
 
 @Composable
 fun EndScreen(
@@ -28,36 +28,40 @@ fun EndScreen(
 ) {
     Column(
         modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Monster(
-            modifier = Modifier
-                .weight(.6f)
-                .padding(16.dp),
-            monsterUiState = monsterUiState,
-            screenshotState = screenshotState
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+        if (screenshotState != null) {
+            ScreenshotBox(
+                modifier = Modifier
+                    .weight(.6f)
+                    .padding(16.dp),
+                screenshotState = screenshotState
+            ) {
+                Monster(
+                    monsterUiState = monsterUiState
+                )
+            }
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
-                .weight(.4f),
+                .weight(.2f),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             RemakeButton(
                 Modifier
                     .padding(8.dp)
-                    .weight(1f)) { onRemakeButtonClicked() }
+                    .weight(1f)
+            ) { onRemakeButtonClicked() }
             ShareButton(
                 Modifier
                     .padding(8.dp)
-                    .weight(1f)){ onShareButtonClicked()}
+                    .weight(1f)
+            ) { onShareButtonClicked() }
         }
     }
 }
@@ -74,6 +78,14 @@ fun RemakeButton(modifier: Modifier, onClick: () -> Unit) {
 
 @Preview
 @Composable
-fun EndPreview(){
-    EndScreen()
+fun EndPreview() {
+    EndScreen(
+        monsterUiState = MonsterUiState(
+            head = R.drawable.head_04,
+            eye = R.drawable.eye_11,
+            mouth = R.drawable.mouth_20,
+            acc = R.drawable.acc_00,
+            body = R.drawable.body_26
+        ), screenshotState = rememberScreenshotState()
+    )
 }
