@@ -1,6 +1,9 @@
 package com.example.createmonster
 
+import android.app.Activity
 import android.content.Context
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,6 +35,8 @@ import com.example.createmonster.ui.CreateMonsterViewModel
 import com.example.createmonster.ui.CreateScreen
 import com.example.createmonster.ui.EndScreen
 import com.example.createmonster.ui.StartScreen
+import com.example.createmonster.utils.AdUnit
+import com.example.createmonster.utils.UnityAdsManager
 import com.example.createmonster.utils.openPrivacyPolicy
 import com.example.createmonster.utils.saveToInternalStorage
 import com.example.createmonster.utils.shareImageUri
@@ -69,6 +76,7 @@ fun CreateMonsterApp(
 ) {
     val navController = rememberNavController()
     val context = LocalContext.current
+    var topBannerId by remember { mutableStateOf(AdUnit.Banner_Start) }
 
     Scaffold(
         topBar = {
@@ -80,19 +88,38 @@ fun CreateMonsterApp(
         }
     ) { innerPadding ->
         val uiState by viewModel.uiState.collectAsState()
+
+        Box(modifier.fillMaxWidth(), Alignment.TopCenter) {
+            AndroidView(
+                modifier = Modifier.fillMaxWidth(),
+                factory = {
+                    UnityAdsManager.loadBanner(context as Activity, topBannerId)
+                },
+                update = {
+                    UnityAdsManager.loadBanner(context as Activity, topBannerId)
+                }
+            )
+        }
+
         NavHost(
             navController = navController,
             startDestination = CreateMonsterScreen.Start.name,
             modifier = modifier.padding(innerPadding)
         ) {
             composable(route = CreateMonsterScreen.Start.name) {
-                StartScreen(
-                    onNextButtonClicked = {
-                        navController.navigate(CreateMonsterScreen.Create.name)
-                    }
-                )
+                UnityAdsManager.load(AdUnit.Interstitial_Start_Create)
+                topBannerId = AdUnit.Banner_Start
+                StartScreen {
+                    navController.navigate(CreateMonsterScreen.Create.name)
+                    UnityAdsManager.show(
+                        AdUnit.Interstitial_Start_Create,
+                        context as Activity
+                    )
+                }
             }
             composable(route = CreateMonsterScreen.Create.name) {
+                UnityAdsManager.load(AdUnit.Interstitial_Create_End)
+                topBannerId = AdUnit.Banner_Create
                 CreateScreen(
                     monsterUiState = uiState,
                     onMonsterHeadChanged = { id -> viewModel.updateMonsterHead(id) },
@@ -103,11 +130,18 @@ fun CreateMonsterApp(
                     onEyePositionChanged = { viewModel.updateEyePosition(it) },
                     onMouthPositionChanged = { viewModel.updateMouthPosition(it) },
                     onAccPositionChanged = { viewModel.updateAccPosition(it) },
-                    onDoneButtonClicked = { navController.navigate(CreateMonsterScreen.End.name) }
+                    onDoneButtonClicked = {
+                        navController.navigate(CreateMonsterScreen.End.name)
+                        UnityAdsManager.show(
+                            AdUnit.Interstitial_Create_End,
+                            context as Activity
+                        )
+                    }
                 )
 
             }
             composable(route = CreateMonsterScreen.End.name) {
+                topBannerId = AdUnit.Banner_End
                 val screenshotState = rememberScreenshotState()
                 var showDialog by remember { mutableStateOf(false) }
                 // Show dialog only when ImageResult is success or error

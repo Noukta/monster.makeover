@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.createmonster.ui.theme.CreateMonsterTheme
+import com.example.createmonster.utils.UnityAdsManager
 
 class MainActivity : ComponentActivity() {
 
@@ -14,6 +15,7 @@ class MainActivity : ComponentActivity() {
                 CreateMonsterApp()
             }
         }
+        UnityAdsManager.initialize(applicationContext)
     }
 
 }
