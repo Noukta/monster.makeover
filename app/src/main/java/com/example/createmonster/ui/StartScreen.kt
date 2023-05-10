@@ -47,7 +47,7 @@ fun StartScreen(
         AnimatedTitle(
             modifier = Modifier
                 .width(300.dp)
-                .weight(.2f)
+                .weight(.3f)
         )
         Monster(
             modifier = Modifier
@@ -56,14 +56,12 @@ fun StartScreen(
             monsterUiState = randomMonster()
         )
         Box(
-            Modifier
-                .padding(horizontal = 64.dp)
-                .weight(.2f)
+            Modifier.weight(.1f), Alignment.Center
         ) {
             StartButton(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
+                    .padding(horizontal = 96.dp)
             )
             { onNextButtonClicked() }
         }
