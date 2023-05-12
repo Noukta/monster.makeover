@@ -11,12 +11,18 @@ android {
         applicationId "com.example.createmonster"
         minSdk 26
         targetSdk 33
-        versionCode 102
-        versionName "1.0.2"
+        versionCode 104
+        versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
+        }
+    }
+
+    sourceSets {
+        main {
+            res.srcDirs += 'src/main/res'
         }
     }
 
@@ -27,11 +33,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     buildFeatures {
         compose true
@@ -59,10 +65,8 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.5.3"
     implementation 'androidx.compose.material3:material3:1.1.0-rc01'
     implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.core:core-ktx:1.10.0'
-    implementation 'com.unity3d.ads:unity-ads:4.7.0'
+    implementation 'com.unity3d.ads:unity-ads:4.7.1'
     implementation 'com.github.SmartToolFactory:Compose-Screenshot:1.0.3'
-    implementation 'androidx.core:core-ktx:1.10.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
