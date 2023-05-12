@@ -2,6 +2,8 @@ package com.example.createmonster
 
 import android.app.Activity
 import android.content.Context
+import android.media.SoundPool
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +25,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -31,6 +32,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.createmonster.data.DataSource.sounds
 import com.example.createmonster.ui.CreateMonsterViewModel
 import com.example.createmonster.ui.CreateScreen
 import com.example.createmonster.ui.EndScreen
@@ -69,16 +71,17 @@ fun CreateMonsterAppBar(
 
 @Composable
 fun CreateMonsterApp(
+    soundPool: SoundPool,
     modifier: Modifier = Modifier,
     viewModel: CreateMonsterViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val navController: NavHostController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Get the name of the current screen
     val currentScreen = CreateMonsterScreen.valueOf(
         backStackEntry?.destination?.route ?: CreateMonsterScreen.Start.name
     )
-    val context = LocalContext.current
     var adBannerId by remember { mutableStateOf(AdUnit.Banner_Start) }
     var canNavigateBack by remember { mutableStateOf(false) }
 
@@ -115,6 +118,13 @@ fun CreateMonsterApp(
                 UnityAdsManager.load(AdUnit.Interstitial_Start_Create)
                 adBannerId = AdUnit.Banner_Start
                 StartScreen {
+                        val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
+                        Log.d("PLAY SOUNDS", "sound id: $soundId")
+                        soundId?.let {
+                            val result = soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+                            Log.d("PLAY SOUNDS", "sound played $result")
+
+                        }
                     navController.navigate(CreateMonsterScreen.Create.name)
                     UnityAdsManager.show(
                         AdUnit.Interstitial_Start_Create,
@@ -184,10 +194,4 @@ private fun remakeNewMonster(
 ) {
     viewModel.resetMonster()
     navController.popBackStack(CreateMonsterScreen.Start.name, inclusive = false)
-}
-
-@Preview
-@Composable
-fun CreateMonsterAppPreview() {
-    CreateMonsterApp()
 }
