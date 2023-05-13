@@ -56,17 +56,39 @@ enum class CreateMonsterScreen {
 @Composable
 fun CreateMonsterAppBar(
     context: Context,
+    isSoundMute: Boolean,
+    onVolumeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BottomAppBar(
         modifier = modifier,
         actions = {
+            var isVolumeOff by remember { mutableStateOf(isSoundMute) }
+
             IconButton(onClick = { openPrivacyPolicy(context) }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.baseline_policy_24),
                     contentDescription = stringResource(R.string.privacy_policy),
                     tint = Color.Unspecified
                 )
+            }
+            IconButton(onClick = {
+                onVolumeClick()
+                isVolumeOff = !isVolumeOff
+            }) {
+                if (isVolumeOff) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.baseline_volume_off_24),
+                        contentDescription = stringResource(R.string.volume_off),
+                        tint = Color.Unspecified
+                    )
+                } else {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.baseline_volume_up_24),
+                        contentDescription = stringResource(R.string.volume_up),
+                        tint = Color.Unspecified
+                    )
+                }
             }
         }
     )
@@ -93,7 +115,21 @@ fun CreateMonsterApp(
         bottomBar = {
             if (currentScreen == CreateMonsterScreen.Start) {
                 CreateMonsterAppBar(
-                    context = context
+                    context = context,
+                    isSoundMute = viewModel.isSoundMute,
+                    onVolumeClick = {
+                        if (viewModel.isSoundMute) playBackgroundMusic(
+                            currentScreen,
+                            soundPool,
+                            viewModel
+                        )
+                        else stopBackgroundMusic(soundPool, viewModel)
+
+                        val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
+                        playSound(soundPool, soundId, viewModel.isSoundMute)
+
+                        viewModel.isSoundMute = !viewModel.isSoundMute
+                    }
                 )
             }
         }
@@ -123,7 +159,7 @@ fun CreateMonsterApp(
                 adBannerId = AdUnit.Banner_Start
                 StartScreen {
                     val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
-                    playSound(soundPool, soundId)
+                    playSound(soundPool, soundId, viewModel.isSoundMute)
                     navController.navigate(CreateMonsterScreen.Create.name)
                     UnityAdsManager.show(
                         AdUnit.Interstitial_Start_Create,
@@ -138,36 +174,36 @@ fun CreateMonsterApp(
                     monsterUiState = uiState,
                     onMonsterHeadChanged = { id ->
                         viewModel.updateMonsterHead(id)
-                        playRandomSound(soundPool)
-                                           },
+                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    },
                     onMonsterEyeChanged = { id ->
                         viewModel.updateMonsterEye(id)
-                        playRandomSound(soundPool)
-                                          },
+                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    },
                     onMonsterMouthChanged = { id ->
                         viewModel.updateMonsterMouth(id)
-                        playRandomSound(soundPool)
-                                            },
+                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    },
                     onMonsterAccChanged = { id ->
                         viewModel.updateMonsterAcc(id)
-                        playRandomSound(soundPool)
-                                          },
+                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    },
                     onMonsterBodyChanged = { id ->
                         viewModel.updateMonsterBody(id)
-                        playRandomSound(soundPool)
-                                           },
+                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    },
                     onEyePositionChanged = {
                         viewModel.updateEyePosition(it)
-                                           },
+                    },
                     onMouthPositionChanged = {
                         viewModel.updateMouthPosition(it)
-                                             },
+                    },
                     onAccPositionChanged = {
                         viewModel.updateAccPosition(it)
-                                           },
+                    },
                     onDoneButtonClicked = {
                         val soundId = sounds.find { it.resId == R.raw.btn_done }?.soundId
-                        playSound(soundPool, soundId)
+                        playSound(soundPool, soundId, viewModel.isSoundMute)
                         navController.navigate(CreateMonsterScreen.End.name)
                         UnityAdsManager.show(
                             AdUnit.Interstitial_Create_End,
@@ -176,7 +212,7 @@ fun CreateMonsterApp(
                     },
                     onNextButtonClicked = {
                         val soundId = sounds.find { it.resId == R.raw.btn_next }?.soundId
-                        playSound(soundPool, soundId)
+                        playSound(soundPool, soundId, viewModel.isSoundMute)
                     }
                 )
 
@@ -190,7 +226,8 @@ fun CreateMonsterApp(
                         val uri = it.saveToInternalStorage(context, "monster.png")
                         val message =
                             "did you like my monster? create yours: https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
-                        shareImageUri(context, uri, message) }
+                        shareImageUri(context, uri, message)
+                    }
                 }
 
                 EndScreen(
@@ -198,19 +235,20 @@ fun CreateMonsterApp(
                     screenshotState = screenshotState,
                     onRemakeButtonClicked = {
                         val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
-                        playSound(soundPool, soundId)
+                        playSound(soundPool, soundId, viewModel.isSoundMute)
                         remakeNewMonster(viewModel, navController)
                         canNavigateBack = false
                     }
                 ) {
                     val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
-                    playSound(soundPool, soundId)
+                    playSound(soundPool, soundId, viewModel.isSoundMute)
                     screenshotState.capture()
                 }
             }
         }
     }
-    if(isMusicReady)
+    //Triggered when screen changed
+    if (isMusicReady && !viewModel.isSoundMute)
         playBackgroundMusic(currentScreen, soundPool, viewModel)
 }
 
@@ -219,22 +257,24 @@ private fun playBackgroundMusic(
     soundPool: SoundPool?,
     viewModel: CreateMonsterViewModel
 ) {
-    if(viewModel.currentStreamId!= 0) {
-        soundPool?.stop(viewModel.currentStreamId)
-        viewModel.isMusicPlaying = false
-        Log.i("SOUND", "streamId stopped: ${viewModel.currentStreamId}")
+    if (viewModel.currentStreamId != 0) {
+        stopBackgroundMusic(soundPool, viewModel)
     }
-    val soundId:Int? = if(currentScreen == CreateMonsterScreen.End){
+    val soundId: Int? = if (currentScreen == CreateMonsterScreen.End) {
         sounds.find { it.resId == R.raw.bgm_end }?.soundId
-    }
-    else{
+    } else {
         sounds.find { it.resId == R.raw.bgm_start_create }?.soundId
     }
-    if(!viewModel.isMusicPlaying)
-    {
+    if (!viewModel.isMusicPlaying) {
         viewModel.currentStreamId = playSoundInfinite(soundPool, soundId)
         viewModel.isMusicPlaying = true
     }
+}
+
+private fun stopBackgroundMusic(soundPool: SoundPool?, viewModel: CreateMonsterViewModel) {
+    soundPool?.stop(viewModel.currentStreamId)
+    viewModel.isMusicPlaying = false
+    Log.i("SOUND", "streamId stopped: ${viewModel.currentStreamId}")
 }
 
 private fun remakeNewMonster(

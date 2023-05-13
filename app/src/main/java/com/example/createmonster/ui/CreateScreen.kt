@@ -74,18 +74,22 @@ fun CreateScreen(
                         onNextButtonClicked()
                         selectedTabIndex++
                     }
+
                     1 -> NextButton(monsterUiState.eye != null) {
                         onNextButtonClicked()
                         selectedTabIndex++
                     }
+
                     2 -> NextButton(monsterUiState.mouth != null) {
                         onNextButtonClicked()
                         selectedTabIndex++
                     }
+
                     3 -> NextButton(monsterUiState.acc != null) {
                         onNextButtonClicked()
                         selectedTabIndex++
                     }
+
                     4 -> DoneButton(monsterUiState.body != null) { onDoneButtonClicked() }
                 }
             }

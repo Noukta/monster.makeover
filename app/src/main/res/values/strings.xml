@@ -14,4 +14,6 @@
     <string name="head">Head</string>
     <string name="body">Body</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="volume_up">Volume Up</string>
+    <string name="volume_off">Volume Off</string>
 </resources>

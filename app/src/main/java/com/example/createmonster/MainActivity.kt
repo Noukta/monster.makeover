@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.createmonster.data.DataSource
 import com.example.createmonster.ui.theme.CreateMonsterTheme
+import com.example.createmonster.utils.UnityAdsManager
 import com.example.createmonster.utils.loadSounds
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 CreateMonsterApp(soundPool, isMusicReady)
             }
         }
-        //UnityAdsManager.initialize(applicationContext)
+        UnityAdsManager.initialize(applicationContext)
     }
 
     override fun onRestart() {

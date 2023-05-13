@@ -15,6 +15,7 @@ class CreateMonsterViewModel : ViewModel() {
 
     var currentStreamId = 0
     var isMusicPlaying = false
+    var isSoundMute = false
 
     fun updateMonsterHead(id: Int) {
         _uiState.update { current ->
