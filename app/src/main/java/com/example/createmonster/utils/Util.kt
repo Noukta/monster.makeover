@@ -7,13 +7,11 @@ import android.graphics.Bitmap
 import android.media.SoundPool
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import androidx.core.content.FileProvider
 import com.example.createmonster.BuildConfig
 import com.example.createmonster.data.DataSource.sounds
 import java.io.File
 import java.io.FileOutputStream
-import java.util.concurrent.atomic.AtomicInteger
 
 fun Bitmap.saveToInternalStorage(context: Context, fileName: String): Uri {
     val imagesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
@@ -47,18 +45,27 @@ fun openPrivacyPolicy(context: Context) {
     context.startActivity(intent)
 }
 
-fun loadSounds(context: Context, soundPool: SoundPool) {
-    val count = AtomicInteger()
-    soundPool.setOnLoadCompleteListener { _, id, status ->
-        if (status == 0) {
-            Log.i("LOAD SOUNDS", "Progress ${count.incrementAndGet()}/${sounds.size}")
-        } else {
-            Log.e("LOAD SOUNDS", "Could not load sound $id, status is $status")
-        }
-    }
+fun loadSounds(context: Context, soundPool: SoundPool?) {
     sounds.forEach {
-        val soundId = soundPool.load(context, it.resId, 1)
+        val soundId = soundPool?.load(context, it.resId, 1)
         it.soundId = soundId
-        Log.d("LOAD SOUNDS", "${it.soundId}")
     }
+}
+
+fun playSound(soundPool: SoundPool?, soundId: Int?): Int{
+    if (soundPool != null && soundId != null) {
+            return soundPool.play(soundId, 1f, 1f, 0, 0, 1f)
+    }
+    return 0
+}
+
+fun playRandomSound(soundPool: SoundPool?): Int{
+    return playSound(soundPool, sounds[(0..15).random()].soundId)
+}
+
+fun playSoundInfinite(soundPool: SoundPool?, soundId:Int?): Int{
+    if (soundPool != null && soundId != null) {
+            return soundPool.play(soundId, 1f, 1f, 1, -1, 1f)
+        }
+    return 0
 }

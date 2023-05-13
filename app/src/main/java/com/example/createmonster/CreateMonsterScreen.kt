@@ -40,6 +40,9 @@ import com.example.createmonster.ui.StartScreen
 import com.example.createmonster.utils.AdUnit
 import com.example.createmonster.utils.UnityAdsManager
 import com.example.createmonster.utils.openPrivacyPolicy
+import com.example.createmonster.utils.playRandomSound
+import com.example.createmonster.utils.playSound
+import com.example.createmonster.utils.playSoundInfinite
 import com.example.createmonster.utils.saveToInternalStorage
 import com.example.createmonster.utils.shareImageUri
 import com.smarttoolfactory.screenshot.rememberScreenshotState
@@ -71,7 +74,8 @@ fun CreateMonsterAppBar(
 
 @Composable
 fun CreateMonsterApp(
-    soundPool: SoundPool,
+    soundPool: SoundPool?,
+    isMusicReady: Boolean,
     modifier: Modifier = Modifier,
     viewModel: CreateMonsterViewModel = viewModel()
 ) {
@@ -118,13 +122,8 @@ fun CreateMonsterApp(
                 UnityAdsManager.load(AdUnit.Interstitial_Start_Create)
                 adBannerId = AdUnit.Banner_Start
                 StartScreen {
-                        val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
-                        Log.d("PLAY SOUNDS", "sound id: $soundId")
-                        soundId?.let {
-                            val result = soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
-                            Log.d("PLAY SOUNDS", "sound played $result")
-
-                        }
+                    val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
+                    playSound(soundPool, soundId)
                     navController.navigate(CreateMonsterScreen.Create.name)
                     UnityAdsManager.show(
                         AdUnit.Interstitial_Start_Create,
@@ -137,20 +136,47 @@ fun CreateMonsterApp(
                 UnityAdsManager.load(AdUnit.Interstitial_Create_End)
                 CreateScreen(
                     monsterUiState = uiState,
-                    onMonsterHeadChanged = { id -> viewModel.updateMonsterHead(id) },
-                    onMonsterEyeChanged = { id -> viewModel.updateMonsterEye(id) },
-                    onMonsterMouthChanged = { id -> viewModel.updateMonsterMouth(id) },
-                    onMonsterAccChanged = { id -> viewModel.updateMonsterAcc(id) },
-                    onMonsterBodyChanged = { id -> viewModel.updateMonsterBody(id) },
-                    onEyePositionChanged = { viewModel.updateEyePosition(it) },
-                    onMouthPositionChanged = { viewModel.updateMouthPosition(it) },
-                    onAccPositionChanged = { viewModel.updateAccPosition(it) },
+                    onMonsterHeadChanged = { id ->
+                        viewModel.updateMonsterHead(id)
+                        playRandomSound(soundPool)
+                                           },
+                    onMonsterEyeChanged = { id ->
+                        viewModel.updateMonsterEye(id)
+                        playRandomSound(soundPool)
+                                          },
+                    onMonsterMouthChanged = { id ->
+                        viewModel.updateMonsterMouth(id)
+                        playRandomSound(soundPool)
+                                            },
+                    onMonsterAccChanged = { id ->
+                        viewModel.updateMonsterAcc(id)
+                        playRandomSound(soundPool)
+                                          },
+                    onMonsterBodyChanged = { id ->
+                        viewModel.updateMonsterBody(id)
+                        playRandomSound(soundPool)
+                                           },
+                    onEyePositionChanged = {
+                        viewModel.updateEyePosition(it)
+                                           },
+                    onMouthPositionChanged = {
+                        viewModel.updateMouthPosition(it)
+                                             },
+                    onAccPositionChanged = {
+                        viewModel.updateAccPosition(it)
+                                           },
                     onDoneButtonClicked = {
+                        val soundId = sounds.find { it.resId == R.raw.btn_done }?.soundId
+                        playSound(soundPool, soundId)
                         navController.navigate(CreateMonsterScreen.End.name)
                         UnityAdsManager.show(
                             AdUnit.Interstitial_Create_End,
                             context as Activity
                         )
+                    },
+                    onNextButtonClicked = {
+                        val soundId = sounds.find { it.resId == R.raw.btn_next }?.soundId
+                        playSound(soundPool, soundId)
                     }
                 )
 
@@ -158,34 +184,57 @@ fun CreateMonsterApp(
             composable(route = CreateMonsterScreen.End.name) {
                 adBannerId = AdUnit.Banner_End
                 val screenshotState = rememberScreenshotState()
-                var showDialog by remember { mutableStateOf(false) }
-                // Show dialog only when ImageResult is success or error
+                // Show dialog only when bitmap not null
                 LaunchedEffect(key1 = screenshotState.bitmap) {
-                    screenshotState.bitmap?.let { showDialog = true }
+                    screenshotState.bitmap?.let {
+                        val uri = it.saveToInternalStorage(context, "monster.png")
+                        val message =
+                            "did you like my monster? create yours: https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
+                        shareImageUri(context, uri, message) }
                 }
 
                 EndScreen(
                     monsterUiState = uiState,
                     screenshotState = screenshotState,
                     onRemakeButtonClicked = {
+                        val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
+                        playSound(soundPool, soundId)
                         remakeNewMonster(viewModel, navController)
                         canNavigateBack = false
                     }
                 ) {
+                    val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
+                    playSound(soundPool, soundId)
                     screenshotState.capture()
-                    if (showDialog) {
-                        screenshotState.bitmap?.let {
-                            val uri = it.saveToInternalStorage(context, "monster.png")
-                            val message =
-                                "did you like my monster? create yours: https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
-                            shareImageUri(context, uri, message)
-                        }
-                    }
                 }
             }
         }
     }
+    if(isMusicReady)
+        playBackgroundMusic(currentScreen, soundPool, viewModel)
+}
 
+private fun playBackgroundMusic(
+    currentScreen: CreateMonsterScreen,
+    soundPool: SoundPool?,
+    viewModel: CreateMonsterViewModel
+) {
+    if(viewModel.currentStreamId!= 0) {
+        soundPool?.stop(viewModel.currentStreamId)
+        viewModel.isMusicPlaying = false
+        Log.i("SOUND", "streamId stopped: ${viewModel.currentStreamId}")
+    }
+    val soundId:Int? = if(currentScreen == CreateMonsterScreen.End){
+        sounds.find { it.resId == R.raw.bgm_end }?.soundId
+    }
+    else{
+        sounds.find { it.resId == R.raw.bgm_start_create }?.soundId
+    }
+    if(!viewModel.isMusicPlaying)
+    {
+        viewModel.currentStreamId = playSoundInfinite(soundPool, soundId)
+        viewModel.isMusicPlaying = true
+    }
 }
 
 private fun remakeNewMonster(

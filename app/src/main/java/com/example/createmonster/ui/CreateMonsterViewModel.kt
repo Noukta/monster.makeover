@@ -13,6 +13,9 @@ class CreateMonsterViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(MonsterUiState())
     val uiState: StateFlow<MonsterUiState> = _uiState.asStateFlow()
 
+    var currentStreamId = 0
+    var isMusicPlaying = false
+
     fun updateMonsterHead(id: Int) {
         _uiState.update { current ->
             current.copy(head = id)

@@ -44,7 +44,8 @@ fun CreateScreen(
     onEyePositionChanged: ((Offset) -> Unit)? = null,
     onMouthPositionChanged: ((Offset) -> Unit)? = null,
     onAccPositionChanged: ((Offset) -> Unit)? = null,
-    onDoneButtonClicked: () -> Unit = {}
+    onDoneButtonClicked: () -> Unit = {},
+    onNextButtonClicked: () -> Unit = {}
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
@@ -69,10 +70,22 @@ fun CreateScreen(
         ) {
             CustomTabRow(selectedTabIndex) {
                 when (selectedTabIndex) {
-                    0 -> NextButton(monsterUiState.head != null) { selectedTabIndex++ }
-                    1 -> NextButton(monsterUiState.eye != null) { selectedTabIndex++ }
-                    2 -> NextButton(monsterUiState.mouth != null) { selectedTabIndex++ }
-                    3 -> NextButton(monsterUiState.acc != null) { selectedTabIndex++ }
+                    0 -> NextButton(monsterUiState.head != null) {
+                        onNextButtonClicked()
+                        selectedTabIndex++
+                    }
+                    1 -> NextButton(monsterUiState.eye != null) {
+                        onNextButtonClicked()
+                        selectedTabIndex++
+                    }
+                    2 -> NextButton(monsterUiState.mouth != null) {
+                        onNextButtonClicked()
+                        selectedTabIndex++
+                    }
+                    3 -> NextButton(monsterUiState.acc != null) {
+                        onNextButtonClicked()
+                        selectedTabIndex++
+                    }
                     4 -> DoneButton(monsterUiState.body != null) { onDoneButtonClicked() }
                 }
             }
