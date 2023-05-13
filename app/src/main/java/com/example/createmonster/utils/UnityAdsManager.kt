@@ -24,7 +24,7 @@ enum class AdUnit {
 }
 
 object UnityAdsConfig {
-    const val testMode: Boolean = false
+    const val testMode: Boolean = true
     const val unityAppID: String = "5273632"
 
     var adUnits = mutableMapOf(
