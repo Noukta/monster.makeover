@@ -117,9 +117,10 @@ fun MonsterMakeoverApp(
     val reviewManager = ReviewManagerFactory.create(context)
     val preferencesHelper = remember { PreferencesHelper(context) }
     val appOpenCount = preferencesHelper.getAppOpenCount()
+    val appOpenMaxToReview = preferencesHelper.getAppOpenMaxToReview()
 
     LaunchedEffect(currentScreen) {
-        if (appOpenCount % 10 == 0 && currentScreen == MonsterMakeoverScreen.End) {
+        if (appOpenCount == appOpenMaxToReview && currentScreen == MonsterMakeoverScreen.End) {
             val request = reviewManager.requestReviewFlow()
             request.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -128,6 +129,7 @@ fun MonsterMakeoverApp(
                     val flow = reviewManager.launchReviewFlow(context as Activity, reviewInfo)
                     flow.addOnCompleteListener {
                         Log.i("REVIEW", "Review flow finished")
+                        preferencesHelper.incrementAppOpenMaxToReview()
                     }
                 } else {
                     // There was some problem, log or handle the error code.

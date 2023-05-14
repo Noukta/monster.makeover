@@ -14,4 +14,14 @@ class PreferencesHelper(context: Context) {
     fun getAppOpenCount(): Int {
         return sharedPreferences.getInt("AppOpenCount", 0)
     }
+
+    fun incrementAppOpenMaxToReview() {
+        var count = getAppOpenMaxToReview() + 5
+        if(count == 1000) count = 5
+        sharedPreferences.edit().putInt("AppOpenMaxToReview", count).apply()
+    }
+
+    fun getAppOpenMaxToReview(): Int {
+        return sharedPreferences.getInt("AppOpenMaxToReview", 0)
+    }
 }
