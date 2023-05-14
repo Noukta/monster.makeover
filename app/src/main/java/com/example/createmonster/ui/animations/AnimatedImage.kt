@@ -1,4 +1,4 @@
-package com.example.createmonster.ui
+package com.example.createmonster.ui.animations
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
