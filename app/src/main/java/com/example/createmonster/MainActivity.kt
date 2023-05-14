@@ -11,11 +11,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.createmonster.data.DataSource
+import com.example.createmonster.ui.MonsterMakeoverApp
 import com.example.createmonster.ui.theme.CreateMonsterTheme
+import com.example.createmonster.utils.PreferencesHelper
 import com.example.createmonster.utils.UnityAdsManager
 import com.example.createmonster.utils.loadSounds
 
 class MainActivity : ComponentActivity() {
+    private lateinit var preferencesHelper: PreferencesHelper
     private var soundPool: SoundPool? = createSoundPool()
     private var loadingCounter by mutableStateOf(0)
     private val isMusicReady by derivedStateOf { loadingCounter == DataSource.sounds.size }
@@ -25,10 +28,12 @@ class MainActivity : ComponentActivity() {
         loadSounds(this, soundPool)
         setContent {
             CreateMonsterTheme {
-                CreateMonsterApp(soundPool, isMusicReady)
+                MonsterMakeoverApp(soundPool, isMusicReady)
             }
         }
         UnityAdsManager.initialize(applicationContext)
+        preferencesHelper = PreferencesHelper(this)
+        preferencesHelper.incrementAppOpenCount()
     }
 
     override fun onRestart() {
