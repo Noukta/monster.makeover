@@ -15,6 +15,7 @@
 4) app: replace com.example with com.monster
 5) settings.gradle: rootProject.name = "mix.monster"
 6) strings.xml: app_name is Mix Monster
-7) delete .gradle and build folders
-8) unityAdsManager.kt: unityAppId = "5273632"
-9) after test -> unityAdsManager.kt: testMode = false
+7) change ic_launcher
+8) delete .gradle and build folders
+9) unityAdsManager.kt: unityAppId = "5273632"
+10) after test -> unityAdsManager.kt: testMode = false
