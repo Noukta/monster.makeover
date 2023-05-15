@@ -8,11 +8,13 @@
 7)  unityAdsManager.kt: unityAppId = "5274719"
 8)  after test -> unityAdsManager.kt: testMode = false
 
-# monster.makeover republishing steps
-1)  build.gradle(Module): replace com.example.createmonster with monster.makeover.mix.monsters
-2)  build.gradle(Module) and directories: change package name to com.mix.monster
-3)  app: replace com.example.createmonster with com.mix.monster
-4)  app: replace com.example with com.monster
-5)  settings.gradle: rootProject.name = "mix.monster"
-6)  strings.xml: app_name is Mix Monster
-7)  after test -> unityAdsManager.kt: testMode = false
+# mix.monster republishing steps
+1) build.gradle(Module): replace com.example.createmonster with monster.makeover.mix.monsters
+2) build.gradle(Module) and directories: change package name to com.mix.monster
+3) app: replace com.example.createmonster with com.mix.monster
+4) app: replace com.example with com.monster
+5) settings.gradle: rootProject.name = "mix.monster"
+6) strings.xml: app_name is Mix Monster
+7) delete .gradle and build folders
+8) unityAdsManager.kt: unityAppId = "5273632"
+9) after test -> unityAdsManager.kt: testMode = false

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.createmonster'
+    namespace 'com.monster.makeover'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.createmonster"
+        applicationId "com.monster.makeover"
         minSdk 26
         targetSdk 33
         versionCode 104
@@ -70,6 +70,10 @@ dependencies {
     implementation 'com.github.SmartToolFactory:Compose-Screenshot:1.0.3'
     implementation 'com.google.android.play:review:2.0.1'
     implementation 'com.google.android.play:review-ktx:2.0.1'
+    implementation 'androidx.media3:media3-exoplayer:1.0.1'
+    implementation 'androidx.media3:media3-exoplayer-dash:1.0.1'
+    implementation 'androidx.media3:media3-ui:1.0.1'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
