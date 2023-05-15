@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="app_name">混合怪物</string>
+
+    <string name="start">开始</string>
+
+    <string name="create_monster">创建怪物</string>
+
+    <string name="end">结束</string>
+
+    <string name="back_button">返回</string>
+
+    <string name="share">分享</string>
+
+    <string name="remake">翻拍</string>
+
+    <string name="next">下一步</string>
+
+    <string name="done">完成</string>
+
+    <string name="accessory">配件</string>
+
+    <string name="mouth">嘴巴</string>
+
+    <string name="eye">眼睛</string>
+
+    <string name="head">头</string>
+
+    <string name="body">身体</string>
+
+    <string name="privacy_policy">隐私政策</string>
+
+    <string name="volume_on">提高音量</string>
+
+    <string name="volume_off">关闭音量</string>
+    <string name="share_message">avez-vous aimé mon monstre? créez le vôtre : https://play.google.com/store/apps/details?id=%s</string>
+
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">ミックスモンスター</string>
+      
+  <string name="start">開始</string>
+      
+  <string name="create_monster">モンスターを作成</string>
+      
+  <string name="end">終了</string>
+      
+  <string name="back_button">戻る</string>
+      
+  <string name="share">共有</string>
+      
+  <string name="remake">リメイク</string>
+      
+  <string name="next">次へ</string>
+      
+  <string name="done">完了</string>
+      
+  <string name="accessory">アクセサリー</string>
+      
+  <string name="mouth">口</string>
+      
+  <string name="eye">目</string>
+      
+  <string name="head">頭</string>
+      
+  <string name="body">ボディ</string>
+      
+  <string name="privacy_policy">プライバシーポリシー</string>
+      
+  <string name="volume_on">ボリュームオン</string>
+      
+  <string name="volume_off">ボリュームオフ</string>
+  <string name="share_message">私のモンスターは好きでしたか？ あなたのものを作成してください: https://play.google.com/store/apps/details?id=%s</string>
+
+</resources>

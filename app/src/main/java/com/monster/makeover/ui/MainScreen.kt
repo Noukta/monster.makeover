@@ -88,7 +88,7 @@ fun MonsterMakeoverAppBar(
                 } else {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.baseline_volume_up_24),
-                        contentDescription = stringResource(R.string.volume_up),
+                        contentDescription = stringResource(R.string.volume_on),
                         tint = Color.Unspecified
                     )
                 }
@@ -248,12 +248,10 @@ fun MonsterMakeoverApp(
             composable(route = MonsterMakeoverScreen.End.name) {
                 adBannerId = AdUnit.Banner_End
                 val screenshotState = rememberScreenshotState()
-                // Show dialog only when bitmap not null
+                val message = stringResource(R.string.share_message, BuildConfig.APPLICATION_ID)
                 LaunchedEffect(key1 = screenshotState.bitmap) {
                     screenshotState.bitmap?.let {
                         val uri = it.saveToInternalStorage(context, "monster.png")
-                        val message =
-                            "did you like my monster? create yours: https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
                         shareImageUri(context, uri, message)
                     }
                 }

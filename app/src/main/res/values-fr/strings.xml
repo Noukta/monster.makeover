@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">Mélanger le monstre</string>
+      
+  <string name="start">Démarrer</string>
+      
+  <string name="create_monster">Créer un monstre</string>
+      
+  <string name="end">Fin</string>
+      
+  <string name="back_button">Retour</string>
+      
+  <string name="share">Partager</string>
+      
+  <string name="remake">Refaire</string>
+      
+  <string name="next">Suivant</string>
+      
+  <string name="done">Terminé</string>
+      
+  <string name="accessory">Accessoire</string>
+      
+  <string name="mouth">Bouche</string>
+      
+  <string name="eye">Oeil</string>
+      
+  <string name="head">Tête</string>
+      
+  <string name="body">Corps</string>
+      
+  <string name="privacy_policy">Politique de confidentialité</string>
+      
+  <string name="volume_on">Volume activé</string>
+      
+  <string name="volume_off">Volume désactivé</string>
+  <string name="share_message">" https://play.google.com/store/apps/details?id=%s"</string>
+
+</resources>
