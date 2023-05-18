@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
-      
-  <string name="app_name">Mische Monster</string>
-      
-  <string name="start">Start</string>
-      
-  <string name="create_monster">Erschaffe Monster</string>
-      
-  <string name="end">Ende</string>
-      
-  <string name="back_button">Zurück</string>
-      
-  <string name="share">Teilen</string>
-      
-  <string name="remake">Neuauflage</string>
-      
-  <string name="next">Weiter</string>
-      
-  <string name="done">Fertig</string>
-      
-  <string name="accessory">Zubehör</string>
-      
-  <string name="mouth">Mund</string>
-      
-  <string name="eye">Auge</string>
-      
-  <string name="head">Kopf</string>
-      
-  <string name="body">Körper</string>
-      
-  <string name="privacy_policy">Datenschutzbestimmungen</string>
-      
-  <string name="volume_on">Lautstärke ein</string>
-      
-  <string name="volume_off">Lautstärke aus</string>
-  <string name="share_message">Hat dir mein Monster gefallen? Erstellen Sie Ihr eigenes: https://play.google.com/store/apps/details?id=%s</string>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string name="app_name">Mische Monster</string>
+
+    <string name="start">Start</string>
+
+    <string name="create_monster">Erschaffe Monster</string>
+
+    <string name="end">Ende</string>
+
+    <string name="back_button">Zurück</string>
+
+    <string name="share">Teilen</string>
+
+    <string name="remake">Neuauflage</string>
+
+    <string name="next">Weiter</string>
+
+    <string name="done">Fertig</string>
+
+    <string name="accessory">Zubehör</string>
+
+    <string name="mouth">Mund</string>
+
+    <string name="eye">Auge</string>
+
+    <string name="head">Kopf</string>
+
+    <string name="body">Körper</string>
+
+    <string name="privacy_policy">Datenschutzbestimmungen</string>
+
+    <string name="volume_on">Lautstärke ein</string>
+
+    <string name="volume_off">Lautstärke aus</string>
+    <string name="share_message">Hat dir mein Monster gefallen? Erstellen Sie Ihr eigenes: https://play.google.com/store/apps/details?id=%s</string>
 
 </resources>

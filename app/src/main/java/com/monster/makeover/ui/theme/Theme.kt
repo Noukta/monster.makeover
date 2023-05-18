@@ -41,7 +41,7 @@ private val LightColors = lightColorScheme(
 )
 
 @Composable
-fun CreateMonsterTheme(
+fun MonsterMakeoverTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = LightColors

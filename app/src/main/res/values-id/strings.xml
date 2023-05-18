@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
-      
-  <string name="app_name">Mix Monster</string>
-      
-  <string name="start">Mulai</string>
-      
-  <string name="create_monster">Buat monster</string>
-      
-  <string name="end">Akhir</string>
-      
-  <string name="back_button">Kembali</string>
-      
-  <string name="share">Bagikan</string>
-      
-  <string name="remake">Buat ulang</string>
-      
-  <string name="next">Selanjutnya</string>
-      
-  <string name="done">Selesai</string>
-      
-  <string name="accessory">Aksesori</string>
-      
-  <string name="mouth">Mulut</string>
-      
-  <string name="eye">Mata</string>
-      
-  <string name="head">Kepala</string>
-      
-  <string name="body">Tubuh</string>
-      
-  <string name="privacy_policy">Kebijakan Privasi</string>
-      
-  <string name="volume_on">Volume Aktif</string>
-      
-  <string name="volume_off">Volume Nonaktif</string>
-  <string name="share_message">apakah kamu menyukai monsterku? buat milikmu: https://play.google.com/store/apps/details?id=%s</string>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string name="app_name">Mix Monster</string>
+
+    <string name="start">Mulai</string>
+
+    <string name="create_monster">Buat monster</string>
+
+    <string name="end">Akhir</string>
+
+    <string name="back_button">Kembali</string>
+
+    <string name="share">Bagikan</string>
+
+    <string name="remake">Buat ulang</string>
+
+    <string name="next">Selanjutnya</string>
+
+    <string name="done">Selesai</string>
+
+    <string name="accessory">Aksesori</string>
+
+    <string name="mouth">Mulut</string>
+
+    <string name="eye">Mata</string>
+
+    <string name="head">Kepala</string>
+
+    <string name="body">Tubuh</string>
+
+    <string name="privacy_policy">Kebijakan Privasi</string>
+
+    <string name="volume_on">Volume Aktif</string>
+
+    <string name="volume_off">Volume Nonaktif</string>
+    <string name="share_message">apakah kamu menyukai monsterku? buat milikmu: https://play.google.com/store/apps/details?id=%s</string>
 
 </resources>

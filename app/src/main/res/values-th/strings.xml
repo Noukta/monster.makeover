@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
-      
-  <string name="app_name">ผสมสัตว์ประหลาด</string>
-      
-  <string name="start">เริ่ม</string>
-      
-  <string name="create_monster">สร้างสัตว์ประหลาด</string>
-      
-  <string name="end">จบ</string>
-      
-  <string name="back_button">กลับ</string>
-      
-  <string name="share">แบ่งปัน</string>
-      
-  <string name="remake">สร้างใหม่</string>
-      
-  <string name="next">ต่อไป</string>
-      
-  <string name="done">เสร็จแล้ว</string>
-      
-  <string name="accessory">อุปกรณ์เสริม</string>
-      
-  <string name="mouth">ปาก</string>
-      
-  <string name="eye">ดวงตา</string>
-      
-  <string name="head">ศีรษะ</string>
-      
-  <string name="body">ร่างกาย</string>
-      
-  <string name="privacy_policy">นโยบายความเป็นส่วนตัว</string>
-      
-  <string name="volume_on">เปิดเสียง</string>
-      
-  <string name="volume_off">ปิดเสียง</string>
-  <string name="share_message">คุณชอบสัตว์ประหลาดของฉันไหม สร้างของคุณ:</string>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string name="app_name">ผสมสัตว์ประหลาด</string>
+
+    <string name="start">เริ่ม</string>
+
+    <string name="create_monster">สร้างสัตว์ประหลาด</string>
+
+    <string name="end">จบ</string>
+
+    <string name="back_button">กลับ</string>
+
+    <string name="share">แบ่งปัน</string>
+
+    <string name="remake">สร้างใหม่</string>
+
+    <string name="next">ต่อไป</string>
+
+    <string name="done">เสร็จแล้ว</string>
+
+    <string name="accessory">อุปกรณ์เสริม</string>
+
+    <string name="mouth">ปาก</string>
+
+    <string name="eye">ดวงตา</string>
+
+    <string name="head">ศีรษะ</string>
+
+    <string name="body">ร่างกาย</string>
+
+    <string name="privacy_policy">นโยบายความเป็นส่วนตัว</string>
+
+    <string name="volume_on">เปิดเสียง</string>
+
+    <string name="volume_off">ปิดเสียง</string>
+    <string name="share_message">คุณชอบสัตว์ประหลาดของฉันไหม สร้างของคุณ:</string>
 
 </resources>

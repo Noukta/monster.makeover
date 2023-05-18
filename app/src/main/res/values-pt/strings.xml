@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
-      
-  <string name="app_name">Mix Monster</string>
-      
-  <string name="start">Iniciar</string>
-      
-  <string name="create_monster">Criar monstro</string>
-      
-  <string name="end">Fim</string>
-      
-  <string name="back_button">Voltar</string>
-      
-  <string name="share">Compartilhar</string>
-      
-  <string name="remake">Remake</string>
-      
-  <string name="next">Próximo</string>
-      
-  <string name="done">Concluído</string>
-      
-  <string name="accessory">Acessório</string>
-      
-  <string name="mouth">Boca</string>
-      
-  <string name="eye">Olho</string>
-      
-  <string name="head">Cabeça</string>
-      
-  <string name="body">Corpo</string>
-      
-  <string name="privacy_policy">Política de Privacidade</string>
-      
-  <string name="volume_on">Volume ligado</string>
-      
-  <string name="volume_off">Volume desligado</string>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string name="app_name">Mix Monster</string>
+
+    <string name="start">Iniciar</string>
+
+    <string name="create_monster">Criar monstro</string>
+
+    <string name="end">Fim</string>
+
+    <string name="back_button">Voltar</string>
+
+    <string name="share">Compartilhar</string>
+
+    <string name="remake">Remake</string>
+
+    <string name="next">Próximo</string>
+
+    <string name="done">Concluído</string>
+
+    <string name="accessory">Acessório</string>
+
+    <string name="mouth">Boca</string>
+
+    <string name="eye">Olho</string>
+
+    <string name="head">Cabeça</string>
+
+    <string name="body">Corpo</string>
+
+    <string name="privacy_policy">Política de Privacidade</string>
+
+    <string name="volume_on">Volume ligado</string>
+
+    <string name="volume_off">Volume desligado</string>
     <string name="share_message">gostou do meu monstro? crie o seu: https://play.google.com/store/apps/details?id=%s</string>
 
 </resources>

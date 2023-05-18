@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
-      
-  <string name="app_name">Mix Monster</string>
-      
-  <string name="start">Inicio</string>
-      
-  <string name="create_monster">Crear monstruo</string>
-      
-  <string name="end">Fin</string>
-      
-  <string name="back_button">Atrás</string>
-      
-  <string name="share">Compartir</string>
-      
-  <string name="remake">Remake</string>
-      
-  <string name="next">Siguiente</string>
-      
-  <string name="done">Listo</string>
-      
-  <string name="accessory">Accesorio</string>
-      
-  <string name="mouth">Boca</string>
-      
-  <string name="eye">Ojo</string>
-      
-  <string name="head">Cabeza</string>
-      
-  <string name="body">Cuerpo</string>
-      
-  <string name="privacy_policy">Política de privacidad</string>
-      
-  <string name="volume_on">Volumen activado</string>
-      
-  <string name="volume_off">Volumen apagado</string>
-  <string name="share_message">¿Te gustó mi monstruo? crea el tuyo: https://play.google.com/store/apps/details?id=%s</string>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string name="app_name">Mix Monster</string>
+
+    <string name="start">Inicio</string>
+
+    <string name="create_monster">Crear monstruo</string>
+
+    <string name="end">Fin</string>
+
+    <string name="back_button">Atrás</string>
+
+    <string name="share">Compartir</string>
+
+    <string name="remake">Remake</string>
+
+    <string name="next">Siguiente</string>
+
+    <string name="done">Listo</string>
+
+    <string name="accessory">Accesorio</string>
+
+    <string name="mouth">Boca</string>
+
+    <string name="eye">Ojo</string>
+
+    <string name="head">Cabeza</string>
+
+    <string name="body">Cuerpo</string>
+
+    <string name="privacy_policy">Política de privacidad</string>
+
+    <string name="volume_on">Volumen activado</string>
+
+    <string name="volume_off">Volumen apagado</string>
+    <string name="share_message">¿Te gustó mi monstruo? crea el tuyo: https://play.google.com/store/apps/details?id=%s</string>
 
 </resources>

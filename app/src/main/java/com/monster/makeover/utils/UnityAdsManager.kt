@@ -14,13 +14,16 @@ import com.unity3d.services.banners.BannerErrorInfo
 import com.unity3d.services.banners.BannerView
 import com.unity3d.services.banners.BannerView.IListener
 import com.unity3d.services.banners.UnityBannerSize
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 enum class AdState {
     READY, STARTED, CLICKED, COMPLETED, SKIPPED, NOT_AVAILABLE, LOAD_FAILED, SHOW_FAILED
 }
 
 enum class AdUnit {
-    Banner_Start, Banner_Create, Banner_End, Rewarded_Locked, Interstitial_Start_Create, Interstitial_Create_End
+    Banner_Start, Banner_Create, Banner_End, Rewarded_Coins, Interstitial_Start_Create, Interstitial_Create_End
 }
 
 object UnityAdsConfig {
@@ -31,7 +34,7 @@ object UnityAdsConfig {
         AdUnit.Banner_Start to AdState.NOT_AVAILABLE,
         AdUnit.Banner_Create to AdState.NOT_AVAILABLE,
         AdUnit.Banner_End to AdState.NOT_AVAILABLE,
-        AdUnit.Rewarded_Locked to AdState.NOT_AVAILABLE,
+        AdUnit.Rewarded_Coins to AdState.NOT_AVAILABLE,
         AdUnit.Interstitial_Start_Create to AdState.NOT_AVAILABLE,
         AdUnit.Interstitial_Create_End to AdState.NOT_AVAILABLE
     )
@@ -42,21 +45,28 @@ object UnityAdsManager : IUnityAdsInitializationListener {
     private val loadListener = LoadListener()
     private val showListener = ShowListener()
     private val bannerListener = BannerListener()
+    lateinit var rewardShowListener: IUnityAdsShowListener
+
+    private val adsScope = CoroutineScope(Dispatchers.IO)
 
     fun load(adUnitId: AdUnit) {
         Log.d("UnityAdsManager", "$adUnitId: ${adUnits[adUnitId]}")
-        if (adUnits[adUnitId] != AdState.READY) UnityAds.load(
-            adUnitId.name,
-            loadListener
-        )
+        adsScope.launch {
+            if (adUnits[adUnitId] != AdState.READY) UnityAds.load(
+                adUnitId.name,
+                loadListener
+            )
+        }
     }
 
-    fun show(adUnitId: AdUnit, activity: Activity) {
-        if (adUnits[adUnitId] == AdState.READY) UnityAds.show(
-            activity,
-            adUnitId.name,
-            showListener
-        )
+    fun show(adUnitId: AdUnit, activity: Activity, reward: Boolean = false) {
+        adsScope.launch {
+            if (adUnits[adUnitId] == AdState.READY) UnityAds.show(
+                activity,
+                adUnitId.name,
+                if (reward) rewardShowListener else showListener
+            )
+        }
     }
 
     fun loadBanner(
@@ -66,7 +76,7 @@ object UnityAdsManager : IUnityAdsInitializationListener {
     ): BannerView {
         val bannerView = BannerView(activity, adUnitId.name, size)
         bannerView.listener = bannerListener
-        bannerView.load()
+        adsScope.launch { bannerView.load() }
         return bannerView
     }
 
@@ -128,9 +138,60 @@ object UnityAdsManager : IUnityAdsInitializationListener {
             placementId?.let {
                 if (state == UnityAds.UnityAdsShowCompletionState.COMPLETED) {
                     adUnits[AdUnit.valueOf(it)] = AdState.COMPLETED
+
                 } else {
                     adUnits[AdUnit.valueOf(it)] = AdState.SKIPPED
                 }
+                Log.d(
+                    "UnityAdsManager", "$it: ${adUnits[AdUnit.valueOf(it)]}"
+                )
+            }
+        }
+
+    }
+
+    class RewardShowListener(val onRewardShowComplete: () -> Unit) : IUnityAdsShowListener {
+        override fun onUnityAdsShowFailure(
+            placementId: String?, error: UnityAds.UnityAdsShowError?, message: String?
+        ) {
+            placementId?.let {
+                adUnits[AdUnit.valueOf(it)] = AdState.SHOW_FAILED
+                Log.e(
+                    "UnityAdsManager",
+                    "Unity Ads failed to show ad for $placementId with error: [$error] $message"
+                )
+            }
+        }
+
+        override fun onUnityAdsShowStart(placementId: String?) {
+            placementId?.let {
+                adUnits[AdUnit.valueOf(it)] = AdState.STARTED
+                Log.d(
+                    "UnityAdsManager", "$it: ${adUnits[AdUnit.valueOf(it)]}"
+                )
+            }
+        }
+
+        override fun onUnityAdsShowClick(placementId: String?) {
+            placementId?.let {
+                adUnits[AdUnit.valueOf(it)] = AdState.CLICKED
+                Log.d(
+                    "UnityAdsManager", "$it: ${adUnits[AdUnit.valueOf(it)]}"
+                )
+            }
+        }
+
+        override fun onUnityAdsShowComplete(
+            placementId: String?, state: UnityAds.UnityAdsShowCompletionState?
+        ) {
+            placementId?.let {
+                if (state == UnityAds.UnityAdsShowCompletionState.COMPLETED) {
+                    adUnits[AdUnit.valueOf(it)] = AdState.COMPLETED
+                    onRewardShowComplete()
+                } else {
+                    adUnits[AdUnit.valueOf(it)] = AdState.SKIPPED
+                }
+                load(AdUnit.valueOf(it))
                 Log.d(
                     "UnityAdsManager", "$it: ${adUnits[AdUnit.valueOf(it)]}"
                 )

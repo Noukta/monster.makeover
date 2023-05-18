@@ -57,8 +57,8 @@ object DataSource {
         Sound(R.raw.btn_next),
         Sound(R.raw.btn_done),
         Sound(R.raw.btn_start_remake),
-//        Sound(R.raw.sfx_coin),
-//        Sound(R.raw.sfx_unlock),
+        Sound(R.raw.sfx_coin),
+        Sound(R.raw.sfx_unlock),
         Sound(R.raw.bgm_start_create),
         Sound(R.raw.bgm_end)
     )

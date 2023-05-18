@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
-      
-  <string name="app_name">Mescola mostro</string>
-      
-  <string name="start">Inizio</string>
-      
-  <string name="create_monster">Crea mostro</string>
-      
-  <string name="end">FINE</string>
-      
-  <string name="back_button">Indietro</string>
-      
-  <string name="share">Condividere</string>
-      
-  <string name="remake">Remake</string>
-      
-  <string name="next">Prossimo</string>
-      
-  <string name="done">Fatto</string>
-      
-  <string name="accessory">Accessorio</string>
-      
-  <string name="mouth">Bocca</string>
-      
-  <string name="eye">Occhio</string>
-      
-  <string name="head">Testa</string>
-      
-  <string name="body">Corpo</string>
-      
-  <string name="privacy_policy">politica sulla riservatezza</string>
-      
-  <string name="volume_on">Volume attivo</string>
-      
-  <string name="volume_off">Volume disattivato</string>
-  <string name="share_message">ti è piaciuto il mio mostro? crea il tuo: https://play.google.com/store/apps/details?id=%s</string>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string name="app_name">Mescola mostro</string>
+
+    <string name="start">Inizio</string>
+
+    <string name="create_monster">Crea mostro</string>
+
+    <string name="end">FINE</string>
+
+    <string name="back_button">Indietro</string>
+
+    <string name="share">Condividere</string>
+
+    <string name="remake">Remake</string>
+
+    <string name="next">Prossimo</string>
+
+    <string name="done">Fatto</string>
+
+    <string name="accessory">Accessorio</string>
+
+    <string name="mouth">Bocca</string>
+
+    <string name="eye">Occhio</string>
+
+    <string name="head">Testa</string>
+
+    <string name="body">Corpo</string>
+
+    <string name="privacy_policy">politica sulla riservatezza</string>
+
+    <string name="volume_on">Volume attivo</string>
+
+    <string name="volume_off">Volume disattivato</string>
+    <string name="share_message">ti è piaciuto il mio mostro? crea il tuo: https://play.google.com/store/apps/details?id=%s</string>
 
 </resources>
