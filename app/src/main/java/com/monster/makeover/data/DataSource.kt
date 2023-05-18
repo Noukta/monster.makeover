@@ -53,12 +53,12 @@ object DataSource {
         Sound(R.raw.btn_select_14),
         Sound(R.raw.btn_select_15),
         Sound(R.raw.btn_select_16),
+        Sound(R.raw.btn_unlock),
         Sound(R.raw.btn_common),
         Sound(R.raw.btn_next),
         Sound(R.raw.btn_done),
         Sound(R.raw.btn_start_remake),
         Sound(R.raw.sfx_coin),
-        Sound(R.raw.sfx_unlock),
         Sound(R.raw.bgm_start_create),
         Sound(R.raw.bgm_end)
     )

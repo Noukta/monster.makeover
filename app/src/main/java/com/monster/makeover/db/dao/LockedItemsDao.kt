@@ -19,10 +19,10 @@ interface LockedItemsDao {
     fun exists(id: Int): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg wallpaper: MonsterItem)
+    fun insertAll(monsterItems: List<MonsterItem>)
 
     @Delete
-    fun delete(wallpaper: MonsterItem)
+    fun delete(monsterItem: MonsterItem)
 
     @Query("DELETE FROM lockedItems")
     fun deleteAll()

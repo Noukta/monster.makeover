@@ -29,6 +29,9 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.monster.makeover.BuildConfig
 import com.monster.makeover.R
 import com.monster.makeover.data.DataSource.sounds
+import com.monster.makeover.db.DatabaseHolder.Companion.Database
+import com.monster.makeover.db.obj.MonsterItem
+import com.monster.makeover.ext.query
 import com.monster.makeover.receivers.scheduleRewardNotification
 import com.monster.makeover.receivers.scheduleRewardReset
 import com.monster.makeover.ui.components.MonsterMakeoverAppBar
@@ -197,25 +200,90 @@ fun MonsterMakeoverApp(
                 UnityAdsManager.load(AdUnit.Interstitial_Create_End)
                 CreateScreen(
                     monsterUiState = uiState,
-                    onMonsterHeadChanged = { id ->
-                        viewModel.updateMonsterHead(id)
-                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    onMonsterHeadChanged = { id, locked ->
+                        if(locked){
+                            if(preferencesHelper.addCoins(-20)) {
+                                currentCoins -=20
+                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
+                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
+                                return@CreateScreen false
+                            }
+                            else return@CreateScreen true
+                        }
+                        else {
+                            viewModel.updateMonsterHead(id)
+                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
+                            return@CreateScreen false
+                        }
                     },
-                    onMonsterEyeChanged = { id ->
-                        viewModel.updateMonsterEye(id)
-                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    onMonsterEyeChanged = { id, locked ->
+                        if(locked){
+                            if(preferencesHelper.addCoins(-20)) {
+                                currentCoins -=20
+                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
+                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
+                                return@CreateScreen false
+                            }
+                            else return@CreateScreen true
+                        }
+                        else {
+                            viewModel.updateMonsterEye(id)
+                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
+                            return@CreateScreen false
+                        }
                     },
-                    onMonsterMouthChanged = { id ->
-                        viewModel.updateMonsterMouth(id)
-                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    onMonsterMouthChanged = { id, locked ->
+                        if(locked){
+                            if(preferencesHelper.addCoins(-20)) {
+                                currentCoins -=20
+                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
+                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
+                                return@CreateScreen false
+                            }
+                            else return@CreateScreen true
+                        }
+                        else {
+                            viewModel.updateMonsterMouth(id)
+                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
+                            return@CreateScreen false
+                        }
                     },
-                    onMonsterAccChanged = { id ->
-                        viewModel.updateMonsterAcc(id)
-                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    onMonsterAccChanged = { id, locked ->
+                        if(locked){
+                            if(preferencesHelper.addCoins(-20)) {
+                                currentCoins -=20
+                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
+                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
+                                return@CreateScreen false
+                            }
+                            else return@CreateScreen true
+                        }
+                        else {
+                            viewModel.updateMonsterAcc(id)
+                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
+                            return@CreateScreen false
+                        }
                     },
-                    onMonsterBodyChanged = { id ->
-                        viewModel.updateMonsterBody(id)
-                        playRandomSound(soundPool, viewModel.isSoundMute)
+                    onMonsterBodyChanged = { id, locked ->
+                        if(locked){
+                            if(preferencesHelper.addCoins(-20)) {
+                                currentCoins -=20
+                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
+                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
+                                return@CreateScreen false
+                            }
+                            else return@CreateScreen true
+                        }
+                        else {
+                            viewModel.updateMonsterBody(id)
+                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
+                            return@CreateScreen false
+                        }
                     },
                     onEyePositionChanged = {
                         viewModel.updateEyePosition(it)
