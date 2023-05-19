@@ -95,7 +95,7 @@ fun scheduleDailyNotification(context: Context) {
     )
     alarmManager.setInexactRepeating(
         AlarmManager.RTC_WAKEUP,
-        System.currentTimeMillis(),
+        System.currentTimeMillis() + DAILY_INTERVAL,
         DAILY_INTERVAL,
         pendingIntent
     )

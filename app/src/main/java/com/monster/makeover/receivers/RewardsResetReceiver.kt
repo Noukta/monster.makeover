@@ -31,7 +31,7 @@ fun scheduleRewardReset(context: Context) {
     )
     alarmManager.setInexactRepeating(
         AlarmManager.RTC_WAKEUP,
-        System.currentTimeMillis(),
+        System.currentTimeMillis() + REWARDS_INTERVAL,
         REWARDS_INTERVAL,
         pendingIntent
     )
