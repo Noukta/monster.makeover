@@ -93,7 +93,7 @@ fun scheduleDailyNotification(context: Context) {
         intent,
         PendingIntent.FLAG_IMMUTABLE
     )
-    alarmManager.setRepeating(
+    alarmManager.setInexactRepeating(
         AlarmManager.RTC_WAKEUP,
         System.currentTimeMillis(),
         DAILY_INTERVAL,

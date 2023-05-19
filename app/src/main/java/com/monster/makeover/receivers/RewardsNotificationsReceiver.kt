@@ -96,7 +96,7 @@ fun scheduleRewardNotification(context: Context) {
         intent,
         PendingIntent.FLAG_IMMUTABLE
     )
-    alarmManager.setRepeating(
+    alarmManager.setInexactRepeating(
         AlarmManager.RTC_WAKEUP,
         System.currentTimeMillis(),
         REWARDS_INTERVAL,
