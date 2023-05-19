@@ -1,6 +1,7 @@
 package com.monster.makeover
 
 import android.Manifest
+import android.app.AlarmManager
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.SoundPool
@@ -20,6 +21,8 @@ import androidx.core.content.ContextCompat
 import com.monster.makeover.data.DataSource.sounds
 import com.monster.makeover.receivers.isAppRunning
 import com.monster.makeover.receivers.scheduleDailyNotification
+import com.monster.makeover.receivers.scheduleRewardNotification
+import com.monster.makeover.receivers.scheduleRewardReset
 import com.monster.makeover.ui.MonsterMakeoverApp
 import com.monster.makeover.ui.theme.MonsterMakeoverTheme
 import com.monster.makeover.utils.PreferencesHelper
@@ -40,7 +43,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadSounds(this, soundPool)
-        nextRequestTime = with(PreferencesHelper(this)) { getNextPermissionRequestTime() }
+        val preferencesHelper = PreferencesHelper(this)
+        nextRequestTime = preferencesHelper.getNextPermissionRequestTime()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             grantPostNotificationPermission()
         }
@@ -50,7 +54,11 @@ class MainActivity : ComponentActivity() {
             }
         }
         isAppRunning = true
-        Log.d("WORK", "isAppRunning $isAppRunning")
+
+        if (preferencesHelper.isPostNotificationsGranted()) {
+            scheduleRewardNotification(this)
+        }
+        scheduleRewardReset(this)
     }
 
     override fun onRestart() {
@@ -65,10 +73,7 @@ class MainActivity : ComponentActivity() {
         if (!isPostNotificationsGranted) {
             val currentTime = System.currentTimeMillis()
             if (nextRequestTime <= currentTime)
-            //val nextRequestTime = System.currentTimeMillis() + AlarmManager.INTERVAL_DAY * 2
-            //for test
-                nextRequestTime = System.currentTimeMillis() + 30000
-            Log.d("NOTIFICATION", "next request at ${nextRequestTime - currentTime}")
+                nextRequestTime = System.currentTimeMillis() + AlarmManager.INTERVAL_DAY * 2
             with(PreferencesHelper(this)) {
                 setNextPermissionRequestTime(nextRequestTime)
             }

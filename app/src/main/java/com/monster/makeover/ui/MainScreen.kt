@@ -32,8 +32,6 @@ import com.monster.makeover.data.DataSource.sounds
 import com.monster.makeover.db.DatabaseHolder.Companion.Database
 import com.monster.makeover.db.obj.MonsterItem
 import com.monster.makeover.ext.query
-import com.monster.makeover.receivers.scheduleRewardNotification
-import com.monster.makeover.receivers.scheduleRewardReset
 import com.monster.makeover.ui.components.MonsterMakeoverAppBar
 import com.monster.makeover.ui.screens.CreateScreen
 import com.monster.makeover.ui.screens.EndScreen
@@ -146,14 +144,13 @@ fun MonsterMakeoverApp(
                                     }
                                     preferencesHelper.addCoins(20)
                                     currentCoins = preferencesHelper.getCoins()
-                                    if (!preferencesHelper.decrementRewardsToClaim()) {
-                                        if (preferencesHelper.isPostNotificationsGranted()) {
+                                    preferencesHelper.decrementRewardsToClaim()
+                                        /*if (preferencesHelper.isPostNotificationsGranted()) {
                                             scheduleRewardNotification(context)
-                                        }
-                                    }
+                                        }*/
                                     rewardsToClaim = preferencesHelper.getRewardsToClaim()
-                                    if (rewardsToClaim != preferencesHelper.initRewardsToClaim)
-                                        scheduleRewardReset(context)
+                                    /*if (rewardsToClaim != preferencesHelper.initRewardsToClaim)
+                                        scheduleRewardReset(context)*/
                                 }
                             UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)
                         }
