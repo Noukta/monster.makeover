@@ -46,7 +46,7 @@ fun TabContent(index: Int, onMonsterItemChanged: (Int, Boolean) -> Boolean){
                 var locked by remember { mutableStateOf(false) }
                 LaunchedEffect(true) {
                     query {
-                        part.first.let { locked = DatabaseHolder.Database.lockedItemsDao().exists(it) }
+                        locked = DatabaseHolder.Database.lockedItemsDao().exists(part.second)
                     }
                 }
                 Box(
