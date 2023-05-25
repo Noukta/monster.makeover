@@ -25,4 +25,10 @@
     <string name="notification_daily_title_2" translatable="false">Free Coins 💰</string>
     <string name="notification_daily_content_1" translatable="false">Claim your daily bag 💰 create infinite number of monsters 👹</string>
     <string name="notification_daily_content_2" translatable="false">Awesome gift for free 💰 to unlock more 👹</string>
+    <string name="enjoy_ask" translatable="false">Are you enjoying the game?</string>
+    <string name="yes" translatable="false">Yes</string>
+    <string name="no" translatable="false">No</string>
+    <string name="rate_ask" translatable="false">Rate us on Google Play</string>
+    <string name="never_show" translatable="false">Never show again</string>
+    <string name="remind" translatable="false">Remind me later</string>
 </resources>

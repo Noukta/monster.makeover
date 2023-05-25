@@ -13,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,28 +26,29 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.android.play.core.review.ReviewManagerFactory
 import com.monster.makeover.BuildConfig
 import com.monster.makeover.R
+import com.monster.makeover.constants.Game
+import com.monster.makeover.constants.ItemType
+import com.monster.makeover.constants.ReviewChoice
+import com.monster.makeover.constants.Time.PLAY_TIME_BEFORE_REVIEW
 import com.monster.makeover.data.DataSource.sounds
-import com.monster.makeover.db.DatabaseHolder.Companion.Database
-import com.monster.makeover.db.obj.MonsterItem
-import com.monster.makeover.ext.query
+import com.monster.makeover.ext.onMonsterItemChanged
+import com.monster.makeover.ext.rateApp
 import com.monster.makeover.ui.components.MonsterMakeoverAppBar
+import com.monster.makeover.ui.components.ReviewDialog
 import com.monster.makeover.ui.screens.CreateScreen
 import com.monster.makeover.ui.screens.EndScreen
 import com.monster.makeover.ui.screens.StartScreen
 import com.monster.makeover.utils.AdUnit
 import com.monster.makeover.utils.PreferencesHelper
 import com.monster.makeover.utils.UnityAdsManager
-import com.monster.makeover.utils.playRandomSound
 import com.monster.makeover.utils.playSound
 import com.monster.makeover.utils.playSoundInfinite
 import com.monster.makeover.utils.saveToInternalStorage
 import com.monster.makeover.utils.shareImageUri
 import com.smarttoolfactory.screenshot.rememberScreenshotState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 enum class MonsterMakeoverScreen {
@@ -57,8 +59,6 @@ enum class MonsterMakeoverScreen {
 
 @Composable
 fun MonsterMakeoverApp(
-    soundPool: SoundPool?,
-    isMusicReady: Boolean,
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel()
 ) {
@@ -73,39 +73,24 @@ fun MonsterMakeoverApp(
     var canNavigateBack by remember { mutableStateOf(false) }
     //Ads
     var adBannerId by remember { mutableStateOf(AdUnit.Banner_Start) }
-    //Sound
-    val soundScope = remember { CoroutineScope(Dispatchers.IO) }
-    //Review
-    val reviewManager = remember { ReviewManagerFactory.create(context) }
-    val preferencesHelper = remember { PreferencesHelper(context) }
-    val appOpenCount = remember { preferencesHelper.getAppOpenCount() }
-    val appOpenMaxToReview = remember { preferencesHelper.getAppOpenMaxToReview() }
-    //Reward
-    var isDailyGiftAvailable by remember { mutableStateOf(preferencesHelper.checkDailyGift()) }
-    var rewardsToClaim by remember { mutableStateOf(preferencesHelper.getRewardsToClaim()) }
-    var currentCoins by remember { mutableStateOf(preferencesHelper.getCoins()) }
-    if (rewardsToClaim > 0)
-        UnityAdsManager.load(AdUnit.Rewarded_Coins)
-
-    LaunchedEffect(currentScreen) {
-        if (appOpenCount == appOpenMaxToReview && currentScreen == MonsterMakeoverScreen.End) {
-            val request = reviewManager.requestReviewFlow()
-            request.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.i("REVIEW", "Request review succeeded")
-                    val reviewInfo = task.result
-                    val flow = reviewManager.launchReviewFlow(context as Activity, reviewInfo)
-                    flow.addOnCompleteListener {
-                        Log.i("REVIEW", "Review flow finished")
-                        preferencesHelper.incrementAppOpenMaxToReview()
-                    }
-                } else {
-                    // There was some problem, log or handle the error code.
-                    Log.e("REVIEW", "Request review failed")
-                }
-            }
-        }
+    //Rewards and gifts
+    var isDailyGiftAvailable by remember {
+        mutableStateOf(
+            PreferencesHelper.isDailyGiftAvailable()
+        ) 
     }
+    var isRewardAvailable by remember {
+        mutableStateOf(
+            PreferencesHelper.isRewardAvailable()
+        )
+    }
+    var availableCoins by remember {
+        mutableStateOf(
+            PreferencesHelper.getAvailableCoins()
+        )
+    }
+    if (isRewardAvailable)
+        UnityAdsManager.load(AdUnit.Rewarded_Coins)
 
     Scaffold(
         bottomBar = {
@@ -114,46 +99,41 @@ fun MonsterMakeoverApp(
                     context = context,
                     isSoundMute = viewModel.isSoundMute,
                     dailyGiftEnabled = isDailyGiftAvailable,
-                    rewardEnabled = rewardsToClaim > 0,
-                    currentCoins = currentCoins,
+                    rewardEnabled = isRewardAvailable,
+                    availableCoins = availableCoins,
                     onVolumeClick = {
-                        if (viewModel.isSoundMute) soundPool?.autoResume()
-                        else soundPool?.autoPause()
+                        if (viewModel.isSoundMute) viewModel.soundPool?.autoResume()
+                        else viewModel.soundPool?.autoPause()
 
                         val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
-                        soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
                         viewModel.isSoundMute = !viewModel.isSoundMute
                     },
                     onRewardClick = {
                         if (isDailyGiftAvailable) {
                             val soundId =
                                 sounds.find { it.resId == R.raw.sfx_coin }?.soundId
-                            soundScope.launch {
-                                playSound(soundPool, soundId, viewModel.isSoundMute)
+                            viewModel.soundScope.launch {
+                                playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
                             }
-                            preferencesHelper.takeDailyGift()
-                            isDailyGiftAvailable = preferencesHelper.checkDailyGift()
-                            currentCoins = preferencesHelper.getCoins()
+                            PreferencesHelper.resetLastDailyGiftTime()
+                            PreferencesHelper.addCoins(Game.DailyGift)
+                            isDailyGiftAvailable = false
                         } else {
                             UnityAdsManager.rewardShowListener =
                                 UnityAdsManager.RewardShowListener {
                                     val soundId =
                                         sounds.find { it.resId == R.raw.sfx_coin }?.soundId
-                                    soundScope.launch {
-                                        playSound(soundPool, soundId, viewModel.isSoundMute)
+                                    viewModel.soundScope.launch {
+                                        playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
                                     }
-                                    preferencesHelper.addCoins(20)
-                                    currentCoins = preferencesHelper.getCoins()
-                                    preferencesHelper.decrementRewardsToClaim()
-                                        /*if (preferencesHelper.isPostNotificationsGranted()) {
-                                            scheduleRewardNotification(context)
-                                        }*/
-                                    rewardsToClaim = preferencesHelper.getRewardsToClaim()
-                                    /*if (rewardsToClaim != preferencesHelper.initRewardsToClaim)
-                                        scheduleRewardReset(context)*/
+                                    PreferencesHelper.resetLastRewardTime()
+                                    PreferencesHelper.addCoins(Game.Reward)
+                                    isRewardAvailable = false
                                 }
                             UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)
                         }
+                        availableCoins = PreferencesHelper.getAvailableCoins()
                     }
                 )
             }
@@ -184,7 +164,7 @@ fun MonsterMakeoverApp(
                 adBannerId = AdUnit.Banner_Start
                 StartScreen {
                     val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
-                    soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                    viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
                     navController.navigate(MonsterMakeoverScreen.Create.name)
                     UnityAdsManager.show(
                         AdUnit.Interstitial_Start_Create,
@@ -198,88 +178,28 @@ fun MonsterMakeoverApp(
                 CreateScreen(
                     monsterUiState = uiState,
                     onMonsterHeadChanged = { id, locked ->
-                        if(locked){
-                            if(preferencesHelper.addCoins(-20)) {
-                                currentCoins -=20
-                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
-                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
-                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
-                                return@CreateScreen false
-                            }
-                            else return@CreateScreen true
-                        }
-                        else {
-                            viewModel.updateMonsterHead(id)
-                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
-                            return@CreateScreen false
+                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Head, viewModel){
+                            availableCoins -=20
                         }
                     },
                     onMonsterEyeChanged = { id, locked ->
-                        if(locked){
-                            if(preferencesHelper.addCoins(-20)) {
-                                currentCoins -=20
-                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
-                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
-                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
-                                return@CreateScreen false
-                            }
-                            else return@CreateScreen true
-                        }
-                        else {
-                            viewModel.updateMonsterEye(id)
-                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
-                            return@CreateScreen false
+                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Eye, viewModel){
+                            availableCoins -=20
                         }
                     },
                     onMonsterMouthChanged = { id, locked ->
-                        if(locked){
-                            if(preferencesHelper.addCoins(-20)) {
-                                currentCoins -=20
-                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
-                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
-                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
-                                return@CreateScreen false
-                            }
-                            else return@CreateScreen true
-                        }
-                        else {
-                            viewModel.updateMonsterMouth(id)
-                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
-                            return@CreateScreen false
+                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Mouth, viewModel){
+                            availableCoins -=20
                         }
                     },
                     onMonsterAccChanged = { id, locked ->
-                        if(locked){
-                            if(preferencesHelper.addCoins(-20)) {
-                                currentCoins -=20
-                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
-                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
-                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
-                                return@CreateScreen false
-                            }
-                            else return@CreateScreen true
-                        }
-                        else {
-                            viewModel.updateMonsterAcc(id)
-                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
-                            return@CreateScreen false
+                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Accessory, viewModel){
+                            availableCoins -=20
                         }
                     },
                     onMonsterBodyChanged = { id, locked ->
-                        if(locked){
-                            if(preferencesHelper.addCoins(-20)) {
-                                currentCoins -=20
-                                val soundId = sounds.find { it.resId == R.raw.btn_unlock}?.soundId
-                                soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
-                                query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
-                                return@CreateScreen false
-                            }
-                            else return@CreateScreen true
-                        }
-                        else {
-                            viewModel.updateMonsterBody(id)
-                            soundScope.launch { playRandomSound(soundPool, viewModel.isSoundMute) }
-                            return@CreateScreen false
+                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Body, viewModel){
+                            availableCoins -=20
                         }
                     },
                     onEyePositionChanged = {
@@ -293,7 +213,7 @@ fun MonsterMakeoverApp(
                     },
                     onDoneButtonClicked = {
                         val soundId = sounds.find { it.resId == R.raw.btn_done }?.soundId
-                        soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
                         navController.navigate(MonsterMakeoverScreen.End.name)
                         UnityAdsManager.show(
                             AdUnit.Interstitial_Create_End,
@@ -302,7 +222,7 @@ fun MonsterMakeoverApp(
                     },
                     onNextButtonClicked = {
                         val soundId = sounds.find { it.resId == R.raw.btn_next }?.soundId
-                        soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
                     }
                 )
 
@@ -323,51 +243,94 @@ fun MonsterMakeoverApp(
                     screenshotState = screenshotState,
                     onRemakeButtonClicked = {
                         val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
-                        soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
                         remakeNewMonster(viewModel, navController)
                         canNavigateBack = false
                     }
                 ) {
                     val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
-                    soundScope.launch { playSound(soundPool, soundId, viewModel.isSoundMute) }
+                    viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
                     screenshotState.capture()
                 }
             }
         }
     }
     //Triggered when screen changed
-    if (isMusicReady && !viewModel.isSoundMute)
-        playBackgroundMusic(currentScreen, soundPool, soundScope, viewModel)
+    if (viewModel.isSoundLoaded && !viewModel.isSoundMute)
+        playBackgroundMusic(
+            currentScreen,
+            viewModel.currentStreamId,
+            viewModel.soundPool,
+            viewModel.soundScope){streamId ->
+            viewModel.setCurrentStreamId(streamId)
+        }
+
+    //App review
+    var isReviewDialogAvailable by rememberSaveable{
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(currentScreen){
+        val reviewStatus = PreferencesHelper.getReviewStatus()
+        val totalPlayTime = PreferencesHelper.getTotalPlayTime()
+        val playtimeBeforeReview: Long = when(reviewStatus){
+            ReviewChoice.REMIND -> PLAY_TIME_BEFORE_REVIEW
+            else -> 2 * PLAY_TIME_BEFORE_REVIEW
+        }
+        if (totalPlayTime >= playtimeBeforeReview) {
+            if (currentScreen == MonsterMakeoverScreen.End) {
+                isReviewDialogAvailable = true
+            }
+        }
+        Log.d("REVIEW", "playtime $totalPlayTime")
+    }
+    if(isReviewDialogAvailable){
+        ReviewDialog {reviewStatus ->
+            isReviewDialogAvailable = false
+            PreferencesHelper.setTotalPlayTime(0L)
+            PreferencesHelper.setReviewStatus(reviewStatus)
+            if(reviewStatus == ReviewChoice.YES) {
+                val soundId =
+                    sounds.find { it.resId == R.raw.sfx_coin }?.soundId
+                viewModel.soundScope.launch {
+                    playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
+                }
+                PreferencesHelper.addCoins(Game.DailyGift * 2)
+                availableCoins = PreferencesHelper.getAvailableCoins()
+                rateApp(context)
+            }
+        }
+    }
 }
 
 private fun playBackgroundMusic(
     currentScreen: MonsterMakeoverScreen,
+    currentStreamId: Int,
     soundPool: SoundPool?,
     soundScope: CoroutineScope,
-    viewModel: MainViewModel
-) {
-    if (viewModel.currentStreamId != 0) {
-        stopBackgroundMusic(soundPool, soundScope, viewModel)
+    setStreamId: (Int)-> Unit
+){
+    if (currentStreamId != 0) {
+        stopBackgroundMusic(soundPool, soundScope, currentStreamId)
     }
     val soundId: Int? = if (currentScreen == MonsterMakeoverScreen.End) {
         sounds.find { it.resId == R.raw.bgm_end }?.soundId
     } else {
         sounds.find { it.resId == R.raw.bgm_start_create }?.soundId
     }
-    if (!viewModel.isMusicPlaying) {
-        soundScope.launch { viewModel.currentStreamId = playSoundInfinite(soundPool, soundId) }
-        viewModel.isMusicPlaying = true
+    soundScope.launch {
+        val newStreamId = playSoundInfinite(soundPool, soundId)
+        setStreamId(newStreamId)
     }
 }
 
 private fun stopBackgroundMusic(
     soundPool: SoundPool?,
     soundScope: CoroutineScope,
-    viewModel: MainViewModel
+    streamId: Int
 ) {
-    soundScope.launch { soundPool?.stop(viewModel.currentStreamId) }
-    viewModel.isMusicPlaying = false
-    Log.i("SOUND", "streamId stopped: ${viewModel.currentStreamId}")
+    soundScope.launch { soundPool?.stop(streamId) }
+    Log.i("SOUND", "streamId stopped: $streamId")
 }
 
 private fun remakeNewMonster(

@@ -27,8 +27,8 @@ import com.monster.makeover.ui.animations.AnimatedImage
 import com.monster.makeover.ui.theme.MonsterMakeoverTheme
 
 @Composable
-fun UserCoins(
-    coins: Int = 10,
+fun PlayerCoins(
+    availableCoins: Int = 60,
     dailyGiftEnabled: Boolean = true,
     rewardEnabled: Boolean = true,
     onRewardClick: () -> Unit = {}
@@ -49,7 +49,7 @@ fun UserCoins(
             )
 
             Text(
-                text = "$coins",
+                text = "$availableCoins",
                 modifier = Modifier
                     .weight(.5f)
                     .padding(start = 5.dp),
@@ -81,12 +81,12 @@ fun UserCoins(
 @Preview
 @Composable
 fun UserCoinsPreview() {
-    MonsterMakeoverTheme() {
+    MonsterMakeoverTheme {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            UserCoins()
+            PlayerCoins()
         }
     }
 }

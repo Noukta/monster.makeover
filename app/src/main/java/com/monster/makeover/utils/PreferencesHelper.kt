@@ -1,89 +1,107 @@
 package com.monster.makeover.utils
 
 import android.content.Context
+import android.content.SharedPreferences
+import com.monster.makeover.constants.Time
+import com.monster.makeover.constants.Game
+import com.monster.makeover.constants.ReviewChoice
 
-class PreferencesHelper(context: Context) {
-    private val sharedPreferences =
-        context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+object PreferencesHelper {
+    // Keys
+    private const val reviewStatus = "reviewStatus"
+    private const val totalPlayTime = "TotalPlayTime"
+    private const val lastPostNotificationsRequestTime = "LastPostNotificationsRequestTime"
+    private const val lastDailyGiftTime = "LastDailyGiftTime"
+    private const val lastRewardTime = "LastRewardTime"
+    private const val availableCoins = "AvailableCoins"
+    
+    private const val prefFile = "preferences"
+    private lateinit var preferences: SharedPreferences
 
-
-    val initRewardsToClaim = 3
-    private val dailyGift = 60
-
-    fun incrementAppOpenCount() {
-        val count = getAppOpenCount() + 1
-        sharedPreferences.edit().putInt("AppOpenCount", count).apply()
+    fun init(context: Context) {
+        preferences = context.getSharedPreferences(prefFile, Context.MODE_PRIVATE)
     }
 
-    fun getAppOpenCount(): Int {
-        return sharedPreferences.getInt("AppOpenCount", 0)
+    private fun getBoolean(key: String, defValue: Boolean = true) = preferences.getBoolean(key, defValue)
+
+    private fun setBoolean(key: String, value: Boolean) {
+        preferences.edit().putBoolean(key, value).apply()
     }
 
-    fun incrementAppOpenMaxToReview() {
-        var count = getAppOpenMaxToReview() + 5
-        if (count == 1000) count = 5
-        sharedPreferences.edit().putInt("AppOpenMaxToReview", count).apply()
+    private fun getInt(key: String, defValue: Int = 0) = preferences.getInt(key, defValue)
+
+    private fun setInt(key: String, value: Int) {
+        preferences.edit().putInt(key, value).apply()
     }
 
-    fun resetDailyGift() {
-        sharedPreferences.edit().putBoolean("DailyGift", true).apply()
+    private fun getLong(key: String, defValue: Long = 0) = preferences.getLong(key, defValue)
+
+    private fun setLong(key: String, value: Long) {
+        preferences.edit().putLong(key, value).apply()
     }
 
-    fun takeDailyGift() {
-        sharedPreferences.edit().putBoolean("DailyGift", false).apply()
-        addCoins(dailyGift)
+    fun setReviewStatus(reviewChoice: ReviewChoice){
+        setInt(reviewStatus, reviewChoice.ordinal)
+    }
+    fun getReviewStatus(): ReviewChoice{
+        val ordinal = getInt(reviewStatus, ReviewChoice.REMIND.ordinal)
+        return ReviewChoice.values()[ordinal]
+    }
+    fun setTotalPlayTime(time: Long){
+        setLong(totalPlayTime, time)
     }
 
-    fun checkDailyGift(): Boolean {
-        return sharedPreferences.getBoolean("DailyGift", true)
-
+    fun getTotalPlayTime(): Long{
+        return getLong(totalPlayTime, 0)
+    }
+    fun resetLastDailyGiftTime() {
+        val currentTime= System.currentTimeMillis()
+        setLong(lastDailyGiftTime, currentTime)
     }
 
-    fun getAppOpenMaxToReview(): Int {
-        return sharedPreferences.getInt("AppOpenMaxToReview", 0)
+    private fun getLastDailyGiftTime(): Long {
+        return getLong(lastDailyGiftTime)
+    }
+    
+    fun isDailyGiftAvailable(): Boolean{
+        val currentTime= System.currentTimeMillis()
+        return currentTime - getLastDailyGiftTime() >= Time.RESET_DAILY_GIFT_INTERVAL
     }
 
-    fun addCoins(coins: Int): Boolean {
-        val newCoins = coins + getCoins()
-        return if (newCoins < 0)
+    fun resetLastRewardTime() {
+        val currentTime= System.currentTimeMillis()
+        setLong(lastRewardTime, currentTime)
+    }
+
+    private fun getLastRewardTime(): Long {
+        return getLong(lastRewardTime)
+    }
+
+    fun isRewardAvailable(): Boolean{
+        val currentTime= System.currentTimeMillis()
+        return currentTime - getLastRewardTime() >= Time.RESET_REWARD_INTERVAL
+    }
+
+    fun addCoins(coinsToAdd: Int): Boolean {
+        val currentAvailableCoins = coinsToAdd + getAvailableCoins()
+        return if (currentAvailableCoins < 0)
             false
         else {
-            sharedPreferences.edit().putInt("Coins", newCoins).apply()
+            setInt(availableCoins, currentAvailableCoins)
             true
         }
     }
 
-    fun getCoins(): Int {
-        return sharedPreferences.getInt("Coins", 20)
+    fun getAvailableCoins(): Int {
+        return getInt(availableCoins, Game.InitAvailableCoins)
     }
 
-    fun decrementRewardsToClaim(): Boolean {
-        val currentRewardsToClaim = getRewardsToClaim() - 1
-        sharedPreferences.edit().putInt("RewardsToClaim", currentRewardsToClaim).apply()
-        return currentRewardsToClaim > 0
+    fun resetLastPostNotificationsRequestTime() {
+        val currentTime= System.currentTimeMillis()
+        setLong(lastPostNotificationsRequestTime, currentTime)
     }
 
-    fun resetRewardsToClaim() {
-        sharedPreferences.edit().putInt("RewardsToClaim", initRewardsToClaim).apply()
-    }
-
-    fun getRewardsToClaim(): Int {
-        return sharedPreferences.getInt("RewardsToClaim", initRewardsToClaim)
-    }
-
-    fun setNextPermissionRequestTime(time: Long) {
-        sharedPreferences.edit().putLong("NextRequestTime", time).apply()
-    }
-
-    fun getNextPermissionRequestTime(): Long {
-        return sharedPreferences.getLong("NextRequestTime", 0L)
-    }
-
-    fun setPostNotificationsGranted(opened: Boolean) {
-        sharedPreferences.edit().putBoolean("PostNotificationsGranted", opened).apply()
-    }
-
-    fun isPostNotificationsGranted(): Boolean {
-        return sharedPreferences.getBoolean("PostNotificationsGranted", false)
+    fun getLastPostNotificationsRequestTime(): Long {
+        return getLong(lastPostNotificationsRequestTime, 0)
     }
 }

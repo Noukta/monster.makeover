@@ -30,7 +30,7 @@ fun MonsterMakeoverAppBar(
     isSoundMute: Boolean,
     dailyGiftEnabled: Boolean,
     rewardEnabled: Boolean,
-    currentCoins: Int,
+    availableCoins: Int,
     onVolumeClick: () -> Unit,
     onRewardClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -71,7 +71,7 @@ fun MonsterMakeoverAppBar(
                 modifier.fillMaxSize(),
                 contentAlignment = Alignment.CenterEnd
             ) {
-                UserCoins(currentCoins, dailyGiftEnabled, rewardEnabled) { onRewardClick() }
+                PlayerCoins(availableCoins, dailyGiftEnabled, rewardEnabled) { onRewardClick() }
             }
 
         },
@@ -83,15 +83,15 @@ fun MonsterMakeoverAppBar(
 @Preview
 @Composable
 fun MonsterMakeoverAppBarPreview() {
-    MonsterMakeoverTheme() {
+    MonsterMakeoverTheme {
         MonsterMakeoverAppBar(
             LocalContext.current,
-            false,
-            true,
-            false,
-            200,
-            {},
-            {}
+            isSoundMute = false,
+            dailyGiftEnabled = true,
+            rewardEnabled = false,
+            availableCoins = 200,
+            onVolumeClick = {},
+            onRewardClick = {}
         )
     }
 }

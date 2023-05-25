@@ -34,5 +34,9 @@ val Typography = Typography(
     labelSmall = TextStyle(
         fontFamily = MainFont,
         fontSize = 10.sp
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = MainFont,
+        fontSize = 20.sp
     )
 )
