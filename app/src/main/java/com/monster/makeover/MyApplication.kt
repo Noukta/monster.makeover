@@ -3,7 +3,7 @@ package com.monster.makeover
 import android.app.Application
 import com.monster.makeover.db.DatabaseHolder
 import com.monster.makeover.utils.PreferencesHelper
-import com.monster.makeover.utils.UnityAdsManager
+import com.monster.makeover.ads.UnityAdsManager
 
 class MyApplication : Application() {
     override fun onCreate() {

@@ -1,26 +1,22 @@
 package com.monster.makeover.constants
 
+import android.app.AlarmManager.INTERVAL_DAY
+import android.app.AlarmManager.INTERVAL_HOUR
 import com.monster.makeover.BuildConfig
 
 object URL {
-    const val PRIVACY_POLICY = "https://www.privacypolicy.example"
+    const val PRIVACY_POLICY = "https://wkeystudio.blogspot.com/2023/04/privacy-policy.html"
     const val PLAY_STORE =
         "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
 }
 
 object Time {
-    private const val HOUR = 3_600_000L
-    private const val DAY = 86_400_000L
-    const val POST_NOTIFICATIONS_PERMISSION_REQUEST_INTERVAL: Long = 2 * DAY
-    const val RESET_REWARD_INTERVAL: Long = HOUR
-    const val RESET_DAILY_GIFT_INTERVAL: Long = DAY
-    const val PLAY_TIME_BEFORE_REVIEW: Long = HOUR
+    const val RESET_REWARD_INTERVAL: Long = INTERVAL_HOUR
+    const val RESET_DAILY_GIFT_INTERVAL: Long = INTERVAL_DAY
+    const val PLAY_TIME_BEFORE_REVIEW: Long = INTERVAL_HOUR
 }
 // Test values
 /*object Time {
-    private const val HOUR = 3_600_000L
-    private const val DAY = 86_400_000L
-    const val POST_NOTIFICATIONS_PREMISSION_REQUEST_INTERVAL: Long = 2 * DAY
     const val RESET_REWARD_INTERVAL: Long = 10_000L
     const val RESET_DAILY_GIFT_INTERVAL: Long = 20_000L
     const val PLAY_TIME_BEFORE_REVIEW: Long = 60_000L

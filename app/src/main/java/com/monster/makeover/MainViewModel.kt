@@ -1,26 +1,21 @@
-package com.monster.makeover.ui
+package com.monster.makeover
 
-import android.Manifest
 import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.SoundPool
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
-import com.monster.makeover.constants.Time.POST_NOTIFICATIONS_PERMISSION_REQUEST_INTERVAL
 import com.monster.makeover.data.DataSource
 import com.monster.makeover.data.MonsterUiState
+import com.monster.makeover.notifs.requestNotificationsPermission
+import com.monster.makeover.notifs.scheduleDailyNotification
 import com.monster.makeover.utils.PreferencesHelper
 import com.monster.makeover.utils.loadSounds
 import kotlinx.coroutines.CoroutineScope
@@ -126,9 +121,9 @@ class MainViewModel : ViewModel(), DefaultLifecycleObserver {
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         loadSounds(owner as Activity, soundPool)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            grantPostNotificationPermission(owner as Activity)
-        }
+        requestNotificationsPermission(owner as Activity)
+        if(!PreferencesHelper.isDailyGiftAvailable())
+            scheduleDailyNotification(owner as Activity)
     }
 
     override fun onStart(owner: LifecycleOwner) {
@@ -143,33 +138,6 @@ class MainViewModel : ViewModel(), DefaultLifecycleObserver {
         var playTime = System.currentTimeMillis() - startTime
         playTime += PreferencesHelper.getTotalPlayTime()
         PreferencesHelper.setTotalPlayTime(playTime)
-
-    }
-
-    // Post Notifications Permission Request
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private fun grantPostNotificationPermission(context: Context) {
-        val permission = Manifest.permission.POST_NOTIFICATIONS
-        val isPostNotificationsGranted = (ContextCompat.checkSelfPermission(context, permission)
-                == PackageManager.PERMISSION_GRANTED)
-
-        if(isPostNotificationsGranted)
-            return
-
-        val lastPostNotificationsRequestTime = PreferencesHelper.getLastPostNotificationsRequestTime()
-        val currentTime = System.currentTimeMillis()
-        val isPermissionRequestAvailable = when{
-            lastPostNotificationsRequestTime == 0L -> true
-            (currentTime - lastPostNotificationsRequestTime
-                    >= POST_NOTIFICATIONS_PERMISSION_REQUEST_INTERVAL) ->
-                true
-            else -> false
-
-        }
-        if(!isPermissionRequestAvailable)
-            return
-
-        //TODO: show dialog for permission request
 
     }
 }

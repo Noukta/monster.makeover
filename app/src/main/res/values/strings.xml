@@ -19,12 +19,12 @@
     <string name="share_message">did you like my monster? create yours: https://play.google.com/store/apps/details?id=%s</string>
     <string name="notification_reward_title_1" translatable="false">Time to claim 💰</string>
     <string name="notification_reward_title_2" translatable="false">Rewards are waiting</string>
-    <string name="notification_reward_content_1" translatable="false">Get your coins 💰 and unlock more monsters 👹</string>
-    <string name="notification_reward_content_2" translatable="false">Claim your rewards 💰 and unleash your imagination 👹</string>
+    <string name="notification_reward_content_1" translatable="false">Get your coins 💰 and unlock more monsters</string>
+    <string name="notification_reward_content_2" translatable="false">Claim your rewards 💰 and unleash your imagination</string>
     <string name="notification_daily_title_1" translatable="false">Daily Gift 💰</string>
     <string name="notification_daily_title_2" translatable="false">Free Coins 💰</string>
-    <string name="notification_daily_content_1" translatable="false">Claim your daily bag 💰 create infinite number of monsters 👹</string>
-    <string name="notification_daily_content_2" translatable="false">Awesome gift for free 💰 to unlock more 👹</string>
+    <string name="notification_daily_content_1" translatable="false">Claim your daily bag 💰 create infinite number of monsters</string>
+    <string name="notification_daily_content_2" translatable="false">Awesome gift for free 💰 to unlock more monsters</string>
     <string name="enjoy_ask" translatable="false">Are you enjoying the game?</string>
     <string name="yes" translatable="false">Yes</string>
     <string name="no" translatable="false">No</string>

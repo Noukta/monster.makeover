@@ -1,11 +1,11 @@
-package com.monster.makeover.utils
+package com.monster.makeover.ads
 
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import com.monster.makeover.utils.UnityAdsConfig.adUnits
-import com.monster.makeover.utils.UnityAdsConfig.testMode
-import com.monster.makeover.utils.UnityAdsConfig.unityAppID
+import com.monster.makeover.ads.UnityAdsConfig.adUnits
+import com.monster.makeover.ads.UnityAdsConfig.testMode
+import com.monster.makeover.ads.UnityAdsConfig.unityAppID
 import com.unity3d.ads.IUnityAdsInitializationListener
 import com.unity3d.ads.IUnityAdsLoadListener
 import com.unity3d.ads.IUnityAdsShowListener

@@ -3,7 +3,6 @@ package com.monster.makeover
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.monster.makeover.ui.MainViewModel
 import com.monster.makeover.ui.MonsterMakeoverApp
 import com.monster.makeover.ui.theme.MonsterMakeoverTheme
 

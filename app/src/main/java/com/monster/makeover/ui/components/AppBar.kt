@@ -21,7 +21,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.monster.makeover.R
 import com.monster.makeover.ui.theme.MonsterMakeoverTheme
-import com.monster.makeover.utils.openPrivacyPolicy
+import com.monster.makeover.ext.openPrivacyPolicy
 
 
 @Composable

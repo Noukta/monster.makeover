@@ -6,7 +6,7 @@ import com.monster.makeover.constants.ItemType
 import com.monster.makeover.data.DataSource.sounds
 import com.monster.makeover.db.DatabaseHolder.Companion.Database
 import com.monster.makeover.db.obj.MonsterItem
-import com.monster.makeover.ui.MainViewModel
+import com.monster.makeover.MainViewModel
 import com.monster.makeover.utils.PreferencesHelper
 import com.monster.makeover.utils.playRandomSound
 import com.monster.makeover.utils.playSound

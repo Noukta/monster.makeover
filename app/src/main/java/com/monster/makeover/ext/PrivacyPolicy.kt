@@ -1,4 +1,4 @@
-package com.monster.makeover.utils
+package com.monster.makeover.ext
 
 import android.content.Context
 import android.content.Intent

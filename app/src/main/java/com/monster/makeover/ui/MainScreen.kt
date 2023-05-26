@@ -27,6 +27,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.monster.makeover.BuildConfig
+import com.monster.makeover.MainViewModel
 import com.monster.makeover.R
 import com.monster.makeover.constants.Game
 import com.monster.makeover.constants.ItemType
@@ -40,13 +41,14 @@ import com.monster.makeover.ui.components.ReviewDialog
 import com.monster.makeover.ui.screens.CreateScreen
 import com.monster.makeover.ui.screens.EndScreen
 import com.monster.makeover.ui.screens.StartScreen
-import com.monster.makeover.utils.AdUnit
+import com.monster.makeover.ads.AdUnit
 import com.monster.makeover.utils.PreferencesHelper
-import com.monster.makeover.utils.UnityAdsManager
+import com.monster.makeover.ads.UnityAdsManager
 import com.monster.makeover.utils.playSound
 import com.monster.makeover.utils.playSoundInfinite
-import com.monster.makeover.utils.saveToInternalStorage
-import com.monster.makeover.utils.shareImageUri
+import com.monster.makeover.ext.saveToInternalStorage
+import com.monster.makeover.ext.shareImageUri
+import com.monster.makeover.notifs.scheduleDailyNotification
 import com.smarttoolfactory.screenshot.rememberScreenshotState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -119,6 +121,7 @@ fun MonsterMakeoverApp(
                             PreferencesHelper.resetLastDailyGiftTime()
                             PreferencesHelper.addCoins(Game.DailyGift)
                             isDailyGiftAvailable = false
+                            scheduleDailyNotification(context)
                         } else {
                             UnityAdsManager.rewardShowListener =
                                 UnityAdsManager.RewardShowListener {
