@@ -64,7 +64,7 @@ fun MonsterCanvas(
     LaunchedEffect(Unit) {
         while (true) {
             delay(40)
-            angle = sin(System.currentTimeMillis() / 1000.0 * 3f).toFloat() * 10f
+            angle = sin(System.currentTimeMillis() / 1000.0 * 4f).toFloat() * 15f
         }
     }
 
@@ -100,7 +100,7 @@ fun MonsterCanvas(
                     }
                 ) { change, dragAmount ->
                     change.consume()
-                    dragOffset = dragOffset.plus(dragAmount)
+                    dragOffset += dragAmount
                 }
             }
         ){
@@ -115,6 +115,10 @@ fun MonsterCanvas(
                 )
             }
             val toStickHead  = 20.dp.toPx()
+            dragOffset = Offset(
+                x = dragOffset.x.coerceIn(-size.width/2, size.width/2),
+                y = dragOffset.y.coerceIn(-size.height/2, size.height/2)
+            )
             withTransform(
                 {
                     if(head != null  && body != null) {
@@ -153,7 +157,9 @@ fun MonsterCanvas(
                     )
                 }
                 acc?.let {
-                    if(selectedItem == 3) newAccOffset = monsterState.accOffset + dragOffset
+                    if(selectedItem == 3){
+                        newAccOffset = monsterState.accOffset + dragOffset
+                    }
                     drawImage(
                         image = it,
                         topLeft = newAccOffset + center - Offset(

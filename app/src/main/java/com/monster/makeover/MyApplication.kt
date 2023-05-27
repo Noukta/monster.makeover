@@ -12,6 +12,6 @@ class MyApplication : Application() {
         //Initialize preferencesHelper
         PreferencesHelper.init(this)
         //Initialize UnityAdsManager
-        UnityAdsManager.initialize(this)
+        //UnityAdsManager.initialize(this)
     }
 }
