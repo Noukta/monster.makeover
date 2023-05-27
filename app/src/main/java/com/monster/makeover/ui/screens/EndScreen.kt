@@ -38,14 +38,13 @@ fun EndScreen(
         ) {
             if (screenshotState != null) {
                 ScreenshotBox(
-                    modifier = Modifier
-                        .weight(.6f)
-                        .padding(16.dp),
+                    modifier = Modifier.weight(.6f),
                     screenshotState = screenshotState
                 ) {
                     MonsterCanvas(
                         monsterState = monsterState,
-                        selectedItem = 0
+                        selectedItem = 0,
+                        animate = true
                     )
                 }
             }

@@ -20,6 +20,7 @@ import com.monster.makeover.ui.components.MonsterCanvas
 import com.monster.makeover.ui.components.PrimaryButton
 import com.monster.makeover.ui.components.SecondaryButton
 import com.monster.makeover.ui.components.TabContent
+import com.monster.makeover.ui.theme.MonsterMakeoverTheme
 
 @Composable
 fun CreateScreen(
@@ -107,13 +108,15 @@ fun DoneButton(enabled: Boolean, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun CreatePreview() {
-    CreateScreen(
-        monsterState = MonsterState(
-            head = R.drawable.head_04,
-            eye = R.drawable.eye_11,
-            mouth = R.drawable.mouth_20,
-            acc = R.drawable.acc_00,
-            body = R.drawable.body_26
+    MonsterMakeoverTheme {
+        CreateScreen(
+            monsterState = MonsterState(
+                head = R.drawable.head_04,
+                eye = R.drawable.eye_11,
+                mouth = R.drawable.mouth_20,
+                acc = R.drawable.acc_00,
+                body = R.drawable.body_26
+            )
         )
-    )
+    }
 }

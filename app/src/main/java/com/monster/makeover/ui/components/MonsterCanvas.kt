@@ -2,7 +2,6 @@ package com.monster.makeover.ui.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
@@ -23,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.monster.makeover.R
 import com.monster.makeover.data.MonsterState
+import kotlinx.coroutines.delay
+import kotlin.math.sin
 
 @Composable
 fun MonsterCanvas(
@@ -31,7 +31,8 @@ fun MonsterCanvas(
     onEyePositionChanged: ((Offset) -> Unit)? = null,
     onMouthPositionChanged: ((Offset) -> Unit)? = null,
     onAccPositionChanged: ((Offset) -> Unit)? = null,
-    selectedItem: Int
+    selectedItem: Int,
+    animate: Boolean = false
 ) {
     val head  = monsterState.head?.let { ImageBitmap.imageResource(it) }
     val eye  = monsterState.eye?.let { ImageBitmap.imageResource(it) }
@@ -57,6 +58,16 @@ fun MonsterCanvas(
     val resizeAnimation = remember {
         Animatable(0f)
     }
+
+    var angle by remember { mutableStateOf(0f) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(40)
+            angle = sin(System.currentTimeMillis() / 1000.0 * 3f).toFloat() * 10f
+        }
+    }
+
     LaunchedEffect(body){
         if(body != null && resizeAnimation.value == 0f)
             resizeAnimation.animateTo(1f)
@@ -79,7 +90,7 @@ fun MonsterCanvas(
         dragOffset = Offset.Zero
     }
 
-    Box(modifier = modifier.background(Color.Yellow)){
+    Box(modifier = modifier){
         Canvas(modifier = Modifier
             .fillMaxSize()
             .pointerInput(Unit) {
@@ -116,7 +127,9 @@ fun MonsterCanvas(
                             left = 0f,
                             top = toStickHead -(body.height.toFloat()+ head.height.toFloat()/2) * resizeAnimation.value
                         )
-
+                        if(animate){
+                            rotate(angle, center + Offset(0f, head.height.toFloat() / 2))
+                        }
                     }
                 }
             ) {
@@ -175,6 +188,7 @@ fun MonsterUiPreview() {
             acc = R.drawable.acc_10,
             body = R.drawable.body_25
         ),
-        selectedItem = 0
+        selectedItem = 0,
+        animate = true
     )
 }

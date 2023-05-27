@@ -11,6 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -23,6 +28,7 @@ import com.monster.makeover.data.MonsterState
 import com.monster.makeover.ui.animations.AnimatedImage
 import com.monster.makeover.ui.components.MonsterCanvas
 import com.monster.makeover.ui.components.PrimaryButton
+import kotlinx.coroutines.delay
 
 fun randomMonster(): MonsterState {
     return MonsterState(
@@ -38,6 +44,15 @@ fun StartScreen(
     modifier: Modifier = Modifier,
     onNextButtonClicked: () -> Unit = {}
 ) {
+    var randomMonster by remember{
+        mutableStateOf(randomMonster())
+    }
+    LaunchedEffect(key1 = Unit, block = {
+        while (true){
+            delay(500)
+            randomMonster = randomMonster()
+        }
+    })
     Column(
         modifier = modifier
             .padding(16.dp)
@@ -55,7 +70,7 @@ fun StartScreen(
             modifier = Modifier
                 .weight(.6f)
                 .padding(16.dp),
-            monsterState = randomMonster(),
+            monsterState = randomMonster,
             selectedItem = 0
         )
         Box(

@@ -95,6 +95,52 @@ fun MonsterMakeoverApp(
         UnityAdsManager.load(AdUnit.Rewarded_Coins)
 
     Scaffold(
+        topBar = {
+            if (currentScreen == MonsterMakeoverScreen.Create) {
+                MonsterMakeoverAppBar(
+                    context = context,
+                    isSoundMute = viewModel.isSoundMute,
+                    dailyGiftEnabled = isDailyGiftAvailable,
+                    rewardEnabled = isRewardAvailable,
+                    availableCoins = availableCoins,
+                    onVolumeClick = {
+                        if (viewModel.isSoundMute) viewModel.soundPool?.autoResume()
+                        else viewModel.soundPool?.autoPause()
+
+                        val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
+                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
+                        viewModel.isSoundMute = !viewModel.isSoundMute
+                    },
+                    onRewardClick = {
+                        if (isDailyGiftAvailable) {
+                            val soundId =
+                                sounds.find { it.resId == R.raw.sfx_coin }?.soundId
+                            viewModel.soundScope.launch {
+                                playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
+                            }
+                            PreferencesHelper.resetLastDailyGiftTime()
+                            PreferencesHelper.addCoins(Game.DailyGift)
+                            isDailyGiftAvailable = false
+                            scheduleDailyNotification(context)
+                        } else {
+                            UnityAdsManager.rewardShowListener =
+                                UnityAdsManager.RewardShowListener {
+                                    val soundId =
+                                        sounds.find { it.resId == R.raw.sfx_coin }?.soundId
+                                    viewModel.soundScope.launch {
+                                        playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
+                                    }
+                                    PreferencesHelper.resetLastRewardTime()
+                                    PreferencesHelper.addCoins(Game.Reward)
+                                    isRewardAvailable = false
+                                }
+                            UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)
+                        }
+                        availableCoins = PreferencesHelper.getAvailableCoins()
+                    }
+                )
+            }
+        },
         bottomBar = {
             if (currentScreen == MonsterMakeoverScreen.Start) {
                 MonsterMakeoverAppBar(
