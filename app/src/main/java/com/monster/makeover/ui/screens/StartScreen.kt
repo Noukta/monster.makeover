@@ -19,13 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.monster.makeover.R
 import com.monster.makeover.data.DataSource.allParts
-import com.monster.makeover.data.MonsterUiState
+import com.monster.makeover.data.MonsterState
 import com.monster.makeover.ui.animations.AnimatedImage
-import com.monster.makeover.ui.components.Monster
+import com.monster.makeover.ui.components.MonsterCanvas
 import com.monster.makeover.ui.components.PrimaryButton
 
-fun randomMonster(): MonsterUiState {
-    return MonsterUiState(
+fun randomMonster(): MonsterState {
+    return MonsterState(
         head = allParts[0][(allParts[0].indices).random()].second,
         eye = allParts[1][(allParts[1].indices).random()].second,
         mouth = allParts[2][(allParts[2].indices).random()].second,
@@ -51,11 +51,12 @@ fun StartScreen(
                 .width(300.dp)
                 .weight(.3f)
         )
-        Monster(
+        MonsterCanvas(
             modifier = Modifier
                 .weight(.6f)
                 .padding(16.dp),
-            monsterUiState = randomMonster()
+            monsterState = randomMonster(),
+            selectedItem = 0
         )
         Box(
             Modifier.weight(.1f), Alignment.Center

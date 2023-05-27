@@ -14,16 +14,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.monster.makeover.R
-import com.monster.makeover.data.MonsterUiState
+import com.monster.makeover.data.MonsterState
 import com.monster.makeover.ui.components.CustomTabRow
-import com.monster.makeover.ui.components.Monster
+import com.monster.makeover.ui.components.MonsterCanvas
 import com.monster.makeover.ui.components.PrimaryButton
 import com.monster.makeover.ui.components.SecondaryButton
 import com.monster.makeover.ui.components.TabContent
 
 @Composable
 fun CreateScreen(
-    monsterUiState: MonsterUiState = MonsterUiState(),
+    monsterState: MonsterState = MonsterState(),
     onMonsterHeadChanged: (Int, Boolean) -> Boolean = { _: Int, _: Boolean -> true},
     onMonsterEyeChanged: (Int, Boolean) -> Boolean = { _: Int, _: Boolean -> false},
     onMonsterMouthChanged: (Int, Boolean) -> Boolean = { _: Int, _: Boolean -> true},
@@ -44,11 +44,12 @@ fun CreateScreen(
                 .weight(.6f)
                 .padding(16.dp)
         ) {
-            Monster(
-                monsterUiState = monsterUiState,
+            MonsterCanvas(
+                monsterState = monsterState,
                 onEyePositionChanged = onEyePositionChanged,
                 onMouthPositionChanged = onMouthPositionChanged,
-                onAccPositionChanged = onAccPositionChanged
+                onAccPositionChanged = onAccPositionChanged,
+                selectedItem = selectedTabIndex
             )
         }
         Column(
@@ -58,27 +59,27 @@ fun CreateScreen(
         ) {
             CustomTabRow(selectedTabIndex) {
                 when (selectedTabIndex) {
-                    0 -> NextButton(monsterUiState.head != null) {
+                    0 -> NextButton(monsterState.head != null) {
                         onNextButtonClicked()
                         selectedTabIndex++
                     }
 
-                    1 -> NextButton(monsterUiState.eye != null) {
+                    1 -> NextButton(monsterState.eye != null) {
                         onNextButtonClicked()
                         selectedTabIndex++
                     }
 
-                    2 -> NextButton(monsterUiState.mouth != null) {
+                    2 -> NextButton(monsterState.mouth != null) {
                         onNextButtonClicked()
                         selectedTabIndex++
                     }
 
-                    3 -> NextButton(monsterUiState.acc != null) {
+                    3 -> NextButton(monsterState.acc != null) {
                         onNextButtonClicked()
                         selectedTabIndex++
                     }
 
-                    4 -> DoneButton(monsterUiState.body != null) { onDoneButtonClicked() }
+                    4 -> DoneButton(monsterState.body != null) { onDoneButtonClicked() }
                 }
             }
 
@@ -107,7 +108,7 @@ fun DoneButton(enabled: Boolean, onClick: () -> Unit) {
 @Composable
 fun CreatePreview() {
     CreateScreen(
-        monsterUiState = MonsterUiState(
+        monsterState = MonsterState(
             head = R.drawable.head_04,
             eye = R.drawable.eye_11,
             mouth = R.drawable.mouth_20,

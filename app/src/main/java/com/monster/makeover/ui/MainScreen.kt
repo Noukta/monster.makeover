@@ -179,7 +179,7 @@ fun MonsterMakeoverApp(
             composable(route = MonsterMakeoverScreen.Create.name) {
                 UnityAdsManager.load(AdUnit.Interstitial_Create_End)
                 CreateScreen(
-                    monsterUiState = uiState,
+                    monsterState = uiState,
                     onMonsterHeadChanged = { id, locked ->
                         return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Head, viewModel){
                             availableCoins -=20
@@ -242,7 +242,7 @@ fun MonsterMakeoverApp(
                 }
 
                 EndScreen(
-                    monsterUiState = uiState,
+                    monsterState = uiState,
                     screenshotState = screenshotState,
                     onRemakeButtonClicked = {
                         val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId

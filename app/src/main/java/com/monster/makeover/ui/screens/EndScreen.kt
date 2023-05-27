@@ -12,9 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.monster.makeover.R
 import com.monster.makeover.data.DataSource.videos
-import com.monster.makeover.data.MonsterUiState
+import com.monster.makeover.data.MonsterState
 import com.monster.makeover.ui.components.BackgroundVideo
-import com.monster.makeover.ui.components.Monster
+import com.monster.makeover.ui.components.MonsterCanvas
 import com.monster.makeover.ui.components.PrimaryButton
 import com.monster.makeover.ui.components.SecondaryButton
 import com.smarttoolfactory.screenshot.ScreenshotBox
@@ -24,7 +24,7 @@ import com.smarttoolfactory.screenshot.rememberScreenshotState
 @Composable
 fun EndScreen(
     modifier: Modifier = Modifier,
-    monsterUiState: MonsterUiState = MonsterUiState(),
+    monsterState: MonsterState = MonsterState(),
     screenshotState: ScreenshotState? = null,
     onRemakeButtonClicked: () -> Unit = {},
     onShareButtonClicked: () -> Unit = {}
@@ -43,8 +43,9 @@ fun EndScreen(
                         .padding(16.dp),
                     screenshotState = screenshotState
                 ) {
-                    Monster(
-                        monsterUiState = monsterUiState
+                    MonsterCanvas(
+                        monsterState = monsterState,
+                        selectedItem = 0
                     )
                 }
             }
@@ -89,7 +90,7 @@ fun RemakeButton(modifier: Modifier, onClick: () -> Unit) {
 @Composable
 fun EndPreview() {
     EndScreen(
-        monsterUiState = MonsterUiState(
+        monsterState = MonsterState(
             head = R.drawable.head_04,
             eye = R.drawable.eye_11,
             mouth = R.drawable.mouth_20,

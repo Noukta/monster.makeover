@@ -13,7 +13,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.monster.makeover.data.DataSource
-import com.monster.makeover.data.MonsterUiState
+import com.monster.makeover.data.MonsterState
 import com.monster.makeover.notifs.requestNotificationsPermission
 import com.monster.makeover.notifs.scheduleDailyNotification
 import com.monster.makeover.utils.PreferencesHelper
@@ -29,8 +29,8 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel(), DefaultLifecycleObserver {
 
     //uiState
-    private val _uiState = MutableStateFlow(MonsterUiState())
-    val uiState: StateFlow<MonsterUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(MonsterState())
+    val uiState: StateFlow<MonsterState> = _uiState.asStateFlow()
     //sound
     var currentStreamId = 0
         private set
@@ -93,7 +93,7 @@ class MainViewModel : ViewModel(), DefaultLifecycleObserver {
     }
 
     fun resetMonster() {
-        _uiState.value = MonsterUiState()
+        _uiState.value = MonsterState()
     }
 
     // Sound Control
