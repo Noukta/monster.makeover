@@ -46,7 +46,7 @@ abstract class AppDatabase : RoomDatabase() {
         val PREPOPULATE_DATA = listOf(
             MonsterItem(R.drawable.head_25),
             MonsterItem(R.drawable.head_26),
-//        MonsterItem(R.drawable.head_27),
+//          MonsterItem(R.drawable.head_27),
             MonsterItem(R.drawable.head_28),
             MonsterItem(R.drawable.head_29),
             MonsterItem(R.drawable.head_30),
@@ -108,14 +108,14 @@ abstract class AppDatabase : RoomDatabase() {
             MonsterItem(R.drawable.body_26),
             MonsterItem(R.drawable.body_27),
             MonsterItem(R.drawable.body_28),
-//        MonsterItem(R.drawable.body_29),
+        MonsterItem(R.drawable.body_29),
             MonsterItem(R.drawable.body_30),
-//        MonsterItem(R.drawable.body_31),
-//        MonsterItem(R.drawable.body_32),
-//        MonsterItem(R.drawable.body_33),
-//        MonsterItem(R.drawable.body_34),
+        MonsterItem(R.drawable.body_31),
+        MonsterItem(R.drawable.body_32),
+        MonsterItem(R.drawable.body_33),
+        MonsterItem(R.drawable.body_34),
             MonsterItem(R.drawable.body_35),
-//        MonsterItem(R.drawable.body_36)
+        MonsterItem(R.drawable.body_36)
         )
     }
 }

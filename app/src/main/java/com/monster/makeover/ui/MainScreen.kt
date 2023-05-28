@@ -1,8 +1,6 @@
 package com.monster.makeover.ui
 
 import android.app.Activity
-import android.media.SoundPool
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,29 +27,25 @@ import androidx.navigation.compose.rememberNavController
 import com.monster.makeover.BuildConfig
 import com.monster.makeover.MainViewModel
 import com.monster.makeover.R
+import com.monster.makeover.ads.AdUnit
+import com.monster.makeover.ads.UnityAdsManager
 import com.monster.makeover.constants.Game
 import com.monster.makeover.constants.ItemType
 import com.monster.makeover.constants.ReviewChoice
 import com.monster.makeover.constants.Time.PLAY_TIME_BEFORE_REVIEW
-import com.monster.makeover.data.DataSource.sounds
 import com.monster.makeover.ext.onMonsterItemChanged
 import com.monster.makeover.ext.rateApp
+import com.monster.makeover.ext.saveToInternalStorage
+import com.monster.makeover.ext.shareImageUri
+import com.monster.makeover.notifs.scheduleDailyNotification
 import com.monster.makeover.ui.components.MonsterMakeoverAppBar
 import com.monster.makeover.ui.components.ReviewDialog
 import com.monster.makeover.ui.screens.CreateScreen
 import com.monster.makeover.ui.screens.EndScreen
 import com.monster.makeover.ui.screens.StartScreen
-import com.monster.makeover.ads.AdUnit
 import com.monster.makeover.utils.PreferencesHelper
-import com.monster.makeover.ads.UnityAdsManager
-import com.monster.makeover.utils.playSound
-import com.monster.makeover.utils.playSoundInfinite
-import com.monster.makeover.ext.saveToInternalStorage
-import com.monster.makeover.ext.shareImageUri
-import com.monster.makeover.notifs.scheduleDailyNotification
+import com.monster.makeover.utils.SoundHelper
 import com.smarttoolfactory.screenshot.rememberScreenshotState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 enum class MonsterMakeoverScreen {
     Start,
@@ -99,25 +93,19 @@ fun MonsterMakeoverApp(
             if (currentScreen == MonsterMakeoverScreen.Create) {
                 MonsterMakeoverAppBar(
                     context = context,
-                    isSoundMute = viewModel.isSoundMute,
+                    isSoundMute = SoundHelper.isSoundMute,
                     dailyGiftEnabled = isDailyGiftAvailable,
                     rewardEnabled = isRewardAvailable,
                     availableCoins = availableCoins,
                     onVolumeClick = {
-                        if (viewModel.isSoundMute) viewModel.soundPool?.autoResume()
-                        else viewModel.soundPool?.autoPause()
-
-                        val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
-                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
-                        viewModel.isSoundMute = !viewModel.isSoundMute
+                        SoundHelper.isSoundMute = !SoundHelper.isSoundMute
+                        if (SoundHelper.isSoundMute) SoundHelper.pauseMusic()
+                        else SoundHelper.playMusic()
+                        SoundHelper.playSound(SoundHelper.commonSound)
                     },
                     onRewardClick = {
                         if (isDailyGiftAvailable) {
-                            val soundId =
-                                sounds.find { it.resId == R.raw.sfx_coin }?.soundId
-                            viewModel.soundScope.launch {
-                                playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
-                            }
+                            SoundHelper.playSound(SoundHelper.coinSound)
                             PreferencesHelper.resetLastDailyGiftTime()
                             PreferencesHelper.addCoins(Game.DailyGift)
                             isDailyGiftAvailable = false
@@ -125,11 +113,7 @@ fun MonsterMakeoverApp(
                         } else {
                             UnityAdsManager.rewardShowListener =
                                 UnityAdsManager.RewardShowListener {
-                                    val soundId =
-                                        sounds.find { it.resId == R.raw.sfx_coin }?.soundId
-                                    viewModel.soundScope.launch {
-                                        playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
-                                    }
+                                    SoundHelper.playSound(SoundHelper.coinSound)
                                     PreferencesHelper.resetLastRewardTime()
                                     PreferencesHelper.addCoins(Game.Reward)
                                     isRewardAvailable = false
@@ -145,25 +129,19 @@ fun MonsterMakeoverApp(
             if (currentScreen == MonsterMakeoverScreen.Start) {
                 MonsterMakeoverAppBar(
                     context = context,
-                    isSoundMute = viewModel.isSoundMute,
+                    isSoundMute = SoundHelper.isSoundMute,
                     dailyGiftEnabled = isDailyGiftAvailable,
                     rewardEnabled = isRewardAvailable,
                     availableCoins = availableCoins,
                     onVolumeClick = {
-                        if (viewModel.isSoundMute) viewModel.soundPool?.autoResume()
-                        else viewModel.soundPool?.autoPause()
-
-                        val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
-                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
-                        viewModel.isSoundMute = !viewModel.isSoundMute
+                        SoundHelper.isSoundMute = !SoundHelper.isSoundMute
+                        if (SoundHelper.isSoundMute) SoundHelper.pauseMusic()
+                        else SoundHelper.playMusic()
+                        SoundHelper.playSound(SoundHelper.commonSound)
                     },
                     onRewardClick = {
                         if (isDailyGiftAvailable) {
-                            val soundId =
-                                sounds.find { it.resId == R.raw.sfx_coin }?.soundId
-                            viewModel.soundScope.launch {
-                                playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
-                            }
+                            SoundHelper.playSound(SoundHelper.coinSound)
                             PreferencesHelper.resetLastDailyGiftTime()
                             PreferencesHelper.addCoins(Game.DailyGift)
                             isDailyGiftAvailable = false
@@ -171,11 +149,7 @@ fun MonsterMakeoverApp(
                         } else {
                             UnityAdsManager.rewardShowListener =
                                 UnityAdsManager.RewardShowListener {
-                                    val soundId =
-                                        sounds.find { it.resId == R.raw.sfx_coin }?.soundId
-                                    viewModel.soundScope.launch {
-                                        playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
-                                    }
+                                    SoundHelper.playSound(SoundHelper.coinSound)
                                     PreferencesHelper.resetLastRewardTime()
                                     PreferencesHelper.addCoins(Game.Reward)
                                     isRewardAvailable = false
@@ -212,8 +186,7 @@ fun MonsterMakeoverApp(
                 UnityAdsManager.load(AdUnit.Interstitial_Start_Create)
                 adBannerId = AdUnit.Banner_Start
                 StartScreen {
-                    val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
-                    viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
+                    SoundHelper.playSound(SoundHelper.startSound)
                     navController.navigate(MonsterMakeoverScreen.Create.name)
                     UnityAdsManager.show(
                         AdUnit.Interstitial_Start_Create,
@@ -261,8 +234,7 @@ fun MonsterMakeoverApp(
                         viewModel.updateAccPosition(it)
                     },
                     onDoneButtonClicked = {
-                        val soundId = sounds.find { it.resId == R.raw.btn_done }?.soundId
-                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
+                        SoundHelper.playSound(SoundHelper.doneSound)
                         navController.navigate(MonsterMakeoverScreen.End.name)
                         UnityAdsManager.show(
                             AdUnit.Interstitial_Create_End,
@@ -270,8 +242,7 @@ fun MonsterMakeoverApp(
                         )
                     },
                     onNextButtonClicked = {
-                        val soundId = sounds.find { it.resId == R.raw.btn_next }?.soundId
-                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
+                        SoundHelper.playSound(SoundHelper.nextSound)
                     }
                 )
 
@@ -291,28 +262,17 @@ fun MonsterMakeoverApp(
                     monsterState = uiState,
                     screenshotState = screenshotState,
                     onRemakeButtonClicked = {
-                        val soundId = sounds.find { it.resId == R.raw.btn_start_remake }?.soundId
-                        viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
+                        SoundHelper.playSound(SoundHelper.startSound)
                         remakeNewMonster(viewModel, navController)
                         canNavigateBack = false
                     }
                 ) {
-                    val soundId = sounds.find { it.resId == R.raw.btn_common }?.soundId
-                    viewModel.soundScope.launch { playSound(viewModel.soundPool, soundId, viewModel.isSoundMute) }
+                    SoundHelper.playSound(SoundHelper.commonSound)
                     screenshotState.capture()
                 }
             }
         }
     }
-    //Triggered when screen changed
-    if (viewModel.isSoundLoaded && !viewModel.isSoundMute)
-        playBackgroundMusic(
-            currentScreen,
-            viewModel.currentStreamId,
-            viewModel.soundPool,
-            viewModel.soundScope){streamId ->
-            viewModel.setCurrentStreamId(streamId)
-        }
 
     //App review
     var isReviewDialogAvailable by rememberSaveable{
@@ -331,55 +291,27 @@ fun MonsterMakeoverApp(
                 isReviewDialogAvailable = true
             }
         }
-        Log.d("REVIEW", "playtime $totalPlayTime")
+
+        if(currentScreen == MonsterMakeoverScreen.End)
+            SoundHelper.prepare(SoundHelper.endMusic, context)
+        else
+            SoundHelper.prepare(SoundHelper.startMusic, context)
+        SoundHelper.playMusic()
     }
+
     if(isReviewDialogAvailable){
         ReviewDialog {reviewStatus ->
             isReviewDialogAvailable = false
             PreferencesHelper.setTotalPlayTime(0L)
             PreferencesHelper.setReviewStatus(reviewStatus)
             if(reviewStatus == ReviewChoice.YES) {
-                val soundId =
-                    sounds.find { it.resId == R.raw.sfx_coin }?.soundId
-                viewModel.soundScope.launch {
-                    playSound(viewModel.soundPool, soundId, viewModel.isSoundMute)
-                }
+                SoundHelper.playSound(SoundHelper.coinSound)
                 PreferencesHelper.addCoins(Game.DailyGift * 2)
                 availableCoins = PreferencesHelper.getAvailableCoins()
                 rateApp(context)
             }
         }
     }
-}
-
-private fun playBackgroundMusic(
-    currentScreen: MonsterMakeoverScreen,
-    currentStreamId: Int,
-    soundPool: SoundPool?,
-    soundScope: CoroutineScope,
-    setStreamId: (Int)-> Unit
-){
-    if (currentStreamId != 0) {
-        stopBackgroundMusic(soundPool, soundScope, currentStreamId)
-    }
-    val soundId: Int? = if (currentScreen == MonsterMakeoverScreen.End) {
-        sounds.find { it.resId == R.raw.bgm_end }?.soundId
-    } else {
-        sounds.find { it.resId == R.raw.bgm_start_create }?.soundId
-    }
-    soundScope.launch {
-        val newStreamId = playSoundInfinite(soundPool, soundId)
-        setStreamId(newStreamId)
-    }
-}
-
-private fun stopBackgroundMusic(
-    soundPool: SoundPool?,
-    soundScope: CoroutineScope,
-    streamId: Int
-) {
-    soundScope.launch { soundPool?.stop(streamId) }
-    Log.i("SOUND", "streamId stopped: $streamId")
 }
 
 private fun remakeNewMonster(

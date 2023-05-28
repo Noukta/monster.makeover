@@ -35,33 +35,6 @@ object DataSource {
             37
         ),
     )
-
-    val sounds = listOf(
-        Sound(R.raw.btn_select_1),
-        Sound(R.raw.btn_select_2),
-        Sound(R.raw.btn_select_3),
-        Sound(R.raw.btn_select_4),
-        Sound(R.raw.btn_select_5),
-        Sound(R.raw.btn_select_6),
-        Sound(R.raw.btn_select_7),
-        Sound(R.raw.btn_select_8),
-        Sound(R.raw.btn_select_9),
-        Sound(R.raw.btn_select_10),
-        Sound(R.raw.btn_select_11),
-        Sound(R.raw.btn_select_12),
-        Sound(R.raw.btn_select_13),
-        Sound(R.raw.btn_select_14),
-        Sound(R.raw.btn_select_15),
-        Sound(R.raw.btn_select_16),
-        Sound(R.raw.btn_unlock),
-        Sound(R.raw.btn_common),
-        Sound(R.raw.btn_next),
-        Sound(R.raw.btn_done),
-        Sound(R.raw.btn_start_remake),
-        Sound(R.raw.sfx_coin),
-        Sound(R.raw.bgm_start_create),
-        Sound(R.raw.bgm_end)
-    )
     val videos = listOf(
         R.raw.bgv_doors_lobby,
         R.raw.bgv_banban_jumbo_josh,
@@ -103,7 +76,7 @@ object DataSource {
         Pair(R.drawable.btn_head_24, R.drawable.head_24),
         Pair(R.drawable.btn_head_25, R.drawable.head_25),
         Pair(R.drawable.btn_head_26, R.drawable.head_26),
-        Pair(R.drawable.btn_head_27, R.drawable.head_27),
+        //Pair(R.drawable.btn_head_27, R.drawable.head_27),
         Pair(R.drawable.btn_head_28, R.drawable.head_28),
         Pair(R.drawable.btn_head_29, R.drawable.head_29),
         Pair(R.drawable.btn_head_30, R.drawable.head_30),

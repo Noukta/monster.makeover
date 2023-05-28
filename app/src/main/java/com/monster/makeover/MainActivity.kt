@@ -10,6 +10,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel = MainViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MonsterMakeoverTheme {
                 MonsterMakeoverApp(viewModel = viewModel)
