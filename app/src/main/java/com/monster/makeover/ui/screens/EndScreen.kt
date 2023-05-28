@@ -31,30 +31,33 @@ fun EndScreen(
 ) {
     BackgroundVideo(randomBackground()) {
         Column(
-            modifier = modifier
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = modifier.padding(16.dp)
         ) {
             if (screenshotState != null) {
-                ScreenshotBox(
-                    modifier = Modifier.weight(.6f),
-                    screenshotState = screenshotState
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(.8f),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom
                 ) {
-                    MonsterCanvas(
-                        monsterState = monsterState,
-                        selectedItem = 0,
-                        animate = true
-                    )
+                    ScreenshotBox(
+                        screenshotState = screenshotState
+                    ) {
+                        MonsterCanvas(
+                            monsterState = monsterState,
+                            selectedItem = 0,
+                            animate = true
+                        )
+                    }
                 }
             }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
                     .weight(.2f),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
                 RemakeButton(
                     Modifier
