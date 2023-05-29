@@ -1,6 +1,11 @@
 package com.monster.makeover
 
 import android.app.Activity
+import android.util.Log
+import androidx.activity.OnBackPressedCallback
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -22,6 +27,8 @@ class MainViewModel : ViewModel(), DefaultLifecycleObserver {
     val uiState: StateFlow<MonsterState> = _uiState.asStateFlow()
     //review app
     private var startTime: Long = 0
+    //exit
+    var showExit by mutableStateOf(false)
 
     //UI State/Monster control
     fun updateMonsterHead(id: Int) {
@@ -82,6 +89,14 @@ class MainViewModel : ViewModel(), DefaultLifecycleObserver {
         requestNotificationsPermission(owner as Activity)
         if(!PreferencesHelper.isDailyGiftAvailable())
             scheduleDailyNotification(owner as Activity)
+
+        (owner as MainActivity).onBackPressedDispatcher
+            .addCallback(owner, object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                Log.d("NAVIGATION", "back pressed")
+                showExit = !showExit
+            }
+        })
     }
 
     override fun onStart(owner: LifecycleOwner) {

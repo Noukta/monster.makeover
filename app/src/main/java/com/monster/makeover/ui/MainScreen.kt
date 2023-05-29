@@ -1,6 +1,7 @@
 package com.monster.makeover.ui
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,6 +39,7 @@ import com.monster.makeover.ext.rateApp
 import com.monster.makeover.ext.saveToInternalStorage
 import com.monster.makeover.ext.shareImageUri
 import com.monster.makeover.notifs.scheduleDailyNotification
+import com.monster.makeover.ui.components.ExitDialog
 import com.monster.makeover.ui.components.MonsterMakeoverAppBar
 import com.monster.makeover.ui.components.ReviewDialog
 import com.monster.makeover.ui.screens.CreateScreen
@@ -310,6 +312,13 @@ fun MonsterMakeoverApp(
                 availableCoins = PreferencesHelper.getAvailableCoins()
                 rateApp(context)
             }
+        }
+    }
+
+    Log.d("NAVIGATION", "exit ${viewModel.showExit}")
+    if(viewModel.showExit){
+        ExitDialog(context as Activity) {
+            viewModel.showExit = false
         }
     }
 }

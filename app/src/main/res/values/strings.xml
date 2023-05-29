@@ -31,4 +31,6 @@
     <string name="rate_ask" translatable="false">Rate us on Google Play</string>
     <string name="never_show" translatable="false">Never show again</string>
     <string name="remind" translatable="false">Remind me later</string>
+    <string name="text_quit" translatable="false">Are you sure you want to quit?</string>
+    <string name="exit" translatable="false">Exit</string>
 </resources>
