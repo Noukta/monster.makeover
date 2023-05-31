@@ -20,5 +20,4 @@ object Settings{
             R.string.notification_daily_content_2)
             .random()
     }
-
 }

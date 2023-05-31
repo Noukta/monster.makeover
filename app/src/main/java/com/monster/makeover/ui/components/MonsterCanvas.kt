@@ -104,6 +104,7 @@ fun MonsterCanvas(
                 }
             }
         ){
+
             body?.let {
                 drawImage(
                     image = it,

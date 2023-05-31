@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import com.monster.makeover.notifs.Settings.DAILY_NOTIFICATION_INTERVAL
 
-fun scheduleDailyNotification(context: Context){
+fun scheduleDailyNotification(context: Context, afterReboot: Boolean = false){
     val alarmManager = context.applicationContext
         .getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, DailyNotificationReceiver::class.java)
@@ -18,7 +18,7 @@ fun scheduleDailyNotification(context: Context){
     )
     alarmManager.setInexactRepeating(
         AlarmManager.RTC_WAKEUP,
-        System.currentTimeMillis() + DAILY_NOTIFICATION_INTERVAL,
+        System.currentTimeMillis() + if(afterReboot) 0 else DAILY_NOTIFICATION_INTERVAL,
         DAILY_NOTIFICATION_INTERVAL,
         pendingIntent
     )

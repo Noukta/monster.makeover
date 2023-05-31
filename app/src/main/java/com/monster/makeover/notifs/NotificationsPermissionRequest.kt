@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
@@ -13,12 +14,9 @@ import com.monster.makeover.notifs.Settings.POST_NOTIFICATIONS_PERMISSION_REQUES
 import com.monster.makeover.utils.PreferencesHelper
 
 // Post Notifications Permission Request
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun requestNotificationsPermission(context: Context) {
-    val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        Manifest.permission.POST_NOTIFICATIONS
-    } else {
-        TODO("VERSION.SDK_INT < TIRAMISU")
-    }
+    val permission = Manifest.permission.POST_NOTIFICATIONS
     val isPermissionGranted = (ContextCompat.checkSelfPermission(context, permission)
             == PackageManager.PERMISSION_GRANTED)
 

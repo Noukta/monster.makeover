@@ -14,6 +14,7 @@ object PreferencesHelper {
     private const val lastDailyGiftTime = "LastDailyGiftTime"
     private const val lastRewardTime = "LastRewardTime"
     private const val availableCoins = "AvailableCoins"
+    private const val lastShareTime = "LastShareTime"
     
     private const val prefFile = "preferences"
     private lateinit var preferences: SharedPreferences
@@ -103,5 +104,19 @@ object PreferencesHelper {
 
     fun getLastPostNotificationsRequestTime(): Long {
         return getLong(lastPostNotificationsRequestTime, 0)
+    }
+
+    fun updateLastShareTime(){
+        val currentTime= System.currentTimeMillis()
+        setLong(lastShareTime, currentTime)
+    }
+
+    fun getLastShareTime(): Long {
+        return getLong(lastShareTime, 0)
+    }
+
+    fun isSharedRecently(): Boolean{
+        val currentTime= System.currentTimeMillis()
+        return currentTime - getLastShareTime() >= Time.RESET_REWARD_INTERVAL
     }
 }

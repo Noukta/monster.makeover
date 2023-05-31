@@ -1,6 +1,7 @@
 package com.monster.makeover.constants
 
 import android.app.AlarmManager.INTERVAL_DAY
+import android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES
 import android.app.AlarmManager.INTERVAL_HOUR
 import com.monster.makeover.BuildConfig
 
@@ -11,9 +12,10 @@ object URL {
 }
 
 object Time {
-    const val RESET_REWARD_INTERVAL: Long = INTERVAL_HOUR
+    const val RESET_REWARD_INTERVAL: Long = INTERVAL_FIFTEEN_MINUTES
     const val RESET_DAILY_GIFT_INTERVAL: Long = INTERVAL_DAY
-    const val PLAY_TIME_BEFORE_REVIEW: Long = INTERVAL_HOUR
+    const val PLAY_TIME_BEFORE_REVIEW: Long = INTERVAL_FIFTEEN_MINUTES
+    const val UPDATE_SHARE_INTERVAL: Long = INTERVAL_HOUR
 }
 // Test values
 /*object Time {

@@ -1,7 +1,6 @@
 package com.monster.makeover.ui
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,8 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import com.monster.makeover.BuildConfig
 import com.monster.makeover.MainViewModel
 import com.monster.makeover.R
-import com.monster.makeover.ads.AdUnit
-import com.monster.makeover.ads.UnityAdsManager
+import com.monster.ads.unityAds.AdUnit
+import com.monster.ads.unityAds.UnityAdsManager
 import com.monster.makeover.constants.Game
 import com.monster.makeover.constants.ItemType
 import com.monster.makeover.constants.ReviewChoice
@@ -269,6 +268,12 @@ fun MonsterMakeoverApp(
                         canNavigateBack = false
                     }
                 ) {
+                    if(!PreferencesHelper.isSharedRecently()) {
+                        SoundHelper.playSound(SoundHelper.coinSound)
+                        PreferencesHelper.addCoins(Game.Reward)
+                        availableCoins = PreferencesHelper.getAvailableCoins()
+                        PreferencesHelper.updateLastShareTime()
+                    }
                     SoundHelper.playSound(SoundHelper.commonSound)
                     screenshotState.capture()
                 }
@@ -315,7 +320,6 @@ fun MonsterMakeoverApp(
         }
     }
 
-    Log.d("NAVIGATION", "exit ${viewModel.showExit}")
     if(viewModel.showExit){
         ExitDialog(context as Activity) {
             viewModel.showExit = false

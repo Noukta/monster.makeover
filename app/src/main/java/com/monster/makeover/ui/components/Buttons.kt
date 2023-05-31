@@ -1,6 +1,7 @@
 package com.monster.makeover.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -39,10 +40,10 @@ fun PrimaryButton(
 
 @Composable
 fun SecondaryButton(
-    text: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    content: @Composable RowScope.() -> Unit
 ) {
     Button(
         onClick = onClick,
@@ -55,8 +56,7 @@ fun SecondaryButton(
             disabledContainerColor = Color.White
         ),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSecondary),
-        contentPadding = ButtonDefaults.ContentPadding
-    ) {
-        Text(text = stringResource(text))
-    }
+        contentPadding = ButtonDefaults.ContentPadding,
+        content = content
+    )
 }
