@@ -124,6 +124,6 @@ object PreferencesHelper {
 
     fun isSharedRecently(): Boolean{
         val currentTime= System.currentTimeMillis()
-        return currentTime - getLastShareTime() >= Time.UPDATE_SHARE_INTERVAL
+        return currentTime - getLastShareTime() <= Time.UPDATE_SHARE_INTERVAL
     }
 }

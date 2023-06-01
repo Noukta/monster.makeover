@@ -267,7 +267,8 @@ fun MonsterMakeoverApp(
                         availableCoins = PreferencesHelper.getAvailableCoins()
                         PreferencesHelper.updateLastShareTime()
                     }
-                    SoundHelper.playSound(SoundHelper.commonSound)
+                    else
+                        SoundHelper.playSound(SoundHelper.commonSound)
                     screenshotState.capture()
                 }
             }
