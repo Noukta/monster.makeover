@@ -27,27 +27,27 @@ fun AdBanner(bannerId: String, modifier: Modifier = Modifier) {
                     loadAd(AdRequest.Builder().build())
                     adListener = object : AdListener() {
                         override fun onAdClicked() {
-                            Log.d("AdBanner", "Ad was clicked.")
+                            Log.d("AdBanner", "Banner Ad was clicked.")
                         }
 
                         override fun onAdClosed() {
-                            Log.d("AdBanner", "Ad closed.")
+                            Log.d("AdBanner", "Banner Ad closed.")
                         }
 
                         override fun onAdFailedToLoad(adError: LoadAdError) {
-                            Log.d("AdBanner", "Ad failed to load.")
+                            Log.d("AdBanner", "Banner Ad failed to load.")
                         }
 
                         override fun onAdImpression() {
-                            Log.d("AdBanner", "Ad impression registered.")
+                            Log.d("AdBanner", "Banner Ad impression registered.")
                         }
 
                         override fun onAdLoaded() {
-                            Log.d("AdBanner", "Ad was loaded.")
+                            Log.d("AdBanner", "Banner Ad was loaded.")
                         }
 
                         override fun onAdOpened() {
-                            Log.d("AdBanner", "Ad opened.")
+                            Log.d("AdBanner", "Banner Ad opened.")
                         }
                     }
                 }

@@ -21,7 +21,7 @@ object AdmobConstant {
     const val APP_OPEN = "ca-app-pub-3940256099942544/3419835294"
     const val INTERSTITIAL_START_CREATE = "ca-app-pub-3940256099942544/1033173712"
     const val INTERSTITIAL_CREATE_END = "ca-app-pub-3940256099942544/1033173712"
-    const val REWARDED_COINS = "ca-app-pub-9919447440379444/1473272617"
+    const val REWARDED_COINS = "ca-app-pub-3940256099942544/5224354917"
     const val NATIVE = ""
     const val BANNER_START = "ca-app-pub-3940256099942544/6300978111"
     const val BANNER_END = "ca-app-pub-3940256099942544/6300978111"

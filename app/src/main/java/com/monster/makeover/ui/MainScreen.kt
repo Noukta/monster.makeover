@@ -82,8 +82,13 @@ fun MonsterMakeoverApp(
             PreferencesHelper.getAvailableCoins()
         )
     }
-    //if (isRewardAvailable)
-        //UnityAdsManager.load(AdUnit.Rewarded_Coins)
+    if (currentScreen != MonsterMakeoverScreen.Splash && isRewardAvailable)
+        AdmobHelper.loadRewarded(
+            context,
+            AdmobConstant.REWARDED_COINS,
+            onAdShowed = {SoundHelper.pauseMusic()},
+            onAdDismissed = {SoundHelper.playMusic()}
+        )
 
     Scaffold(
         topBar = {
@@ -107,17 +112,16 @@ fun MonsterMakeoverApp(
                             PreferencesHelper.addCoins(Game.DailyGift)
                             isDailyGiftAvailable = false
                             scheduleDailyNotification(context)
+                            availableCoins += Game.DailyGift
                         } else {
-                            /*UnityAdsManager.rewardShowListener =
-                                UnityAdsManager.RewardShowListener {
-                                    SoundHelper.playSound(SoundHelper.coinSound)
-                                    PreferencesHelper.resetLastRewardTime()
-                                    PreferencesHelper.addCoins(Game.Reward)
-                                    isRewardAvailable = false
-                                }
-                            UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)*/
+                            AdmobHelper.showRewarded(context, AdmobConstant.REWARDED_COINS){
+                                SoundHelper.playSound(SoundHelper.coinSound)
+                                PreferencesHelper.resetLastRewardTime()
+                                PreferencesHelper.addCoins(Game.Reward)
+                                isRewardAvailable = false
+                                availableCoins += Game.Reward
+                            }
                         }
-                        availableCoins = PreferencesHelper.getAvailableCoins()
                     }
                 )
             }
@@ -143,17 +147,16 @@ fun MonsterMakeoverApp(
                             PreferencesHelper.addCoins(Game.DailyGift)
                             isDailyGiftAvailable = false
                             scheduleDailyNotification(context)
+                            availableCoins += Game.DailyGift
                         } else {
-                            /*UnityAdsManager.rewardShowListener =
-                                UnityAdsManager.RewardShowListener {
-                                    SoundHelper.playSound(SoundHelper.coinSound)
-                                    PreferencesHelper.resetLastRewardTime()
-                                    PreferencesHelper.addCoins(Game.Reward)
-                                    isRewardAvailable = false
-                                }
-                            UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)*/
+                            AdmobHelper.showRewarded(context, AdmobConstant.REWARDED_COINS){
+                                SoundHelper.playSound(SoundHelper.coinSound)
+                                PreferencesHelper.resetLastRewardTime()
+                                PreferencesHelper.addCoins(Game.Reward)
+                                isRewardAvailable = false
+                                availableCoins += Game.Reward
+                            }
                         }
-                        availableCoins = PreferencesHelper.getAvailableCoins()
                     }
                 )
             }
