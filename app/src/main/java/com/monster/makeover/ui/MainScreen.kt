@@ -181,6 +181,7 @@ fun MonsterMakeoverApp(
                     onAdShowed = {SoundHelper.pauseMusic()},
                     onAdDismissed = {SoundHelper.playMusic()}
                 )
+                isRewardAvailable = PreferencesHelper.isRewardAvailable()
                 StartScreen {
                     SoundHelper.playSound(SoundHelper.startSound)
                     navController.navigate(MonsterMakeoverScreen.Create.name)
@@ -194,6 +195,7 @@ fun MonsterMakeoverApp(
                     onAdShowed = {SoundHelper.pauseMusic()},
                     onAdDismissed = {SoundHelper.playMusic()}
                 )
+                isRewardAvailable = PreferencesHelper.isRewardAvailable()
                 CreateScreen(
                     monsterState = uiState,
                     onMonsterHeadChanged = { id, locked ->
