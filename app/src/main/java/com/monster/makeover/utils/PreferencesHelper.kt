@@ -15,6 +15,7 @@ object PreferencesHelper {
     private const val lastRewardTime = "LastRewardTime"
     private const val availableCoins = "AvailableCoins"
     private const val lastShareTime = "LastShareTime"
+    private const val isConsentAccepted = "IsConsentAccepted"
     
     private const val prefFile = "preferences"
     private lateinit var preferences: SharedPreferences
@@ -41,6 +42,12 @@ object PreferencesHelper {
         preferences.edit().putLong(key, value).apply()
     }
 
+    fun acceptConsent(){
+        setBoolean(isConsentAccepted, true)
+    }
+    fun isConsentAccepted(): Boolean{
+        return getBoolean(isConsentAccepted, false)
+    }
     fun setReviewStatus(reviewChoice: ReviewChoice){
         setInt(reviewStatus, reviewChoice.ordinal)
     }
@@ -111,7 +118,7 @@ object PreferencesHelper {
         setLong(lastShareTime, currentTime)
     }
 
-    fun getLastShareTime(): Long {
+    private fun getLastShareTime(): Long {
         return getLong(lastShareTime, 0)
     }
 

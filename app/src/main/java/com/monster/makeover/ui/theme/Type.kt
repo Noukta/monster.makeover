@@ -10,6 +10,9 @@ import com.monster.makeover.R
 val MainFont = FontFamily(
     Font(R.font.tiktok)
 )
+val Roboto = FontFamily(
+    Font(R.font.roboto)
+)
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = MainFont,
