@@ -82,14 +82,16 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
-    //Ads
-    implementation 'com.unity3d.ads:unity-ads:4.7.1'
+
     //Imagery
     implementation 'com.github.SmartToolFactory:Compose-Screenshot:1.0.3'
-    // video player
+    //Video player
     implementation "androidx.media3:media3-exoplayer:$media3_version"
     implementation "androidx.media3:media3-exoplayer-dash:$media3_version"
     implementation "androidx.media3:media3-ui:$media3_version"
+    //Admob and UMP
+    implementation 'com.google.android.gms:play-services-ads:22.1.0'
+    implementation 'com.google.android.ump:user-messaging-platform:2.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
