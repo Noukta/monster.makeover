@@ -33,4 +33,8 @@
     <string name="remind" translatable="false">Remind me later</string>
     <string name="text_quit" translatable="false">Are you sure you want to quit?</string>
     <string name="exit" translatable="false">Exit</string>
+    <string name="accept" translatable="false">Accept</string>
+    <string name="ready" translatable="false">Ready to start?</string>
+    <string name="consent_text" translatable="false">By clicking \'Accept\' you certify that you are at least 16 years old and consent to receiving Personalized Ads</string>
+    <string name="and_privacy_policy" translatable="false">and privacy policy</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.monster.makeover
 
 import android.app.Activity
+import android.os.Build
 import android.util.Log
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,6 +31,7 @@ class MainViewModel : ViewModel(), DefaultLifecycleObserver {
     private var startTime: Long = 0
     //exit
     var showExit by mutableStateOf(false)
+    var isConsentAccepted by mutableStateOf(PreferencesHelper.isConsentAccepted())
 
     //UI State/Monster control
     fun updateMonsterHead(id: Int) {
@@ -84,6 +87,7 @@ class MainViewModel : ViewModel(), DefaultLifecycleObserver {
     }
 
     //MainActivity LifeCycle Observing
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         requestNotificationsPermission(owner as Activity)

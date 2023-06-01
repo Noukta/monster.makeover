@@ -1,8 +1,6 @@
 package com.monster.makeover.ui
 
 import android.app.Activity
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -13,11 +11,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,8 +23,9 @@ import androidx.navigation.compose.rememberNavController
 import com.monster.makeover.BuildConfig
 import com.monster.makeover.MainViewModel
 import com.monster.makeover.R
-import com.monster.ads.unityAds.AdUnit
-import com.monster.ads.unityAds.UnityAdsManager
+import com.monster.makeover.ads.admob.ConsentDialog
+import com.monster.makeover.ads.unityAds.AdUnit
+import com.monster.makeover.ads.unityAds.UnityAdsManager
 import com.monster.makeover.constants.Game
 import com.monster.makeover.constants.ItemType
 import com.monster.makeover.constants.ReviewChoice
@@ -43,12 +40,14 @@ import com.monster.makeover.ui.components.MonsterMakeoverAppBar
 import com.monster.makeover.ui.components.ReviewDialog
 import com.monster.makeover.ui.screens.CreateScreen
 import com.monster.makeover.ui.screens.EndScreen
+import com.monster.makeover.ui.screens.SplashScreen
 import com.monster.makeover.ui.screens.StartScreen
 import com.monster.makeover.utils.PreferencesHelper
 import com.monster.makeover.utils.SoundHelper
 import com.smarttoolfactory.screenshot.rememberScreenshotState
 
 enum class MonsterMakeoverScreen {
+    Splash,
     Start,
     Create,
     End
@@ -65,9 +64,8 @@ fun MonsterMakeoverApp(
     navController.enableOnBackPressed(false)
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = MonsterMakeoverScreen.valueOf(
-        backStackEntry?.destination?.route ?: MonsterMakeoverScreen.Start.name
+        backStackEntry?.destination?.route ?: MonsterMakeoverScreen.Splash.name
     )
-    var canNavigateBack by remember { mutableStateOf(false) }
     //Ads
     var adBannerId by remember { mutableStateOf(AdUnit.Banner_Start) }
     //Rewards and gifts
@@ -164,25 +162,17 @@ fun MonsterMakeoverApp(
         }
     ) { innerPadding ->
         val uiState by viewModel.uiState.collectAsState()
-        if (currentScreen != MonsterMakeoverScreen.Create) {
-            Box(modifier.fillMaxWidth(), Alignment.TopCenter) {
-                AndroidView(
-                    modifier = Modifier.fillMaxWidth(),
-                    factory = {
-                        UnityAdsManager.loadBanner(context as Activity, adBannerId)
-                    },
-                    update = {
-                        UnityAdsManager.loadBanner(context as Activity, adBannerId)
-                    }
-                )
-            }
-        }
 
         NavHost(
             navController = navController,
-            startDestination = MonsterMakeoverScreen.Start.name,
+            startDestination = MonsterMakeoverScreen.Splash.name,
             modifier = modifier.padding(innerPadding)
         ) {
+            composable(route = MonsterMakeoverScreen.Splash.name){
+               SplashScreen(context, viewModel.isConsentAccepted){
+                   navController.navigate(MonsterMakeoverScreen.Start.name)
+               }
+            }
             composable(route = MonsterMakeoverScreen.Start.name) {
                 UnityAdsManager.load(AdUnit.Interstitial_Start_Create)
                 adBannerId = AdUnit.Banner_Start
@@ -193,7 +183,6 @@ fun MonsterMakeoverApp(
                         AdUnit.Interstitial_Start_Create,
                         context as Activity
                     )
-                    canNavigateBack = true
                 }
             }
             composable(route = MonsterMakeoverScreen.Create.name) {
@@ -265,7 +254,6 @@ fun MonsterMakeoverApp(
                     onRemakeButtonClicked = {
                         SoundHelper.playSound(SoundHelper.startSound)
                         remakeNewMonster(viewModel, navController)
-                        canNavigateBack = false
                     }
                 ) {
                     if(!PreferencesHelper.isSharedRecently()) {
@@ -301,9 +289,10 @@ fun MonsterMakeoverApp(
 
         if(currentScreen == MonsterMakeoverScreen.End)
             SoundHelper.prepare(SoundHelper.endMusic, context)
-        else
+        if(currentScreen == MonsterMakeoverScreen.Start)
             SoundHelper.prepare(SoundHelper.startMusic, context)
-        SoundHelper.playMusic()
+        if(currentScreen != MonsterMakeoverScreen.Splash)
+            SoundHelper.playMusic()
     }
 
     if(isReviewDialogAvailable){
@@ -324,6 +313,13 @@ fun MonsterMakeoverApp(
         ExitDialog(context as Activity) {
             viewModel.showExit = false
         }
+    }
+
+    if(!viewModel.isConsentAccepted){
+        ConsentDialog(onDismiss = {
+            viewModel.isConsentAccepted = true
+            PreferencesHelper.acceptConsent()
+        })
     }
 }
 
