@@ -43,40 +43,37 @@ object AdmobHelper {
             override fun onAdLoaded(interstitialAd: InterstitialAd) {
                 Log.d(TAG, "Interstitial Ad was loaded.")
                 mInterstitialAds[adUnit] = interstitialAd
+                mInterstitialAds[adUnit]?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                    override fun onAdClicked() {
+                        // Called when a click is recorded for an ad.
+                        Log.d(TAG, "Interstitial Ad was clicked.")
+                    }
+
+                    override fun onAdDismissedFullScreenContent() {
+                        // Called when ad is dismissed.
+                        Log.d(TAG, "Interstitial Ad dismissed fullscreen content.")
+                        onAdDismissed()
+                    }
+
+                    override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                        // Called when ad fails to show.
+                        Log.e(TAG, "Interstitial Ad failed to show fullscreen content.")
+                        onAdDismissed()
+                    }
+
+                    override fun onAdImpression() {
+                        // Called when an impression is recorded for an ad.
+                        Log.d(TAG, "Interstitial Ad recorded an impression.")
+                    }
+
+                    override fun onAdShowedFullScreenContent() {
+                        // Called when ad is shown.
+                        Log.d(TAG, "Interstitial Ad showed fullscreen content.")
+                        onAdShowed()
+                    }
+                }
             }
         })
-        mInterstitialAds[adUnit]?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdClicked() {
-                // Called when a click is recorded for an ad.
-                Log.d(TAG, "Interstitial Ad was clicked.")
-                loadInterstitial(context, adUnit)
-            }
-
-            override fun onAdDismissedFullScreenContent() {
-                // Called when ad is dismissed.
-                Log.d(TAG, "Interstitial Ad dismissed fullscreen content.")
-                onAdDismissed()
-                loadInterstitial(context, adUnit)
-            }
-
-            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                // Called when ad fails to show.
-                Log.e(TAG, "Interstitial Ad failed to show fullscreen content.")
-                onAdDismissed()
-                loadInterstitial(context, adUnit)
-            }
-
-            override fun onAdImpression() {
-                // Called when an impression is recorded for an ad.
-                Log.d(TAG, "Interstitial Ad recorded an impression.")
-            }
-
-            override fun onAdShowedFullScreenContent() {
-                // Called when ad is shown.
-                Log.d(TAG, "Interstitial Ad showed fullscreen content.")
-                onAdShowed()
-            }
-        }
     }
 
     fun showInterstitial(context: Context, adUnit: String) {
@@ -104,40 +101,37 @@ object AdmobHelper {
             override fun onAdLoaded(rewardedAd: RewardedAd) {
                 Log.d(TAG, "Rewarded Ad was loaded.")
                 mRewardedAds[adUnit] = rewardedAd
+                mRewardedAds[adUnit]?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                    override fun onAdClicked() {
+                        // Called when a click is recorded for an ad.
+                        Log.d(TAG, "Rewarded Ad was clicked.")
+                    }
+
+                    override fun onAdDismissedFullScreenContent() {
+                        // Called when ad is dismissed.
+                        Log.d(TAG, "Rewarded Ad dismissed fullscreen content.")
+                        onAdDismissed()
+                    }
+
+                    override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                        // Called when ad fails to show.
+                        Log.e(TAG, "Rewarded Ad failed to show fullscreen content.")
+                        onAdDismissed()
+                    }
+
+                    override fun onAdImpression() {
+                        // Called when an impression is recorded for an ad.
+                        Log.d(TAG, "Rewarded Ad recorded an impression.")
+                    }
+
+                    override fun onAdShowedFullScreenContent() {
+                        // Called when ad is shown.
+                        Log.d(TAG, "Rewarded Ad showed fullscreen content.")
+                        onAdShowed()
+                    }
+                }
             }
         })
-        mRewardedAds[adUnit]?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdClicked() {
-                // Called when a click is recorded for an ad.
-                Log.d(TAG, "Rewarded Ad was clicked.")
-                loadInterstitial(context, adUnit)
-            }
-
-            override fun onAdDismissedFullScreenContent() {
-                // Called when ad is dismissed.
-                Log.d(TAG, "Rewarded Ad dismissed fullscreen content.")
-                onAdDismissed()
-                loadInterstitial(context, adUnit)
-            }
-
-            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                // Called when ad fails to show.
-                Log.e(TAG, "Rewarded Ad failed to show fullscreen content.")
-                onAdDismissed()
-                loadInterstitial(context, adUnit)
-            }
-
-            override fun onAdImpression() {
-                // Called when an impression is recorded for an ad.
-                Log.d(TAG, "Rewarded Ad recorded an impression.")
-            }
-
-            override fun onAdShowedFullScreenContent() {
-                // Called when ad is shown.
-                Log.d(TAG, "Rewarded Ad showed fullscreen content.")
-                onAdShowed()
-            }
-        }
     }
 
     fun showRewarded(context: Context, adUnit: String, onRewarded: ()->Unit) {
