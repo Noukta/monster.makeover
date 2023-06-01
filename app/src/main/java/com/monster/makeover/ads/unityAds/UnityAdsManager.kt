@@ -1,5 +1,6 @@
 
 package com.monster.makeover.ads.unityAds
+/*
 
 import android.app.Activity
 import android.content.Context
@@ -263,3 +264,4 @@ object UnityAdsManager : IUnityAdsInitializationListener {
         )
     }
 }
+*/

@@ -23,7 +23,12 @@ object AdmobHelper {
     )
     private const val TAG = "AdmobHelper"
 
-    fun loadInterstitial(context: Context, adUnit: String) {
+    fun loadInterstitial(
+        context: Context,
+        adUnit: String,
+        onAdShowed: () -> Unit = {},
+        onAdDismissed: () -> Unit = {}
+    ) {
         val adRequest = AdRequest.Builder().build()
 
         InterstitialAd.load(context, adUnit, adRequest, object : InterstitialAdLoadCallback() {
@@ -46,12 +51,14 @@ object AdmobHelper {
                         override fun onAdDismissedFullScreenContent() {
                             // Called when ad is dismissed.
                             Log.d(TAG, "Ad dismissed fullscreen content.")
+                            onAdDismissed()
                             loadInterstitial(context, adUnit)
                         }
 
                         override fun onAdFailedToShowFullScreenContent(p0: AdError) {
                             // Called when ad fails to show.
                             Log.e(TAG, "Ad failed to show fullscreen content.")
+                            onAdDismissed()
                             loadInterstitial(context, adUnit)
                         }
 
@@ -63,6 +70,7 @@ object AdmobHelper {
                         override fun onAdShowedFullScreenContent() {
                             // Called when ad is shown.
                             Log.d(TAG, "Ad showed fullscreen content.")
+                            onAdShowed()
                         }
                     }
             }

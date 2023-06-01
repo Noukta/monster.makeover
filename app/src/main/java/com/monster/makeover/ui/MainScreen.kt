@@ -23,9 +23,9 @@ import androidx.navigation.compose.rememberNavController
 import com.monster.makeover.BuildConfig
 import com.monster.makeover.MainViewModel
 import com.monster.makeover.R
+import com.monster.makeover.ads.admob.AdmobConstant
+import com.monster.makeover.ads.admob.AdmobHelper
 import com.monster.makeover.ads.admob.ConsentDialog
-import com.monster.makeover.ads.unityAds.AdUnit
-import com.monster.makeover.ads.unityAds.UnityAdsManager
 import com.monster.makeover.constants.Game
 import com.monster.makeover.constants.ItemType
 import com.monster.makeover.constants.ReviewChoice
@@ -66,8 +66,6 @@ fun MonsterMakeoverApp(
     val currentScreen = MonsterMakeoverScreen.valueOf(
         backStackEntry?.destination?.route ?: MonsterMakeoverScreen.Splash.name
     )
-    //Ads
-    var adBannerId by remember { mutableStateOf(AdUnit.Banner_Start) }
     //Rewards and gifts
     var isDailyGiftAvailable by remember {
         mutableStateOf(
@@ -84,8 +82,8 @@ fun MonsterMakeoverApp(
             PreferencesHelper.getAvailableCoins()
         )
     }
-    if (isRewardAvailable)
-        UnityAdsManager.load(AdUnit.Rewarded_Coins)
+    //if (isRewardAvailable)
+        //UnityAdsManager.load(AdUnit.Rewarded_Coins)
 
     Scaffold(
         topBar = {
@@ -110,14 +108,14 @@ fun MonsterMakeoverApp(
                             isDailyGiftAvailable = false
                             scheduleDailyNotification(context)
                         } else {
-                            UnityAdsManager.rewardShowListener =
+                            /*UnityAdsManager.rewardShowListener =
                                 UnityAdsManager.RewardShowListener {
                                     SoundHelper.playSound(SoundHelper.coinSound)
                                     PreferencesHelper.resetLastRewardTime()
                                     PreferencesHelper.addCoins(Game.Reward)
                                     isRewardAvailable = false
                                 }
-                            UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)
+                            UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)*/
                         }
                         availableCoins = PreferencesHelper.getAvailableCoins()
                     }
@@ -146,14 +144,14 @@ fun MonsterMakeoverApp(
                             isDailyGiftAvailable = false
                             scheduleDailyNotification(context)
                         } else {
-                            UnityAdsManager.rewardShowListener =
+                            /*UnityAdsManager.rewardShowListener =
                                 UnityAdsManager.RewardShowListener {
                                     SoundHelper.playSound(SoundHelper.coinSound)
                                     PreferencesHelper.resetLastRewardTime()
                                     PreferencesHelper.addCoins(Game.Reward)
                                     isRewardAvailable = false
                                 }
-                            UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)
+                            UnityAdsManager.show(AdUnit.Rewarded_Coins, context as Activity, true)*/
                         }
                         availableCoins = PreferencesHelper.getAvailableCoins()
                     }
@@ -174,19 +172,25 @@ fun MonsterMakeoverApp(
                }
             }
             composable(route = MonsterMakeoverScreen.Start.name) {
-                UnityAdsManager.load(AdUnit.Interstitial_Start_Create)
-                adBannerId = AdUnit.Banner_Start
+                AdmobHelper.loadInterstitial(
+                    context,
+                    AdmobConstant.INTERSTITIAL_START_CREATE,
+                    onAdShowed = {SoundHelper.pauseMusic()},
+                    onAdDismissed = {SoundHelper.playMusic()}
+                )
                 StartScreen {
                     SoundHelper.playSound(SoundHelper.startSound)
                     navController.navigate(MonsterMakeoverScreen.Create.name)
-                    UnityAdsManager.show(
-                        AdUnit.Interstitial_Start_Create,
-                        context as Activity
-                    )
+                    AdmobHelper.showInterstitial(context, AdmobConstant.INTERSTITIAL_START_CREATE)
                 }
             }
             composable(route = MonsterMakeoverScreen.Create.name) {
-                UnityAdsManager.load(AdUnit.Interstitial_Create_End)
+                AdmobHelper.loadInterstitial(
+                    context,
+                    AdmobConstant.INTERSTITIAL_CREATE_END,
+                    onAdShowed = {SoundHelper.pauseMusic()},
+                    onAdDismissed = {SoundHelper.playMusic()}
+                )
                 CreateScreen(
                     monsterState = uiState,
                     onMonsterHeadChanged = { id, locked ->
@@ -226,10 +230,7 @@ fun MonsterMakeoverApp(
                     onDoneButtonClicked = {
                         SoundHelper.playSound(SoundHelper.doneSound)
                         navController.navigate(MonsterMakeoverScreen.End.name)
-                        UnityAdsManager.show(
-                            AdUnit.Interstitial_Create_End,
-                            context as Activity
-                        )
+                        AdmobHelper.showInterstitial(context, AdmobConstant.INTERSTITIAL_CREATE_END)
                     },
                     onNextButtonClicked = {
                         SoundHelper.playSound(SoundHelper.nextSound)
@@ -238,7 +239,6 @@ fun MonsterMakeoverApp(
 
             }
             composable(route = MonsterMakeoverScreen.End.name) {
-                adBannerId = AdUnit.Banner_End
                 val screenshotState = rememberScreenshotState()
                 val message = stringResource(R.string.share_message, BuildConfig.APPLICATION_ID)
                 LaunchedEffect(key1 = screenshotState.bitmap) {
