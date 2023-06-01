@@ -31,7 +31,7 @@ fun onMonsterItemChanged(
             ItemType.Accessory -> viewModel.updateMonsterAcc(id)
             ItemType.Body -> viewModel.updateMonsterBody(id)
         }
-        SoundHelper.playSound(SoundHelper.randomSelectSound)
+        SoundHelper.playSound(SoundHelper.selectSounds.random())
         return false
     }
 }

@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 object SoundHelper{
-    private val selectSounds = listOf(
+    val selectSounds = listOf(
         Sound(R.raw.btn_select_1),
         Sound(R.raw.btn_select_2),
         Sound(R.raw.btn_select_3),
@@ -33,7 +33,6 @@ object SoundHelper{
         Sound(R.raw.btn_select_15),
         Sound(R.raw.btn_select_16)
     )
-    val randomSelectSound = selectSounds.random()
     val unlockSound = Sound(R.raw.btn_unlock)
     val commonSound = Sound(R.raw.btn_common)
     val nextSound = Sound(R.raw.btn_next)
