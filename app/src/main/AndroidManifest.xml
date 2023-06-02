@@ -15,10 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="33">
-        <!-- real app id -->
+        <!-- monster.makeover app id -->
         <!--<meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9919447440379444~4494133729" />-->
+        <!-- test app id -->
+        <!-- mix.monster app id -->
+        <!--<meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9919447440379444~2834455746" />-->
         <!-- test app id -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
