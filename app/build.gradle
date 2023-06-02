@@ -10,6 +10,10 @@ android {
 
     defaultConfig {
         applicationId "com.monster.makeover"
+        //monster.makeover
+        //applicationId "mix.monsters.makeover.monster"
+        //mix.monster
+        //applicationId "monster.makeover.mix.monsters"
         minSdk 26
         targetSdk 33
         versionCode 110
