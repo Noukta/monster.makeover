@@ -31,7 +31,7 @@ class MainViewModel : ViewModel(), DefaultLifecycleObserver {
     private var startTime: Long = 0
     //exit
     var showExit by mutableStateOf(false)
-    var isConsentAccepted by mutableStateOf(PreferencesHelper.isConsentAccepted())
+    var consentStatus by mutableStateOf(PreferencesHelper.getConsentStatus())
 
     //UI State/Monster control
     fun updateMonsterHead(id: Int) {

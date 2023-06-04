@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.android.ump.ConsentInformation.ConsentStatus
 import com.monster.makeover.R
 import com.monster.makeover.ads.admob.AdmobConstant
 import com.monster.makeover.ads.admob.AppOpenAdManager
@@ -26,12 +27,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SplashScreen(context: Context, isConsentAccepted: Boolean, onLoadFinished: () -> Unit) {
+fun SplashScreen(context: Context, consentStatus: Int, onLoadFinished: () -> Unit) {
     val appOpenAdManager = AppOpenAdManager()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(isConsentAccepted) {
-        if(isConsentAccepted) {
+    LaunchedEffect(consentStatus) {
+        if (consentStatus != ConsentStatus.REQUIRED) {
             for (i in AdmobConstant.COUNTER_TIME * 2 downTo 0) {
                 delay(500)
                 appOpenAdManager.showAdIfAvailable(
@@ -43,6 +44,7 @@ fun SplashScreen(context: Context, isConsentAccepted: Boolean, onLoadFinished: (
                     }
                 }
             }
+
             onLoadFinished()
         }
     }
@@ -65,6 +67,6 @@ fun SplashScreen(context: Context, isConsentAccepted: Boolean, onLoadFinished: (
 @Composable
 fun SplashScreenPreview(){
     MonsterMakeoverTheme {
-        SplashScreen(LocalContext.current, true) {}
+        SplashScreen(LocalContext.current, 0) {}
     }
 }

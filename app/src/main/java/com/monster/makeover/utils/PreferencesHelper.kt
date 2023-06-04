@@ -2,9 +2,10 @@ package com.monster.makeover.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.monster.makeover.constants.Time
+import com.google.android.ump.ConsentInformation
 import com.monster.makeover.constants.Game
 import com.monster.makeover.constants.ReviewChoice
+import com.monster.makeover.constants.Time
 
 object PreferencesHelper {
     // Keys
@@ -15,7 +16,7 @@ object PreferencesHelper {
     private const val lastRewardTime = "LastRewardTime"
     private const val availableCoins = "AvailableCoins"
     private const val lastShareTime = "LastShareTime"
-    private const val isConsentAccepted = "IsConsentAccepted"
+    private const val consentStatus = "ConsentStatus"
     
     private const val prefFile = "preferences"
     private lateinit var preferences: SharedPreferences
@@ -42,20 +43,24 @@ object PreferencesHelper {
         preferences.edit().putLong(key, value).apply()
     }
 
-    fun acceptConsent(){
-        setBoolean(isConsentAccepted, true)
+    fun setConsentStatus(value: Int) {
+        setInt(consentStatus, value)
     }
-    fun isConsentAccepted(): Boolean{
-        return getBoolean(isConsentAccepted, false)
+
+    fun getConsentStatus(): Int {
+        return getInt(consentStatus, ConsentInformation.ConsentStatus.UNKNOWN)
     }
-    fun setReviewStatus(reviewChoice: ReviewChoice){
+
+    fun setReviewStatus(reviewChoice: ReviewChoice) {
         setInt(reviewStatus, reviewChoice.ordinal)
     }
-    fun getReviewStatus(): ReviewChoice{
+
+    fun getReviewStatus(): ReviewChoice {
         val ordinal = getInt(reviewStatus, ReviewChoice.REMIND.ordinal)
         return ReviewChoice.values()[ordinal]
     }
-    fun setTotalPlayTime(time: Long){
+
+    fun setTotalPlayTime(time: Long) {
         setLong(totalPlayTime, time)
     }
 

@@ -20,11 +20,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.android.ump.ConsentInformation.ConsentStatus
 import com.monster.makeover.BuildConfig
 import com.monster.makeover.MainViewModel
 import com.monster.makeover.R
 import com.monster.makeover.ads.admob.AdmobConstant
 import com.monster.makeover.ads.admob.AdmobHelper
+import com.monster.makeover.ads.admob.Consent
 import com.monster.makeover.ads.admob.ConsentDialog
 import com.monster.makeover.constants.Game
 import com.monster.makeover.constants.ItemType
@@ -170,9 +172,9 @@ fun MonsterMakeoverApp(
             modifier = modifier.padding(innerPadding)
         ) {
             composable(route = MonsterMakeoverScreen.Splash.name){
-               SplashScreen(context, viewModel.isConsentAccepted){
-                   navController.navigate(MonsterMakeoverScreen.Start.name)
-               }
+                SplashScreen(context, viewModel.consentStatus) {
+                    navController.navigate(MonsterMakeoverScreen.Start.name)
+                }
             }
             composable(route = MonsterMakeoverScreen.Start.name) {
                 AdmobHelper.loadInterstitial(
@@ -315,16 +317,23 @@ fun MonsterMakeoverApp(
         }
     }
 
-    if(viewModel.showExit){
+    if (viewModel.showExit) {
         ExitDialog(context as Activity) {
             viewModel.showExit = false
         }
     }
 
-    if(!viewModel.isConsentAccepted){
+    LaunchedEffect(Unit) {
+        if (viewModel.consentStatus == ConsentStatus.UNKNOWN)
+            Consent.getConsentStatus(context) {
+                viewModel.consentStatus = it
+            }
+    }
+
+    if (viewModel.consentStatus == ConsentStatus.REQUIRED) {
         ConsentDialog(onDismiss = {
-            viewModel.isConsentAccepted = true
-            PreferencesHelper.acceptConsent()
+            viewModel.consentStatus = ConsentStatus.OBTAINED
+            PreferencesHelper.setConsentStatus(viewModel.consentStatus)
         })
     }
 }
