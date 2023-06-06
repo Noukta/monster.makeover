@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "605848639865",
+    "project_id": "monster-makeover-470bb",
+    "storage_bucket": "monster-makeover-470bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605848639865:android:d0b5fd522bceb1bad977a8",
+        "android_client_info": {
+          "package_name": "com.monster.makeover"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605848639865-e1jb5b29p0nqb6vn3mamm04u7asbc17f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDevDJ9PvUy5FxA6Kj5tDKS7OQvVEP2Bt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605848639865-e1jb5b29p0nqb6vn3mamm04u7asbc17f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

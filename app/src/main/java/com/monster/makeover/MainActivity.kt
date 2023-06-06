@@ -14,8 +14,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             MonsterMakeoverTheme {
                 MonsterMakeoverApp(viewModel = viewModel)
+                //TestCrashButton()
             }
         }
         lifecycle.addObserver(viewModel)
     }
 }
+
+
+//for firebase crashlytics initialization
+/*
+@Composable
+fun TestCrashButton(){
+    Button(onClick = { throw RuntimeException("Test Crash")}) {
+        Text(text = "Test Crash")
+    }
+}*/
