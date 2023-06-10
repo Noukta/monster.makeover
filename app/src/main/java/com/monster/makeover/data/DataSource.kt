@@ -26,7 +26,7 @@ object DataSource {
             R.string.accessory,
             R.drawable.ico_acc,
             R.drawable.ico_acc_selected,
-            30
+            54
         ),
         TabInfo(
             R.string.body,
@@ -218,7 +218,31 @@ object DataSource {
         Pair(R.drawable.btn_acc_26, R.drawable.acc_26),
         Pair(R.drawable.btn_acc_27, R.drawable.acc_27),
         Pair(R.drawable.btn_acc_28, R.drawable.acc_28),
-        Pair(R.drawable.btn_acc_29, R.drawable.acc_29)
+        Pair(R.drawable.btn_acc_29, R.drawable.acc_29),
+        Pair(R.drawable.btn_acc_30, R.drawable.acc_30),
+        Pair(R.drawable.btn_acc_31, R.drawable.acc_31),
+        Pair(R.drawable.btn_acc_32, R.drawable.acc_32),
+        Pair(R.drawable.btn_acc_33, R.drawable.acc_33),
+        Pair(R.drawable.btn_acc_34, R.drawable.acc_34),
+        Pair(R.drawable.btn_acc_35, R.drawable.acc_35),
+        Pair(R.drawable.btn_acc_36, R.drawable.acc_36),
+        Pair(R.drawable.btn_acc_37, R.drawable.acc_37),
+        Pair(R.drawable.btn_acc_38, R.drawable.acc_38),
+        Pair(R.drawable.btn_acc_39, R.drawable.acc_39),
+        Pair(R.drawable.btn_acc_40, R.drawable.acc_40),
+        Pair(R.drawable.btn_acc_41, R.drawable.acc_41),
+        Pair(R.drawable.btn_acc_42, R.drawable.acc_42),
+        Pair(R.drawable.btn_acc_43, R.drawable.acc_43),
+        Pair(R.drawable.btn_acc_44, R.drawable.acc_44),
+        Pair(R.drawable.btn_acc_45, R.drawable.acc_45),
+        Pair(R.drawable.btn_acc_46, R.drawable.acc_46),
+        Pair(R.drawable.btn_acc_47, R.drawable.acc_47),
+        Pair(R.drawable.btn_acc_48, R.drawable.acc_48),
+        Pair(R.drawable.btn_acc_49, R.drawable.acc_49),
+        Pair(R.drawable.btn_acc_50, R.drawable.acc_50),
+        Pair(R.drawable.btn_acc_51, R.drawable.acc_51),
+        Pair(R.drawable.btn_acc_52, R.drawable.acc_52),
+        Pair(R.drawable.btn_acc_53, R.drawable.acc_53)
     )
     private val bodies = listOf(
         Pair(R.drawable.btn_body_00, R.drawable.body_00),
@@ -230,7 +254,7 @@ object DataSource {
         Pair(R.drawable.btn_body_06, R.drawable.body_06),
         Pair(R.drawable.btn_body_07, R.drawable.body_07),
         Pair(R.drawable.btn_body_08, R.drawable.body_08),
-//        Pair(R.drawable.btn_body_09, R.drawable.body_09),
+        Pair(R.drawable.btn_body_09, R.drawable.body_09),
         Pair(R.drawable.btn_body_10, R.drawable.body_10),
         Pair(R.drawable.btn_body_11, R.drawable.body_11),
         Pair(R.drawable.btn_body_12, R.drawable.body_12),

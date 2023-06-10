@@ -9,22 +9,10 @@ import com.monster.makeover.utils.PreferencesHelper
 import com.monster.makeover.utils.SoundHelper
 
 fun onMonsterItemChanged(
-    id: Int,
-    locked: Boolean,
-    itemType: ItemType,
-    viewModel: MainViewModel,
-    onUnlock: () -> Unit
+    id: Int, unlocked: Boolean, itemType: ItemType, viewModel: MainViewModel, onUnlock: () -> Unit
 ): Boolean {
-    if(locked){
-        return if(PreferencesHelper.addCoins(-Game.ItemValue)) {
-            onUnlock()
-            SoundHelper.playSound(SoundHelper.unlockSound)
-            query {  Database.lockedItemsDao().delete(MonsterItem(id)) }
-            false
-        } else true
-    }
-    else {
-        when(itemType){
+    if (unlocked) {
+        when (itemType) {
             ItemType.Head -> viewModel.updateMonsterHead(id)
             ItemType.Eye -> viewModel.updateMonsterEye(id)
             ItemType.Mouth -> viewModel.updateMonsterMouth(id)
@@ -32,6 +20,13 @@ fun onMonsterItemChanged(
             ItemType.Body -> viewModel.updateMonsterBody(id)
         }
         SoundHelper.playSound(SoundHelper.selectSounds.random())
-        return false
+        return true
+    } else {
+        return if (PreferencesHelper.addCoins(-Game.ItemValue)) {
+            onUnlock()
+            SoundHelper.playSound(SoundHelper.unlockSound)
+            query { Database.unlockedItemsDao().insert(MonsterItem(id)) }
+            true
+        } else false
     }
 }

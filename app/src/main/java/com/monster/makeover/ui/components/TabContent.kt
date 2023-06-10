@@ -43,19 +43,19 @@ fun TabContent(index: Int, onMonsterItemChanged: (Int, Boolean) -> Boolean){
             rows = GridCells.Fixed(3), contentPadding = PaddingValues(8.dp)
         ) {
             items(DataSource.allParts[index]) { part ->
-                var locked by remember { mutableStateOf(false) }
+                var unlocked by remember { mutableStateOf(false) }
                 LaunchedEffect(true) {
                     query {
-                        locked = DatabaseHolder.Database.lockedItemsDao().exists(part.second)
+                        unlocked = DatabaseHolder.Database.unlockedItemsDao().exists(part.second)
                     }
                 }
                 Box(
                     Modifier.clickable(role = Role.Button) {
-                        locked = onMonsterItemChanged(part.second, locked)
+                        unlocked = onMonsterItemChanged(part.second, unlocked)
                     }, Alignment.Center
 
                 ) {
-                    val icon = if(locked) R.drawable.btn_locked else R.drawable.btn_item
+                    val icon = if (unlocked) R.drawable.btn_item else R.drawable.btn_locked
                     Image(
                         painterResource(id = icon),
                         contentDescription = "",
@@ -68,11 +68,13 @@ fun TabContent(index: Int, onMonsterItemChanged: (Int, Boolean) -> Boolean){
                             .width(48.dp)
                             .height(48.dp)
                     )
-                    if(locked){
+                    if (!unlocked) {
                         Image(
                             painter = painterResource(id = R.drawable.coins_lock),
                             contentDescription = "",
-                            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth()
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .fillMaxWidth()
                         )
 
                     }

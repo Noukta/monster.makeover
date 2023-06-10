@@ -148,17 +148,27 @@ fun MonsterCanvas(
                     )
                 }
                 mouth?.let {
-                    if(selectedItem == 2) newMouthOffset = monsterState.mouthOffset + dragOffset
+                    if (selectedItem == 2) newMouthOffset = monsterState.mouthOffset + dragOffset
                     drawImage(
                         image = it,
                         topLeft = newMouthOffset + center - Offset(
                             it.width.toFloat() / 2,
-                            (it.height.toFloat() -head!!.height.toFloat()*.4f) / 2
+                            (it.height.toFloat() - head!!.height.toFloat() * .4f) / 2
+                        )
+                    )
+                }
+                eye?.let {
+                    if (selectedItem == 1) newEyeOffset = monsterState.eyeOffset + dragOffset
+                    drawImage(
+                        image = it,
+                        topLeft = newEyeOffset + center - Offset(
+                            it.width.toFloat() / 2,
+                            (it.height.toFloat() + head!!.height.toFloat() * .2f) / 2
                         )
                     )
                 }
                 acc?.let {
-                    if(selectedItem == 3){
+                    if (selectedItem == 3) {
                         newAccOffset = monsterState.accOffset + dragOffset
                     }
                     drawImage(
@@ -166,16 +176,6 @@ fun MonsterCanvas(
                         topLeft = newAccOffset + center - Offset(
                             it.width.toFloat() / 2,
                             (it.height.toFloat() + head!!.height.toFloat()) / 2
-                        )
-                    )
-                }
-                eye?.let {
-                    if(selectedItem == 1) newEyeOffset = monsterState.eyeOffset + dragOffset
-                    drawImage(
-                        image = it,
-                        topLeft = newEyeOffset + center - Offset(
-                            it.width.toFloat() / 2,
-                            (it.height.toFloat() +head!!.height.toFloat()*.2f) / 2
                         )
                     )
                 }

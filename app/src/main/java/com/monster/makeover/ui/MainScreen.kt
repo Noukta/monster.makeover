@@ -187,29 +187,54 @@ fun MonsterMakeoverApp(
                 isRewardAvailable = PreferencesHelper.isRewardAvailable()
                 CreateScreen(
                     monsterState = uiState,
-                    onMonsterHeadChanged = { id, locked ->
-                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Head, viewModel){
-                            availableCoins -=20
+                    onMonsterHeadChanged = { id, unlocked ->
+                        return@CreateScreen onMonsterItemChanged(
+                            id,
+                            unlocked,
+                            ItemType.Head,
+                            viewModel
+                        ) {
+                            availableCoins -= 20
                         }
                     },
-                    onMonsterEyeChanged = { id, locked ->
-                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Eye, viewModel){
-                            availableCoins -=20
+                    onMonsterEyeChanged = { id, unlocked ->
+                        return@CreateScreen onMonsterItemChanged(
+                            id,
+                            unlocked,
+                            ItemType.Eye,
+                            viewModel
+                        ) {
+                            availableCoins -= 20
                         }
                     },
-                    onMonsterMouthChanged = { id, locked ->
-                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Mouth, viewModel){
-                            availableCoins -=20
+                    onMonsterMouthChanged = { id, unlocked ->
+                        return@CreateScreen onMonsterItemChanged(
+                            id,
+                            unlocked,
+                            ItemType.Mouth,
+                            viewModel
+                        ) {
+                            availableCoins -= 20
                         }
                     },
-                    onMonsterAccChanged = { id, locked ->
-                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Accessory, viewModel){
-                            availableCoins -=20
+                    onMonsterAccChanged = { id, unlocked ->
+                        return@CreateScreen onMonsterItemChanged(
+                            id,
+                            unlocked,
+                            ItemType.Accessory,
+                            viewModel
+                        ) {
+                            availableCoins -= 20
                         }
                     },
-                    onMonsterBodyChanged = { id, locked ->
-                        return@CreateScreen onMonsterItemChanged(id, locked, ItemType.Body, viewModel){
-                            availableCoins -=20
+                    onMonsterBodyChanged = { id, unlocked ->
+                        return@CreateScreen onMonsterItemChanged(
+                            id,
+                            unlocked,
+                            ItemType.Body,
+                            viewModel
+                        ) {
+                            availableCoins -= 20
                         }
                     },
                     onEyePositionChanged = {
