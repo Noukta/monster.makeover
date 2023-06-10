@@ -177,26 +177,13 @@ fun MonsterMakeoverApp(
                 }
             }
             composable(route = MonsterMakeoverScreen.Start.name) {
-                AdmobHelper.loadInterstitial(
-                    context,
-                    AdmobConstant.INTERSTITIAL_START_CREATE,
-                    onAdShowed = {SoundHelper.pauseMusic()},
-                    onAdDismissed = {SoundHelper.playMusic()}
-                )
                 isRewardAvailable = PreferencesHelper.isRewardAvailable()
                 StartScreen {
                     SoundHelper.playSound(SoundHelper.startSound)
                     navController.navigate(MonsterMakeoverScreen.Create.name)
-                    AdmobHelper.showInterstitial(context, AdmobConstant.INTERSTITIAL_START_CREATE)
                 }
             }
             composable(route = MonsterMakeoverScreen.Create.name) {
-                AdmobHelper.loadInterstitial(
-                    context,
-                    AdmobConstant.INTERSTITIAL_CREATE_END,
-                    onAdShowed = {SoundHelper.pauseMusic()},
-                    onAdDismissed = {SoundHelper.playMusic()}
-                )
                 isRewardAvailable = PreferencesHelper.isRewardAvailable()
                 CreateScreen(
                     monsterState = uiState,
@@ -237,7 +224,6 @@ fun MonsterMakeoverApp(
                     onDoneButtonClicked = {
                         SoundHelper.playSound(SoundHelper.doneSound)
                         navController.navigate(MonsterMakeoverScreen.End.name)
-                        AdmobHelper.showInterstitial(context, AdmobConstant.INTERSTITIAL_CREATE_END)
                     },
                     onNextButtonClicked = {
                         SoundHelper.playSound(SoundHelper.nextSound)

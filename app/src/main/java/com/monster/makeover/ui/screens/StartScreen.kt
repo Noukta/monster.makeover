@@ -1,5 +1,6 @@
 package com.monster.makeover.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,24 +14,27 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.monster.makeover.R
 import com.monster.makeover.ads.admob.AdBanner
 import com.monster.makeover.ads.admob.AdmobConstant
+import com.monster.makeover.ads.admob.AdmobHelper
 import com.monster.makeover.data.DataSource.allParts
 import com.monster.makeover.data.MonsterState
 import com.monster.makeover.ui.animations.AnimatedImage
 import com.monster.makeover.ui.components.MonsterCanvas
 import com.monster.makeover.ui.components.PrimaryButton
+import com.monster.makeover.utils.SoundHelper
 import kotlinx.coroutines.delay
 
 fun randomMonster(): MonsterState {
@@ -47,7 +51,8 @@ fun StartScreen(
     modifier: Modifier = Modifier,
     onNextButtonClicked: () -> Unit = {}
 ) {
-    var randomMonster by remember{
+    val context = LocalContext.current
+    var randomMonster by remember {
         mutableStateOf(randomMonster())
     }
     LaunchedEffect(key1 = Unit, block = {
@@ -88,8 +93,21 @@ fun StartScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 96.dp)
             )
-            { onNextButtonClicked() }
+            {
+                onNextButtonClicked()
+                AdmobHelper.showInterstitial(context, AdmobConstant.INTERSTITIAL_START_CREATE)
+            }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        AdmobHelper.loadInterstitial(
+            context,
+            AdmobConstant.INTERSTITIAL_START_CREATE,
+            onAdShowed = { SoundHelper.pauseMusic() },
+            onAdDismissed = { SoundHelper.playMusic() }
+        )
+        Log.d("Interstitial", "load INTERSTITIAL_START_CREATE")
     }
 }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -12,10 +13,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.monster.makeover.R
+import com.monster.makeover.ads.admob.AdmobConstant
+import com.monster.makeover.ads.admob.AdmobHelper
 import com.monster.makeover.data.MonsterState
 import com.monster.makeover.ui.components.CustomTabRow
 import com.monster.makeover.ui.components.MonsterCanvas
@@ -23,6 +27,7 @@ import com.monster.makeover.ui.components.PrimaryButton
 import com.monster.makeover.ui.components.SecondaryButton
 import com.monster.makeover.ui.components.TabContent
 import com.monster.makeover.ui.theme.MonsterMakeoverTheme
+import com.monster.makeover.utils.SoundHelper
 
 @Composable
 fun CreateScreen(
@@ -38,6 +43,7 @@ fun CreateScreen(
     onDoneButtonClicked: () -> Unit = {},
     onNextButtonClicked: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     var selectedTabIndex by remember { mutableStateOf(0) }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -82,7 +88,10 @@ fun CreateScreen(
                         selectedTabIndex++
                     }
 
-                    4 -> DoneButton(monsterState.body != null) { onDoneButtonClicked() }
+                    4 -> DoneButton(monsterState.body != null) {
+                        onDoneButtonClicked()
+                        AdmobHelper.showInterstitial(context, AdmobConstant.INTERSTITIAL_CREATE_END)
+                    }
                 }
             }
 
@@ -94,6 +103,15 @@ fun CreateScreen(
                 else -> TabContent(selectedTabIndex, onMonsterBodyChanged)
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        AdmobHelper.loadInterstitial(
+            context,
+            AdmobConstant.INTERSTITIAL_CREATE_END,
+            onAdShowed = { SoundHelper.pauseMusic() },
+            onAdDismissed = { SoundHelper.playMusic() }
+        )
     }
 }
 
