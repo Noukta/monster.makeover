@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,10 +30,12 @@ import androidx.compose.ui.unit.dp
 import com.monster.makeover.R
 import com.monster.makeover.data.DataSource
 import com.monster.makeover.db.DatabaseHolder
-import com.monster.makeover.ext.query
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun TabContent(index: Int, onMonsterItemChanged: (Int, Boolean) -> Boolean){
+    val scope = rememberCoroutineScope()
     Surface(
         modifier = Modifier.padding(top = 8.dp),
         color = MaterialTheme.colorScheme.primaryContainer,
@@ -43,12 +46,18 @@ fun TabContent(index: Int, onMonsterItemChanged: (Int, Boolean) -> Boolean){
             rows = GridCells.Fixed(3), contentPadding = PaddingValues(8.dp)
         ) {
             items(DataSource.allParts[index]) { part ->
-                var unlocked by remember { mutableStateOf(false) }
-                LaunchedEffect(true) {
-                    query {
+                var unlocked by remember {
+                    mutableStateOf(
+                        true
+                    )
+                }
+
+                LaunchedEffect(Unit) {
+                    scope.launch(Dispatchers.IO) {
                         unlocked = DatabaseHolder.Database.unlockedItemsDao().exists(part.second)
                     }
                 }
+
                 Box(
                     Modifier.clickable(role = Role.Button) {
                         unlocked = onMonsterItemChanged(part.second, unlocked)

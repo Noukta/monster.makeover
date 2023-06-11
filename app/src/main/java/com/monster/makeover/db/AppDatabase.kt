@@ -5,14 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.monster.makeover.data.UNLOCKED_ACCS
-import com.monster.makeover.data.UNLOCKED_BODIES
-import com.monster.makeover.data.UNLOCKED_EYES
-import com.monster.makeover.data.UNLOCKED_HEADS
-import com.monster.makeover.data.UNLOCKED_MOUTHS
+import com.monster.makeover.data.unlockedItems
 import com.monster.makeover.db.dao.UnlockedItemsDao
 import com.monster.makeover.db.obj.MonsterItem
-import com.monster.makeover.ext.query
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Database(
     version = 2,
@@ -39,11 +37,16 @@ abstract class AppDatabase : RoomDatabase() {
             )
                 .fallbackToDestructiveMigration()
                 .addCallback(object : Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            getInstance(context).unlockedItemsDao().insertAll(unlockedItems)
+                        }
+                    }
+
                     override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
                         super.onDestructiveMigration(db)
-                        query {
-                            val unlockedItems =
-                                UNLOCKED_HEADS + UNLOCKED_EYES + UNLOCKED_MOUTHS + UNLOCKED_ACCS + UNLOCKED_BODIES
+                        CoroutineScope(Dispatchers.IO).launch {
                             getInstance(context).unlockedItemsDao().insertAll(unlockedItems)
                         }
                     }

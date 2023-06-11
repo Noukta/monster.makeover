@@ -88,3 +88,6 @@ val UNLOCKED_BODIES = listOf(
     MonsterItem(R.drawable.body_13),
     MonsterItem(R.drawable.body_14)
 )
+
+val unlockedItems =
+    UNLOCKED_HEADS + UNLOCKED_EYES + UNLOCKED_MOUTHS + UNLOCKED_ACCS + UNLOCKED_BODIES
