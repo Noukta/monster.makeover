@@ -9,7 +9,7 @@ import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
 
 object Consent {
-    private const val testMode = true
+    private const val testMode = false
     private lateinit var consentInformation: ConsentInformation
     private lateinit var params: ConsentRequestParameters
     private lateinit var debugSettings: ConsentDebugSettings

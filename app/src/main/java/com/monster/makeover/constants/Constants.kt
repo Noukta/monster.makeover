@@ -11,19 +11,19 @@ object URL {
         "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
 }
 
-/*object Time {
+object Time {
     const val RESET_REWARD_INTERVAL: Long = INTERVAL_FIFTEEN_MINUTES
     const val RESET_DAILY_GIFT_INTERVAL: Long = INTERVAL_DAY
-    const val PLAY_TIME_BEFORE_REVIEW: Long = INTERVAL_FIFTEEN_MINUTES
+    const val PLAY_TIME_BEFORE_REVIEW: Long = 300_000L
     const val UPDATE_SHARE_INTERVAL: Long = INTERVAL_HOUR
-}*/
+}
 // Test values
-object Time {
+/*object Time {
     const val RESET_REWARD_INTERVAL: Long = 10_000L
     const val RESET_DAILY_GIFT_INTERVAL: Long = 20_000L
     const val PLAY_TIME_BEFORE_REVIEW: Long = 60_000L
     const val UPDATE_SHARE_INTERVAL: Long = 30_000L
-}
+}*/
 
 object Game{
     const val InitAvailableCoins = 100
