@@ -1,21 +1,13 @@
-# monster.makeover republishing steps
-1)  build.gradle(Module): replace com.example.createmonster with mix.monsters.makeover.monster
-2)  build.gradle(Module) and directories: change package name to com.monster.makeover
-3)  app: replace com.example.createmonster with com.monster.makeover
-4)  app: replace com.example with com.monster
-5)  settings.gradle: rootProject.name = "monster.makeover"
-6)  strings.xml: app_name is Monster Makeover
-7)  unityAdsManager.kt: unityAppId = "5274719"
-8)  after test -> unityAdsManager.kt: testMode = false
+<!-- ---------- Header ---------- -->
+<div align="center">
+  <img width="200" height="200"src="https://github.com/Noukta/monster.makeover/assets/17930235/a4d933a4-9bf9-420f-90ba-6fa0a794b1db">
+  <h1>Monster Makeover</h1>
+<p>Casual game built by Jetpack Compose coded with Kotlin.</p>
+</div>
 
-# mix.monster republishing steps
-1) build.gradle(Module): replace com.example.createmonster with monster.makeover.mix.monsters
-2) build.gradle(Module) and directories: change package name to com.mix.monster
-3) app: replace com.example.createmonster with com.mix.monster
-4) app: replace com.example with com.monster
-5) settings.gradle: rootProject.name = "mix.monster"
-6) strings.xml: app_name is Mix Monster
-7) change ic_launcher
-8) delete .gradle and build folders
-9) unityAdsManager.kt: unityAppId = "5273632"
-10) after test -> unityAdsManager.kt: testMode = false
+# Screenshots
+<img src="https://github.com/Noukta/monster.makeover/assets/17930235/af7754fb-f6a8-4f12-bee8-8b87792281af" width="30%">
+<img src="https://github.com/Noukta/monster.makeover/assets/17930235/1062dffa-5a36-4d0c-b1b6-cb7b48744c7c" width="30%">
+<img src="https://github.com/Noukta/monster.makeover/assets/17930235/c5c1ed08-f0f4-49da-83f7-e28003d38e24" width="30%">
+
+# Used Technologies
