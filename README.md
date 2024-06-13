@@ -11,3 +11,10 @@
 <img src="https://github.com/Noukta/monster.makeover/assets/17930235/c5c1ed08-f0f4-49da-83f7-e28003d38e24" width="30%">
 
 # Used Technologies
+Following the recommended practices by google I made this app using the MVVM architecture and these libraries:
+* Compose
+* Room
+* Firebase analytics and Firebase crashlytics
+* Canvas for drawing and animating
+* exoplayer
+* material3
