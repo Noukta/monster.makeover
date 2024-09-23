@@ -4,7 +4,12 @@
 <p>Casual game built by Jetpack Compose coded with Kotlin.</p>
 </div>
 
+# Demo Video
+
+https://github.com/user-attachments/assets/644a9f45-0ea2-4f21-ac2c-d464ae696009
+
 # Screenshots
+
 <img src="https://github.com/Noukta/monster.makeover/assets/17930235/af7754fb-f6a8-4f12-bee8-8b87792281af" width="30%">
 <img src="https://github.com/Noukta/monster.makeover/assets/17930235/1062dffa-5a36-4d0c-b1b6-cb7b48744c7c" width="30%">
 <img src="https://github.com/Noukta/monster.makeover/assets/17930235/c5c1ed08-f0f4-49da-83f7-e28003d38e24" width="30%">
